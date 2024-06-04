@@ -1,0 +1,13 @@
+{
+  "workspaces": [
+    "deps/*"
+  ],
+  "dependencies": {
+    "@ungap/custom-elements": "^1.3.0",
+    "highlight.js": "^11.9.0",
+    "morphdom": "^2.7.2",
+    "otterly": "workspace:assets/otterly",
+    "phoenix": "workspace:*",
+    "phoenix_html": "workspace:*"
+  }
+}

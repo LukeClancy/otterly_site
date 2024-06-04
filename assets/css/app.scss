@@ -1,0 +1,62 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "highlight.js/scss/github.scss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.test{
+	background-color: black;
+}
+@keyframes otsspin {
+	0% { transform: rotate(-10deg) }
+	80% { transform: rotate(-10deg) }
+	86% { transform: rotate(50deg) }
+	92% { transform: rotate(-30deg) }
+	100% { transform: rotate(-10deg) }
+};
+.otter-wiggle{
+	animation: otsspin 25s ease infinite;
+}
+.max_h90vh{
+	max-height: 90vh;
+}
+
+@layer components {
+	ul{	@apply list-disc px-4 mb-5 }
+	ol{	@apply list-decimal px-4 mb-5 }
+	li{ @apply m-2 }
+	h3{ @apply text-xl font-medium }
+
+	.btn{
+		@apply align-middle select-none cursor-pointer font-bold text-center;
+		@apply transition-all disabled:opacity-50 disabled:shadow-none;
+		@apply disabled:pointer-events-none text-xs py-3 px-6 rounded-lg;
+		@apply bg-gray-600 text-white shadow-md shadow-gray-900/10;
+		@apply hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85];
+		@apply focus:shadow-none active:opacity-[0.85] active:shadow-none;
+	}
+
+	\/\/ md means markdown and we put on parent of converted markdown->html. What is up with these comments lol what is happening
+	.md code{ @apply bg-slate-300 mb-8 }
+	.md p { @apply mb-2 }
+	.md h1{ @apply text-4xl m-auto font-semibold m-2 sm:m-8 text-brand rounded-full }
+	.md h2{ @apply text-2xl font-semibold mb-4 }
+	.md h3{ @apply text-xl font-medium }
+	.md h4{ @apply text-lg font-normal }
+	.md pre{ @apply bg-slate-300 mb-4 p-2 overflow-x-scroll }
+	.md a{ @apply text-blue-600 visited:text-purple-600 text-blue-600 visited:text-purple-600 }
+}
+
+@layer utilities {
+	pre {
+		white-space: pre-wrap;       /* Since CSS 2.1 */
+		white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+		white-space: -pre-wrap;      /* Opera 4-6 */
+		white-space: -o-pre-wrap;    /* Opera 7 */
+		word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	}
+}

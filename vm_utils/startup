@@ -1,0 +1,8 @@
+#!/bin/bash
+cd /root
+echo "STARTING SERVICE ON $(date)" >> output.txt
+cd /root/midflip
+source /root/.bashrc
+source /root/.profile
+RAILS_ENV=production bundle exec ./bin/rails server -p 3000 >> /root/output
+# -b 'ssl://0.0.0.0:443?key=/etc/letsencrypt/live/midflip.com/privkey.pem&cert=/etc/letsencrypt/live/midflip.com/fullchain.pem'  >> /root/output.txt

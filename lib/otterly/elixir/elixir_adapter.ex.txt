@@ -1,0 +1,14 @@
+defmodule App.ElixirAdapter do
+#Follow whatever this dude did.
+# https://blog.plataformatec.com.br/2019/01/building-a-new-mysql-adapter-for-ecto-part-iv-ecto-integration/
+
+# https://github.com/elixir-ecto/ecto_sql/blob/v3.11.1/lib/ecto/adapters/sql.ex
+
+# wow no.
+use Ecto.Adapters.SQL,
+  driver: :myxql,
+  migration_lock: "FOR UPDATE"
+
+
+
+end

@@ -1,0 +1,30 @@
+# !bin/bash
+#
+#	Automatically pushes to the server
+#
+figlet --gay "Main->"
+figlet --gay "Production->"
+figlet --gay "Server"
+
+git add ../../*
+echo 1
+git pull
+echo 2
+git commit -m 'pushing main to server'
+echo 3
+git checkout production
+echo 4
+git merge main
+echo 5
+git push
+echo 6
+git checkout main
+echo 7
+
+./init_on_vm $1
+echo 8
+echo "FINISHED push_main_to_server SCRIPT"
+echo 9
+echo "You are currently in the green branch below"
+echo 10
+git branch -a

@@ -1,0 +1,35 @@
+init_on_vm [ip] [github username] [github secret] - initializes midflip / refreshes
+	midflip on the vm from the production branch of midflip. If it just needs to be refreshed
+	then only the ip is required
+
+push_main_to_server [ip] [gh username] [gh sec] - wrapper on above that pushes local main branch to
+	the server
+
+push_main_to_production_branch - just pushes to production branch
+
+update_credentials [ip] - updates server credentials
+
+update_credentials_reversed [ip] - updates your credentials based on the server's. I accidently erased
+	my credentials at some point
+
+warning_refresh_server [ip] - like a push_main_to_server refresh, but does not update assets or migrate or
+	install new dependencies etc. Good for developers making rapid fixes, but can break things if
+	not used correctly. It basically just pushes from main -> production, pulls on server, and then
+	systemctl restarts.
+
+jinxed [ip] - Sets up NGINX reverse proxy, and then runs CertBot on it which gives the site ssh/https capabilities.
+	Note that the script requires user interaction (which if you mess up can be bad so dont). NGINX
+	settings can be changed in the pre_ssl_nginx_mf_config file.
+
+Note that for credentials in this section, that they can be stored in ../private for easy access.
+That folder is not committed.
+
+To set up a new server you must:
+	1. Set up the VM to have correct firewall settings (to cloudflare)
+	2. Set up the VM to have the correct tags for database access (on digital ocean idk other providers)
+	3. If this server contains nginx, run jinxed. May need to stop it from creating cert and add your
+		own if you are into that kind of thing. Look into certbot certification transfers across
+		machines shouldn't be too hard.
+	4. Run init_on_vm
+	5. Decide wether you want to run midflip_que.service and then activate the service if so
+	6. Set Routing/DNS settings and test the thing including anycable.

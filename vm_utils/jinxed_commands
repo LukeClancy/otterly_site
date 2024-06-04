@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# these commands are utilized by the jinxed command.
+
+#nginx / certbot handle https and in the future probably(?) load balancing and junk.
+
+			#<----this command makes things fail fast which is useful in this case.
+
+apt update && apt install nginx
+
+mv ~/vm_utils/pre_ssl_nginx_config /etc/nginx/sites-available/$PROJECT_DIR
+ln -s /etc/nginx/sites-available/$PROJECT_DIR etc/nginx/sites-enabled/$PROJECT_DIR
+
+#https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
+echo 'INSTALLATIONS...'
+
+#install snapd certbot
+apt install snapd
+snap install --classic certbot
+
+#link it up
+ln -s /snap/bin/certbot /usr/bin/certbot
+
+#echo 'RELOADING NGINX...'
+#systemctl restart nginx.service
+
+echo 'CERTBOTTING...'
+
+if [ -z "$DOMAINS" ]; then
+	echo '$DOMAINS is missing.'
+	exit 1
+fi
+
+#https://github.com/certbot/certbot/issues/5486
+certbot --non-interactive --expand --nginx -v -d $DOMAINS
+
+echo 'yay!'

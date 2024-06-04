@@ -1,0 +1,12 @@
+# !bin/bash
+#
+#	Automatically pushes to the server
+#
+git add ../../*
+git commit -m 'pushing main to production branch'
+git checkout production
+git merge main
+git push
+git checkout main
+
+echo "FINISHED push_main_to_production_branch SCRIPT"

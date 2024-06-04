@@ -1,0 +1,12 @@
+defmodule App.Repo.Message do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "messages" do
+    field :ai, :boolean
+    field :order, :integer
+    field :text, :string
+    field :conversation_id, :integer
+    timestamps()
+  end
+end

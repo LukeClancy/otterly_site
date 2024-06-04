@@ -1,0 +1,18 @@
+# !bin/bash
+#
+#	njinx and certbot installation and setup.
+#
+#
+
+figlet --gay "Njinx & Certbot"
+echo "____________________________________________________________________________________________"
+echo "- handles https and ssl certs"
+echo "____________________________________________________________________________________________"
+
+echo "PUSHING UPDATED FILES..."
+scp -r ../vm_utils "root@$1:~"
+scp -r ../private  "root@$1:~"
+
+echo 'RUNNING COMMANDS...'
+ssh "root@$1" "~/vm_utils/jinxed_commands"
+echo 'done!'

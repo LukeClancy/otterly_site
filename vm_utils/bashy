@@ -1,0 +1,16 @@
+#!/usr/bin/python3
+import subprocess
+
+#https://docs.python.org/3/library/subprocess.html#module-subprocess
+
+#subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, capture_output=False,
+#	shell=False, cwd=None, timeout=None, check=False, encoding=None, errors=None, text=None, env=None,
+#	universal_newlines=None, **other_popen_kwargs)¶
+
+def bash(str):
+	return subprocess.run(str, text=True, shell=True)
+
+def bashout(str):
+	result = subprocess.run(str, capture_output=True, text=True, shell=True)
+	return result.stdout.strip()
+
