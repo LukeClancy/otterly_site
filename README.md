@@ -1,8 +1,8 @@
 # Otterly Site
 
-Site for [otterly js](https://github.com/LukeClancy/otterly/tree/main) documentation. Takes markdown and file names from my [otterly npm package's docs folder](https://github.com/LukeClancy/otterly/tree/main/docs) and converts it to html documentation with a menu and everything. Can be repurposed with some work for other docs.
+Site for [otterly js](https://github.com/LukeClancy/otterly/tree/main) documentation. Takes markdown and file names from my [otterly npm package's docs folder](https://github.com/LukeClancy/otterly/tree/main/docs) and converts them into rich html documentation. Can be repurposed with some work for other docs.
 
-My goal here is to get familiar with elixir/phoenix, look into technologies for quick iteration, test out otterly js, and create a good docs site for future projects. I want to work in surrealdb at some point too, but there will be some integration work there at some point as it doesn't play nice yet with phoenix.
+My goal here is to work with elixir/phoenix, look into technologies for quick iteration, test out otterly js, and create a good docs site for future projects. I want to work in surrealdb at some point too, but there will be some integration work there at some point as it doesn't play nice yet with phoenix.
 
 Once again, this website is:
 - a testing ground for phoenix technologies
