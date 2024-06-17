@@ -3,13 +3,8 @@ import { readdir }	from 'node:fs/promises'
 import { watch }	from "fs/promises";
 import { parseArgs }	from "util"
 
-//good parts of bun:	Reeeaaaaaallllly easy to work with, great docs
-//bad parts of bun:		- hates jpeg/jpg apparently (core dump). Turned out to be an issue with sourcemaps see below.
-//notes:
-//	1. sourcemap build option breaks things randomly. There are already issues on GH.
-//	2. mix phx.digest does hashed names and cache management for us. It also links directly into how phoenix works.
-//		Unfortuntely it does not regex replace filenames with digested filenames in js/css files. You can do that
-//		by adding a 'bun bundling.js --relink' task in the mix.exs file after the phx.digest mix task..
+//good practice, sort of figured webpack out though and bun has its own weirdnesses as its so new.
+//Keepin eye on it but have gone back to WP.
 
 let { values, positionals } = parseArgs({
 	options: {watch: {type: 'boolean'}, minify: {type: 'boolean'}, relink: {type: 'boolean'}}
@@ -101,10 +96,3 @@ if(values['watch']){
 	await f(false)
 }
 
-
-// handle_hell(){
-// 	out = Bun.gzipSync(f)
-// 	hasher = new Bun.CryptoHasher("sha512")
-// 	hasher.update(Bun.read(f))
-	
-// }

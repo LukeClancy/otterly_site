@@ -17,7 +17,7 @@ let is_dev = true
 
 //set up otty as a global variable named otty, along with various settings.
 //AfterDive is set as the response handling object for the otty.dive method.
-window.otty = new Otty(is_dev, AfterDive, csrf_selector, csrf_send_as)
+window.otty = Otty.init(is_dev, AfterDive, csrf_selector, csrf_send_as)
 
 //set up units, events, and a mutation observer to keep them synced with the
 //html. This also sets up shortcuts in the 
