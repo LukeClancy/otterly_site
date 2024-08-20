@@ -17,17 +17,17 @@ mix deps.get
 mix deps.compile
 
 echo "INSTALL BUN PACKAGES"
-s bun install --verbose --production
+sudo bun install --verbose --production
 
 echo "RESTARTING SERVICE"
 SERV_ENABLED="$(systemctl is-enabled otterly.service)"
 
 #reloads boot executables and their relationshipts on the system level (... I think)
 #Got a warning without it, see systemctl man page near bottom.
-s systemctl daemon-reload
+sudo systemctl daemon-reload
 
 if [ "$SERV_ENABLED" == "enabled" ]; then
-	s systemctl restart otterly.service
+	sudo systemctl restart otterly.service
 	echo "SYSTEM RUNNING WEBSERVER"
 else
 	echo "NO WEBSERVER RUNNING"
