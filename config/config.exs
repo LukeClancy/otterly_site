@@ -21,6 +21,7 @@ parse_env_vars = fn (filename) ->
     Enum.map(fn z ->
       #do nothing on failing bad format
       try do
+        
         [k,v] = String.split(z, "=", parts: 2)
         #trimmmmm
         k = String.trim k
