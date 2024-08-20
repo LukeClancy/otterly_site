@@ -6,6 +6,7 @@
 
 # General application configuration
 import Config
+require Logger
 
 parse_env_vars = fn (filename) ->
   Logger.warning("FILENAME #{filename}")
