@@ -26,7 +26,7 @@ config :otterly, OtterlyWeb.Endpoint,
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   #
   https: [
-    port: 443,
+    port: 4001,
     cipher_suite: :strong,
     keyfile: "/home/luke/selfsigned_key.pem",
     certfile: "/home/luke/otterly_site/priv/cert/selfsigned.pem"
