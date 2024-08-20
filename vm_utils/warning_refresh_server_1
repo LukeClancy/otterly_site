@@ -1,4 +1,6 @@
 #!/bin/bash
+source ~/.profile
+source ~/.bashrc
 source ~/private/shared
 source ~/private/production
 
