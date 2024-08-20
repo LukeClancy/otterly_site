@@ -34,7 +34,7 @@ config :otterly, OtterlyWeb.Endpoint,
   check_origin: false,
   code_reloader: false,
   debug_errors: false,
-  secret_key_base: Application.get_env("SECRET_KEY_BASE")
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 # Enable dev routes for dashboard and mailbox
 config :otterly, dev_routes: false

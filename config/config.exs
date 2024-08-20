@@ -9,7 +9,6 @@ import Config
 require Logger
 
 parse_env_vars = fn (filename) ->
-  Logger.warning("FILENAME #{filename}")
   {:ok, txt} = File.read(filename)
   Logger.warning("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
   System.put_env(
