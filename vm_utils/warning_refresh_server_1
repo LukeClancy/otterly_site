@@ -2,7 +2,7 @@
 source ~/private/shared
 source ~/private/production
 
-cd /root/$PROJECT_DIR
+cd $HOME/$PROJECT_DIR
 
 #https://www.freecodecamp.org/news/git-pull-force-how-to-overwrite-local-changes-with-git/
 echo "FETCHING PRODUCTION"
@@ -18,14 +18,14 @@ echo "INSTALL BUN PACKAGES"
 bun install --verbose --production
 
 echo "RESTARTING SERVICE"
-SERV_ENABLED="$(systemctl is-enabled the_little_things.service)"
+SERV_ENABLED="$(systemctl is-enabled otterly.service)"
 
 #reloads boot executables and their relationshipts on the system level (... I think)
 #Got a warning without it, see systemctl man page near bottom.
 systemctl daemon-reload
 
 if [ "$SERV_ENABLED" == "enabled" ]; then
-	systemctl restart midflip.service
+	systemctl restart otterly.service
 	echo "SYSTEM RUNNING WEBSERVER"
 else
 	echo "NO WEBSERVER RUNNING"

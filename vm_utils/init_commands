@@ -5,45 +5,42 @@
 #	in development, one should probably use this as a reference but not run it.
 #
 PROJECT_ENV='production'
-source ../private/shared
+source ~/.bashrc
+source ~/.profile
+source ~/shared.sh
 if [ -z "$PROJECT_ENV" ]; then
 	echo 'This script requires $PROJECT_ENV to be set'
 	exit 1
 fi
-source "../private/$PROJECT_ENV"
+echo "You are running in the $PROJECT_ENV enviroment___________________________________"
+X="~/$PROJECT_ENV.sh"
+source $X
 
-
-#check shared is sourced on shell open
-if grep -q 'source ~/private/shared' ~/.bashrc; then
-	echo "source ~/private/shared" >> ~/.bashrc
-	echo "source ~/private/shared" >> ~/.profile
+if ! grep -q 'source ~/shared.sh' ~/.bashrc; then
+ 		echo "Y"
+		echo "source ~/shared.sh" >> ~/.bashrc
+		echo "source ~/shared.sh" >> ~/.profile
+        echo "source ~/$PROJECT_ENV.sh" >> ~/.bashrc
+        echo "source ~/$PROJECT_ENV".sh >> ~/.profile
+fi
+if [ -z "$ERLANG_VERSION" ]; then
+	echo 'missing enviroment variables'
+	exit 1
 fi
 
-#check other is sourced on shell open
-if grep -q 'source ~/private/$PROJECT_ENV' ~/.bashrc; then
-        echo "source ~/private/$PROJECT_ENV" >> ~/.bashrc
-        echo "source ~/private/$PROJECT_ENV" >> ~/.profile
-fi
-
-apt update
-apt upgrade
+sudo apt update
+sudo apt upgrade
 
 echo "INSTALLING BUN"
-apt install curl -y
-
-# https://github.com/oven-sh/bun
+sudo apt install curl -y
 curl -fsSL https://bun.sh/install | bash
 
 echo "INSTALLING ESSENTIALS"
-apt install rustc gcc cmake build-essential pkg-config git libffi-dev -y
+sudo apt install rustc gcc cmake build-essential pkg-config git libffi-dev unzip libssl-dev erlang-dev erlang-crypto -y 
 
-#enable auto updates.
-echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
-dpkg-reconfigure -f noninteractive unattended-upgrades
-
-echo "INSTALLING SURREALDB"
-#https://surrealdb.com/install
-curl -sSf https://install.surrealdb.com | sh
+# echo "INSTALLING SURREALDB"
+# #https://surrealdb.com/install
+# curl -sSf https://install.surrealdb.com | sh
 
 echo "INSTALLING ELIXIR AND ERLANG"
 
@@ -51,78 +48,93 @@ echo "INSTALLING ELIXIR AND ERLANG"
 #	here:		https://asdf-vm.com/guide/getting-started.html
 #	and here:	https://thinkingelixir.com/install-elixir-using-asdf/
 
-#install asdf, a version manager.
-if grep -q '. "$HOME/.asdf/asdf.sh"' ~/.bashrc; then
+echo "ASDF setup"
+if [ ! -f ~/.asdf/asdf.sh ]; then
 	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
-	echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
-	echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
+	echo '. ~/.asdf/asdf.sh' >> ~/.bashrc
+	echo '. ~/.asdf/completions/asdf.bash' >> ~/.bashrc
+	echo '. ~/.asdf/asdf.sh' >> ~/.profile
+	echo '. ~/.asdf/completions/asdf.bash' >> ~/.profile
 	bash ~/.asdf/asdf.sh
+	bash ~/.asdf/completions/asdf.bash
 
 	#add erlang as installable
 	asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
 	asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+	echo "ASDF installed"
+else
+	echo "ASDF pre-installed"
 fi
 
 #check to make sure the versions are there
-
 if [ -z "$ERLANG_VERSION" ]; then
-	echo '$ERLANG_VERSION is missing. Pick the latest stable version with \'asdf list-all erlang\'. Add into the private/production file'
+	echo "\$ERLANG_VERSION is missing. Pick the latest stable version with 'asdf list-all erlang'. Add into the private/production file"
 	exit 1
 fi
 
 if [ -z "$ELIXIR_VERSION" ]; then
-	echo '$ELIXIR_VERSION is missing. Pick latest stable version with \'asdf list-all elixir\'. The \'opt\' number HAS TO match the major version number of the $ERLANG_VERSION. Add into the private/production file'
+	echo "\$ELIXIR_VERSION is missing. Pick latest stable version with 'asdf list-all elixir'. The 'opt' number HAS TO match the major version number of the $ERLANG_VERSION. Add into the private/production file"
 	exit 1
 fi
 
+echo "setting up elixir/erlang via asdf"
 asdf install erlang $ERLANG_VERSION
 asdf install elixir $ELIXIR_VERSION
+echo "setting global versions"
 asdf global erlang $ERLANG_VERSION
 asdf global elixir $ELIXIR_VERSION
+echo "updating the asdf things"
+asdf update
+asdf plugin update erlang
+asdf plugin update elixir
+echo "end elixir/erlang setup"
 
-echo "ADDING SERVICES"
+echo "adding services to systemctl"
 sudo cp ~/vm_utils/*.service /etc/systemd/system
 
-echo "CLONING / UPDATING REPO"
+echo "cloning and or updating project $PROJECT_DIR"
 if [ -z "$PROJECT_DIR" ]; then
 	echo '$PROJECT_DIR is missing. This should be the name of the project (aka base directory). This should also be the name of your git repo.'
 	exit 1
 fi
-
 if [ -z "$GITHUB_CLONE_URL" ]; then
 	echo '$GITHUB_CLONE_URL is missing. Should look like https://[github username]:[github personal access token]@github.com/[repo path]'
 	exit 1
 fi
 
-if [[ -d "/root/$PROJECT_DIR" ]]; then
+if [[ -d "~/$PROJECT_DIR" ]]; then
 	#https://www.freecodecamp.org/news/git-pull-force-how-to-overwrite-local-changes-with-git/
-	cd "/root/$PROJECT_DIR"
+	cd ~/$PROJECT_DIR
+
 	git fetch
 	git reset --hard HEAD
 	git merge '@{u}'
 	#git pull
 	MF_STATUS="UPDATING"
+	echo "updated"
 else
 	git clone -v -b production --single-branch $GITHUB_CLONE_URL
 	MF_STATUS="INITING"
-	cd "/root/$PROJECT_DIR"
+	cd ~/$PROJECT_DIR
+	echo "cloned"
 fi
 
-echo "INSTALLING ELIXIR DEPENDANCIES"
+echo "grabbing hex we are now in $(pwd)"
+mix local.hex --force
+
+echo "installing elixir dependancies via mix"
 mix deps.get
 mix deps.compile
 
-echo "INSTALL BUN PACKAGES"
-bun install --verbose --production
+echo "installing bun packages"
+sudo bun install --verbose --production
 #RAILS_ENV=production NODE_ENV=production ./bin/yarn install --check-files
 
 echo "BUN PRECOMPILE - TODO"
+mix assets.deploy
 
-#yarn build	#the order of these two matters143.244.208.157
-#RAILS_ENV=production NODE_ENV=production ./bin/rails assets:precompile
-
-echo "DATABASE MIGRATIONS - TODO"
-#RAILS_ENV=production ./bin/rails db:migrate
+echo "migrating"
+mix ecto.migrate
 
 if [ -z "$ENABLED_SERVICES_ON_INSTALL" ]; then
 	echo '$ENABLED_SERVICES_ON_INSTALL is missing.'

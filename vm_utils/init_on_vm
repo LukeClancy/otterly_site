@@ -6,15 +6,16 @@
 
 figlet --gay "initing from prod"
 
-#get the env variables goin
-scp -r ../private "root@$1:~"
-scp -r ../vm_utils "root@$1:~"
+#get the env variables goin. Have to put only in the 
+#home because init_commands pushes or whathavu
+scp -r ../private/* "luke@$1:~"
+scp -r ../vm_utils "luke@$1:~"
 
 #get everything in the right spot
-ssh "root@$1" "~/vm_utils/init_commands $2 $3"
+ssh "luke@$1" "~/vm_utils/init_commands $2 $3"
 
 #activate that stuff
-ssh "root@$1" /root/vm_utils/warning_refresh_server_1
+ssh "luke@$1" $HOME/vm_utils/warning_refresh_server_1
 
 #sleep 2
-#ssh "root@$1" ( echo "RESTARTING SERVER" && shutdown now -r )
+#ssh "luke@$1" ( echo "RESTARTING SERVER" && shutdown now -r )

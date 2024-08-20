@@ -1,6 +1,6 @@
 ################################################################################
 # midflip.service
-# for starting up the midflip website automatically on system start / reboot
+# for starting up the otterly website automatically on system start / reboot
 #
 ################################################################################
 # This program should be placed in /etc/systemd/system directory.
@@ -9,13 +9,13 @@
 
 [Unit]
 
-Description='Its MeritFront. You know, the reason this server exists????'
+Description='Its the Otterly Site. You know, the reason this server exists????'
 
 [Service]
-User=root
+User=luke
 Type=simple
-WorkingDirectory=/root
-ExecStart=/root/vm_utils/startup
+WorkingDirectory=/home/luke
+ExecStart=/home/luke/vm_utils/startup
 TimeoutSec=30
 RestartSec=15s
 Restart=always

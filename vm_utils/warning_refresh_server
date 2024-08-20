@@ -4,22 +4,10 @@
 #
 
 #this is all superfluous but i was messing around
-txtblk='\e[0;30m' # Black - Regular
-txtred='\e[0;31m' # Red
-txtgrn='\e[0;32m' # Green
-txtylw='\e[0;33m' # Yellow
-txtblu='\e[0;34m' # Blue
-txtpur='\e[0;35m' # Purple
-txtcyn='\e[0;36m' # Cyan
-txtwht='\e[0;37m' # White
 figlet --gay "backend"
 figlet --gay "code"
 figlet --gay "update"
-echo "updates server from main branch. It just updates the functional backend ruby code"
-echo -e "${txtcyn}- does not update gems"
-echo "- does not update javascript"
-echo "- does not update css"
-echo "- does not update images"
+echo "Limited update of code"
 figlet --gay \- \- \- \- \- \-
 
 #this bit pushes production up, then switches back to main
@@ -31,12 +19,10 @@ git push
 git checkout main
 
 #refresh the scripts and env variables
-scp -r ../vm_utils "root@$1:~"
-scp -r ../private "root@$1:~"
+scp -r ../private/* "luke@$1:~"
+scp -r ../vm_utils "luke@$1:~"
 
-#run the script on the server
-sleep 1
-ssh "root@$1" /root/vm_utils/warning_refresh_server_1
+ssh "luke@$1" ~/vm_utils/warning_refresh_server_1
 
 figlet --gay "DONE"
 

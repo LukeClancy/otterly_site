@@ -29,6 +29,6 @@ high.registerLanguage('json', helixir)
 
 otty.highlighter = high
 
-otty.unitHandler = new UnitHandler([Generic, Debug, Syntax, MoreOtters])
+otty.unitHandler = new UnitHandler(Generic, [Generic, Debug, Syntax, MoreOtters])
 
 otty.handleNavigation()

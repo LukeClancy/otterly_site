@@ -128,6 +128,9 @@ defmodule OtterlyWeb do
     end
   end
 
+  @spec view() ::
+          {:__block__, [{:keep, {any(), any()}}, ...],
+           [{:__block__, [], [...]} | {:import, [...], [...]}, ...]}
   def view do
     quote location: :keep do
       import Temple.Component

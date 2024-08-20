@@ -7,6 +7,51 @@
 # General application configuration
 import Config
 
+parse_env_vars = fn (filename) ->
+  {:ok, txt} = File.read(filename)
+  Logger.warning("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+  System.put_env(
+    String.splitter(txt, "\n", trim: true) |>
+    #remove comments and whitespace
+    Enum.map(&String.trim/1) |>
+    Enum.filter(fn z -> !(String.at(z,0) == "#") end) |>
+    #get the key and the value
+    Enum.map(fn z ->
+      #do nothing on failing bad format
+      try do
+        [k,v] = String.split(z, "=", parts: 2)
+        #trimmmmm
+        k = String.trim k
+        v = String.trim v
+        #remove any quotes
+        v = case (String.at(v, 0) == "'" and String.at(v,-1) == "'") or (String.at(v, 0) == "\"" and String.at(v,-1) == "\"") do
+          true -> String.slice(v, 1..-2)
+          false -> v
+        end
+        {k,v}
+      rescue RuntimeError -> false
+        Logger.warning("ENV file line failed: #{z}")
+      end
+    end) |>
+    Enum.filter(fn z -> z != false end)
+  )
+end
+
+env_files = %{
+  test:   "../bin/private/development.sh",
+  dev:   "../bin/private/development.sh",
+  shared: "../bin/private/shared.sh",
+  prod:  "~/production.sh",
+  shared_prod:  "~/shared.sh",
+}
+case config_env() == :prod do
+  parse_env_vars.(Map.fetch!(env_files, :prod))
+  parse_env_vars.(Map.fetch!(env_files, :shared_prod))
+else
+  parse_env_vars.(Map.fetch!(env_files, :dev))
+  parse_env_vars.(Map.fetch!(env_files, :shared))
+end
+
 config :bun,
   version: "1.1.12",
   otterly: [
@@ -14,12 +59,6 @@ config :bun,
     # cd: Path.expand("..", __DIR__),
     env: %{"ENVIROMENT_IS" => Atom.to_string(config_env())}
   ]
-
-# config :bun, version: "1.0.33", default: [
-#     args: ~w(build js/app.js --outdir=../priv/static/assets --external /fonts/* --external /images/*),
-#     cd: Path.expand("../assets", __DIR__),
-#     env: %{}
-#   ]
 
 config :otterly, generators: [timestamp_type: :utc_datetime]
 

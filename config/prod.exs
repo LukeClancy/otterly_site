@@ -12,3 +12,29 @@ config :logger, level: :info
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
+
+config :otterly, Repo,
+  database: "default",
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  # OR use a URL to connect instead
+  url: "postgres://postgres:postgres@localhost/ecto_simple"
+
+config :otterly, OtterlyWeb.Endpoint,
+  # Binding to loopback ipv4 address prevents access from other machines.
+  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
+  #
+  https: [
+    port: 4001,
+    cipher_suite: :strong,
+    keyfile: "private/selfsigned_key.pem",
+    certfile: "priv/cert/selfsigned.pem"
+  ],
+  check_origin: false,
+  code_reloader: false,
+  debug_errors: false,
+  secret_key_base: ENV["SECRET_KEY_BASE"],
+
+# Enable dev routes for dashboard and mailbox
+config :otterly, dev_routes: false

@@ -10,9 +10,9 @@ echo "- handles https and ssl certs"
 echo "____________________________________________________________________________________________"
 
 echo "PUSHING UPDATED FILES..."
-scp -r ../vm_utils "root@$1:~"
-scp -r ../private  "root@$1:~"
+scp -r ../vm_utils "luke@$1:~"
+scp -r ../private  "luke@$1:~"
 
 echo 'RUNNING COMMANDS...'
-ssh "root@$1" "~/vm_utils/jinxed_commands"
+ssh "luke@$1" "~/vm_utils/jinxed_commands"
 echo 'done!'
