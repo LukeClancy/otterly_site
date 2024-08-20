@@ -14,7 +14,7 @@ if [ -z "$PROJECT_ENV" ]; then
 	exit 1
 fi
 echo "You are running in the $PROJECT_ENV enviroment___________________________________"
-X="~/$PROJECT_ENV.sh"
+X="$HOME/$PROJECT_ENV.sh"
 source $X
 
 if ! grep -q 'source ~/shared.sh' ~/.bashrc; then
@@ -32,7 +32,7 @@ fi
 sudo apt update
 sudo apt upgrade
 
-if [ -z $(whereis bun) ]
+if [ -z $(whereis bun) ]; then
 	echo "INSTALLING BUN"
 	sudo apt install curl -y
 	curl -fsSL https://bun.sh/install | bash
@@ -66,6 +66,10 @@ if [ ! -f ~/.asdf/asdf.sh ]; then
 	asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
 	echo "ASDF installed"
 else
+	export PATH="$PATH:/home/luke/.asdf/shims"
+	#these fucking things only run interactively which is the dumbest shit I have ever seen.
+	bash ~/.asdf/asdf.sh
+	bash ~/.asdf/completions/asdf.bash
 	echo "ASDF pre-installed"
 fi
 
@@ -110,8 +114,8 @@ if [[ -d "~/$PROJECT_DIR" ]]; then
 	cd ~/$PROJECT_DIR
 
 	git fetch
-	git reset --hard HEAD
-	git merge '@{u}'
+	git reset --hard @{u}
+	# git merge '@{u}'
 	#git pull
 	MF_STATUS="UPDATING"
 	echo "updated"
