@@ -9,8 +9,7 @@ cd $HOME/$PROJECT_DIR
 #https://www.freecodecamp.org/news/git-pull-force-how-to-overwrite-local-changes-with-git/
 echo "FETCHING PRODUCTION"
 git fetch
-git reset --hard HEAD
-git merge '@{u}'
+git reset --hard @{u}
 
 echo "INSTALLING ELIXIR DEPENDANCIES"
 mix deps.get
