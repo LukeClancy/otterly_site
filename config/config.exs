@@ -16,12 +16,11 @@ parse_env_vars = fn (filename) ->
     String.splitter(txt, "\n", trim: true) |>
     #remove comments and whitespace
     Enum.map(&String.trim/1) |>
-    Enum.filter(fn z -> !(String.at(z,0) == "#") end) |>
+    Enum.filter(fn z -> !(String.at(z,0) == "#" && String.contains?('=')) end) |>
     #get the key and the value
     Enum.map(fn z ->
       #do nothing on failing bad format
       try do
-        
         [k,v] = String.split(z, "=", parts: 2)
         #trimmmmm
         k = String.trim k
