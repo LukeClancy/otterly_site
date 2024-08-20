@@ -28,8 +28,8 @@ config :otterly, OtterlyWeb.Endpoint,
   https: [
     port: 4001,
     cipher_suite: :strong,
-    keyfile: "private/selfsigned_key.pem",
-    certfile: "priv/cert/selfsigned.pem"
+    keyfile: "~/selfsigned_key.pem",
+    certfile: "~/otterly_site/priv/cert/selfsigned.pem"
   ],
   check_origin: false,
   code_reloader: false,
