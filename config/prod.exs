@@ -29,7 +29,7 @@ config :otterly, OtterlyWeb.Endpoint,
     port: 4001,
     cipher_suite: :strong,
     keyfile: "/home/luke/selfsigned_key.pem",
-    certfile: "priv/cert/selfsigned.pem"
+    certfile: "/home/luke/otterly_site/priv/cert/selfsigned.pem"
   ],
   check_origin: false,
   code_reloader: false,
