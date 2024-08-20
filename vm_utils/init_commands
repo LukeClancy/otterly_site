@@ -130,7 +130,7 @@ mix deps.get
 mix deps.compile
 
 echo "installing bun packages"
-sudo bun install --verbose --production
+sudo /home/luke/.bun/bin/bun install --verbose --production
 # RAILS_ENV=production NODE_ENV=production ./bin/yarn install --check-files
 
 echo "BUN PRECOMPILE - TODO"

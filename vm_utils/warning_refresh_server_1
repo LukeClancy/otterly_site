@@ -17,7 +17,7 @@ mix deps.get
 mix deps.compile
 
 echo "INSTALL BUN PACKAGES"
-sudo bun install --verbose --production
+sudo /home/luke/.bun/bin/bun install --verbose --production
 
 echo "RESTARTING SERVICE"
 SERV_ENABLED="$(systemctl is-enabled otterly.service)"
