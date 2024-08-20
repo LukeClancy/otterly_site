@@ -19,7 +19,6 @@ defmodule OtterlyWeb.Router do
     get "/docs/:v",  PageController, :docs
     get "/docs",  PageController, :docs
     get "/",      PageController, :home
-    get "/conv/:id",   AiController, :conv
     get "/test",  PageController, :test
   end
 
