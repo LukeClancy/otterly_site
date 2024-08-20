@@ -41,8 +41,8 @@ env_files = %{
   test:   "../bin/private/development.sh",
   dev:   "../bin/private/development.sh",
   shared: "../bin/private/shared.sh",
-  prod:  "~/production.sh",
-  shared_prod:  "~/shared.sh",
+  prod:  "/home/luke/production.sh",
+  shared_prod:  "/home/luke/shared.sh",
 }
 case config_env() do
   :prod ->
