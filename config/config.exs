@@ -9,6 +9,7 @@ import Config
 require Logger
 
 parse_env_vars = fn (filename) ->
+  Logger.warning(filename)
   {:ok, txt} = File.read(filename)
   Logger.warning("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
   System.put_env(
@@ -39,9 +40,9 @@ parse_env_vars = fn (filename) ->
 end
 
 env_files = %{
-  test:   "../bin/private/development.sh",
-  dev:   "../bin/private/development.sh",
-  shared: "../bin/private/shared.sh",
+  test:   "private/development.sh",
+  dev:   "private/development.sh",
+  shared: "private/shared.sh",
   prod:  "/home/luke/production.sh",
   shared_prod:  "/home/luke/shared.sh",
 }
