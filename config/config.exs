@@ -44,12 +44,13 @@ env_files = %{
   prod:  "~/production.sh",
   shared_prod:  "~/shared.sh",
 }
-case config_env() == :prod do
-  parse_env_vars.(Map.fetch!(env_files, :prod))
-  parse_env_vars.(Map.fetch!(env_files, :shared_prod))
-else
-  parse_env_vars.(Map.fetch!(env_files, :dev))
-  parse_env_vars.(Map.fetch!(env_files, :shared))
+case config_env() do
+  :prod ->
+    parse_env_vars.(Map.fetch!(env_files, :prod))
+    parse_env_vars.(Map.fetch!(env_files, :shared_prod))
+    _ ->
+    parse_env_vars.(Map.fetch!(env_files, :dev))
+    parse_env_vars.(Map.fetch!(env_files, :shared))
 end
 
 config :bun,
