@@ -8,6 +8,7 @@ PROJECT_ENV='production'
 source ~/.bashrc
 source ~/.profile
 source ~/shared.sh
+
 if [ -z "$PROJECT_ENV" ]; then
 	echo 'This script requires $PROJECT_ENV to be set'
 	exit 1
@@ -31,9 +32,11 @@ fi
 sudo apt update
 sudo apt upgrade
 
-echo "INSTALLING BUN"
-sudo apt install curl -y
-curl -fsSL https://bun.sh/install | bash
+if [ -z $(whereis bun) ]
+	echo "INSTALLING BUN"
+	sudo apt install curl -y
+	curl -fsSL https://bun.sh/install | bash
+fi
 
 echo "INSTALLING ESSENTIALS"
 sudo apt install rustc gcc cmake build-essential pkg-config git libffi-dev unzip libssl-dev erlang-dev erlang-crypto -y 
@@ -128,7 +131,7 @@ mix deps.compile
 
 echo "installing bun packages"
 sudo bun install --verbose --production
-#RAILS_ENV=production NODE_ENV=production ./bin/yarn install --check-files
+# RAILS_ENV=production NODE_ENV=production ./bin/yarn install --check-files
 
 echo "BUN PRECOMPILE - TODO"
 mix assets.deploy
