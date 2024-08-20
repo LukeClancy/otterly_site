@@ -1,8 +1,8 @@
 #!/bin/bash
 source ~/.profile
 source ~/.bashrc
-source ~/private/shared.sh
-source ~/private/production.sh
+source ~/shared.sh
+source ~/production.sh
 
 cd $HOME/$PROJECT_DIR
 
