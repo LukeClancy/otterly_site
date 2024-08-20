@@ -5,5 +5,4 @@ source ~/.profile
 source ~/shared.sh
 source ~/production.sh
 cd ~/$PROJECT_DIR
-echo "yeet" >> out.txt
-MIX_ENV=prod mix phx.server @> ~/out.txt
+MIX_ENV=prod mix phx.server
