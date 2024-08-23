@@ -57,6 +57,13 @@ case config_env() do
     parse_env_vars.(Map.fetch!(env_files, :shared))
 end
 
+#config :bun,
+#  ./bundling.js: [
+#    args: ~w(js/app.js --outdir=../priv/static/assets),
+#    cd: Path.expand("../assets", __DIR__),
+#    env: %{"ENV_VAR" => "value"}
+#  ]
+
 config :bun,
   version: "1.1.12",
   otterly: [
@@ -79,15 +86,28 @@ config :otterly, OtterlyWeb.Endpoint,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.4.0",
-  otterly: [
+  version: "3.2.7",
+  app: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.scss
       --output=../priv/static/app.css
-    ),
+     ),
     cd: Path.expand("../assets", __DIR__)
   ]
+
+
+
+#config :tailwind,
+#  version: "3.4.0",
+#  otterly: [
+#    args: ~w(
+#      --config=tailwind.config.js
+#      --input=css/app.scss
+#      --output=../priv/static/app.css
+#    ),
+#    cd: Path.expand("../assets", __DIR__)
+#  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

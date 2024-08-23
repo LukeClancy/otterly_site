@@ -80,7 +80,7 @@ defmodule Otterly.MixProject do
       ],
       "assets.deploy": [
         "tailwind app --minify",
-        "bun ./bundling.js --minify",
+        "bun otterly --minify",
         "phx.digest",
         # "bun ./bundling.js --relink"
       ]
