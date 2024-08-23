@@ -13,7 +13,7 @@ module.exports = {
     "../lib/otterly_web/**/*.*ex",
 	"../lib/otterly_web/**/**/*.*ex"
   ],
-  theme: {
+  theme: {							///if you are changing the sm md lg xl 2xl 3xl etv breakpoints change expand.js tooooooooooooooooo
     extend: {
       colors: {
         brand: "#FD4F00",

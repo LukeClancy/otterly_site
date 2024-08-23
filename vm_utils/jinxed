@@ -7,12 +7,12 @@
 figlet --gay "Njinx & Certbot"
 echo "____________________________________________________________________________________________"
 echo "- handles https and ssl certs"
+echo "- we only use the main one otterly.js"
 echo "____________________________________________________________________________________________"
 
-echo "PUSHING UPDATED FILES..."
-scp -r ../vm_utils "luke@$1:~"
-scp -r ../private  "luke@$1:~"
-
-echo 'RUNNING COMMANDS...'
-ssh "luke@$1" "~/vm_utils/jinxed_commands"
+echo 'pushin updated files...'
+scp -r ../vm_utils "$1:~"
+scp -r ../private/* "$1:~"
+echo 'running commands...'
+ssh "root@$1" "~/vm_utils/jinxed_commands"
 echo 'done!'
