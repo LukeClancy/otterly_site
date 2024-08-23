@@ -137,8 +137,8 @@ mix deps.compile
 # sudo /home/luke/.bun/bin/bun install --verbose --production
 # # RAILS_ENV=production NODE_ENV=production ./bin/yarn install --check-files
 
-echo "DEPLOYING ASSETS"
-mix assets.deploy
+echo "DEPLOYING ASSETS NEVERMIND PUT THEM IN REPO"
+# mix assets.deploy
 
 echo "migrating"
 mix ecto.migrate

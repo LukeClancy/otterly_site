@@ -1,0 +1,4 @@
+[submodule "assets/otterly"]
+	path = assets/otterly
+	url = https://github.com/LukeClancy/otterly
+	branch = dev
