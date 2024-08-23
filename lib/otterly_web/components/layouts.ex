@@ -23,6 +23,7 @@ defmodule OtterlyWeb.Layouts do
 # <script src=\"/assets/js/language/generic.js\"></script>
 # <script src=\"/assets/js/language/javascript.js\"></script>
 # <script src=\"/assets/js/language/html.js\"></script>
+          script defer: "true", src: "https://w.soundcloud.com/player/api.js"
           script defer: "true", phx_track_static: true, src: ~p"/assets/app.js"
         end
         body(class: "bg-white antialiased") do
@@ -65,8 +66,26 @@ defmodule OtterlyWeb.Layouts do
           end
         end
       end
-
-        @inner_content
+        body do
+          div(id: "replace-area") do
+            @inner_content
+          end
+          player_url = "https://w.soundcloud.com/player?"
+          song_url = "https://soundcloud.com/lofi_girl/sets/best-of-lofi-2023" <> URI.encode_query(%{})
+          uri = player_url <> URI.encode_query(%{
+              url: song_url,
+              buying: false,
+              auto_play: false,
+              single_active: true
+          })
+          h = "150" #< change in css too
+          div(class: "a-box")
+          footer do
+            div(display: "flex") do
+              iframe(class: "player", height: h, scrolling: "no", frameborder: "no", allow: "autoplay", src:  uri)
+            end
+          end
+        end
     end
   end
 end

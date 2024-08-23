@@ -22,11 +22,6 @@ defmodule OtterlyWeb.Router do
     get "/test",  PageController, :test
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", OtterlyWeb do
-  #   pipe_through :api
-  # end
-
   # Enable LiveDashboard in development
   if Application.compile_env(:otterly, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put

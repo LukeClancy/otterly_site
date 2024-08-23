@@ -4,34 +4,43 @@
 
 #nginx / certbot handle https and in the future probably(?) load balancing and junk.
 
-			#<----this command makes things fail fast which is useful in this case.
+#<----this command makes things fail fast which is useful in this case.
 
-apt update && apt install nginx
+source ~/.bashrc
+source ~/.profile
+source ~/shared.sh
+source ~/production.sh
 
-mv ~/vm_utils/pre_ssl_nginx_config /etc/nginx/sites-available/$PROJECT_DIR
-ln -s /etc/nginx/sites-available/$PROJECT_DIR etc/nginx/sites-enabled/$PROJECT_DIR
+sudo apt update && sudo apt install nginx
+
+sudo apt install python3-pip
+sudo apt install python3-bs4 #< this uses pip believe it or not
+
+s mv ~/vm_utils/otterly_nginx /etc/nginx/sites-available/otterly
+s ln -s /etc/nginx/sites-available/otterly /etc/nginx/sites-enabled/otterly
 
 #https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
 echo 'INSTALLATIONS...'
 
-#install snapd certbot
-apt install snapd
-snap install --classic certbot
-
-#link it up
-ln -s /snap/bin/certbot /usr/bin/certbot
-
-#echo 'RELOADING NGINX...'
-#systemctl restart nginx.service
+sudo apt install snapd
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo snap set certbot trust-plugin-with-root=ok
 
 echo 'CERTBOTTING...'
 
-if [ -z "$DOMAINS" ]; then
-	echo '$DOMAINS is missing.'
-	exit 1
-fi
+echo "CHECK THESE ARE FINE"
+echo "$NAMECHEAP_UNAME | $NAMECHEAP_API_KEY | $THIS_IP | $CERTBOT_DOMAIN"
 
-#https://github.com/certbot/certbot/issues/5486
-certbot --non-interactive --expand --nginx -v -d $DOMAINS
+#this has not been tested w/ automation
+# wildcards are only supported with DNS verification. Why draw the line there? Cause fuck it.
+export PATH=$PATH:$HOME/vm_utils/namecheap
+sudo certbot certonly \
+     --preferred-challenges=dns \
+     --manual \
+     --manual-auth-hook=namecheap_certbot \
+     --agree-tos \
+     -d otterlyjs.org,*.otterlyjs.org
 
-echo 'yay!'
+#get https -> http
+sudo certbot run --nginx

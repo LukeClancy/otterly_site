@@ -24,7 +24,25 @@
 .max_h90vh{
 	max-height: 90vh;
 }
-
+.a-box{
+	box-sizing: border-box;
+    display: inline-block;
+    min-height: 150px !important;
+    min-width: 150px !important;
+    max-height: 150px !important;
+}
+.player{
+	width: 450px;
+}
+footer{
+	bottom: 0px;
+	position: fixed;
+	width: 100%;
+	height: 150px;
+}
+.orange{
+	background-color:  #fd4f00 ;
+}
 @layer components {
 	ul{	@apply list-disc px-4 mb-5 }
 	ol{	@apply list-decimal px-4 mb-5 }
@@ -50,6 +68,7 @@
 	.md pre{ @apply bg-slate-300 mb-4 p-2 overflow-x-scroll }
 	.md a{ @apply text-blue-600 visited:text-purple-600 text-blue-600 visited:text-purple-600 }
 }
+
 
 @layer utilities {
 	pre {

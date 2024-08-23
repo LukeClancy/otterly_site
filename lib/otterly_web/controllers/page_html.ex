@@ -202,7 +202,7 @@ let otters = unit.otterCount')
           br
           br
 
-          p class: "shrink", do: "Made to be simple but powerfull, we provide a small but strong basis for Single Page Applications, Progressive Web Apps and Ajax / Forms. This is a work in progress! PWA and ajax is still in the works! Take a look at the docs!"
+          p class: "shrink", do: "Made to be simple but powerfull, we provide a small but strong basis for Single Page Applications, Progressive Web Apps and Ajax / Forms. Current status has Events, AJAX and SPA capabilites handled. PWA capabilites are being considered in the future, but not currently."
 
           br
           br
@@ -220,29 +220,28 @@ let otters = unit.otterCount')
     assigns = Map.put(assigns, :docs_info, get_docs_info(assigns))
 
     temple do
-      div(class: "max-w-screen-xl mx-auto px-3 grid grid-cols-4 gap-4") do
+      div(class: "max-w-screen-xl mx-auto px-3 grid grid-cols-4 gap-4", data_unit: "Expand") do
         div(class: "col-span-4") do
           flash_group(assigns)
         end
-        div(class: "bg-slate-300 rounded sticky top-5 max_h90vh")do #, data_unit: "Menu"
-          div(id: "menu_contents") do
-            div(class: "p-2") do
-              span(class: "flex p-3") do
-                div(class: "grow") do
-                  for v <- @docs_info.versions do
-                    a(href: ~p"/docs/#{v.v}", class: if(v.selected, do: "underline", else: "")) do
-                      h3 do: v.v
-                    end
-                  end
+        div(id: "menu_contents", class: "bg-slate-300 rounded sticky top-5 max_h90vh")do #, data_unit: "Menu"
+          div(class: "p-2") do
+            span(class: "flex flex-wrap") do
+              for v <- @docs_info.versions do
+                  c_def = "pr-2"
+                  classy = if(v.selected, do: c_def <> " underline", else: c_def)
+                a(href: ~p"/docs/#{v.v}", class: classy) do
+                  h3 do: v.v
                 end
-                span(id: "expand_button", class: "hero-play ms-max w-6")
               end
-              c &menu/1, assigns: assigns
             end
+            c &menu/1, assigns: assigns
           end
         end
-        div(class: "col-span-3 rounded p-2 md")do
-          raw @docs_info.html
+        div(class: "rounded p-2 md ", id: "content_area")do
+          div(class: "inline-flex", data_on: "_parse->yeetNextTwoInside")
+          span(id: "expand_button", class: "mt-2 sm:mt-8 inline-block hero-play-solid sticky bg-slate-300 h-10 w-10 margin", data_on: 'click->toggle')
+           raw @docs_info.html
         end
       end
     end

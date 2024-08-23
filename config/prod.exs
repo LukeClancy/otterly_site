@@ -25,12 +25,7 @@ config :otterly, OtterlyWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   #
-  https: [
-    port: 4001,
-    cipher_suite: :strong,
-    keyfile: "/home/luke/selfsigned_key.pem",
-    certfile: "/home/luke/otterly_site/priv/cert/selfsigned.pem"
-  ],
+  http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
   code_reloader: false,
   debug_errors: false,
