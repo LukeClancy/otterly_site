@@ -10,8 +10,10 @@ module.exports = {
     "./js/**/*.js",
 	"./js/**/**/*.js",
     "../lib/otterly_web.ex",
-    "../lib/otterly_web/**/*.*ex",
-	"../lib/otterly_web/**/**/*.*ex"
+	"../lib/otterly_web/*.ex",
+    "../lib/otterly_web/controllers/*.ex",
+	"../lib/otterly_web/components/*.ex",
+	"../lib/otterly_web/**.ex"
   ],
   theme: {							///if you are changing the sm md lg xl 2xl 3xl etv breakpoints change expand.js tooooooooooooooooo
     extend: {

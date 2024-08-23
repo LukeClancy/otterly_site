@@ -1,1 +1,4272 @@
-var T1=Object.create;var{defineProperty:h0,getPrototypeOf:x1,getOwnPropertyNames:f1}=Object;var E1=Object.prototype.hasOwnProperty;var g1=(q,Z,z)=>{z=q!=null?T1(x1(q)):{};const J=Z||!q||!q.__esModule?h0(z,"default",{value:q,enumerable:!0}):z;for(let Q of f1(q))if(!E1.call(J,Q))h0(J,Q,{get:()=>q[Q],enumerable:!0});return J};var N1=(q,Z)=>()=>(Z||q((Z={exports:{}}).exports,Z),Z.exports);var D1=N1((P7,F1)=>{var J1=function(q){if(q instanceof Map)q.clear=q.delete=q.set=function(){throw new Error("map is read-only")};else if(q instanceof Set)q.add=q.clear=q.delete=function(){throw new Error("set is read-only")};return Object.freeze(q),Object.getOwnPropertyNames(q).forEach((Z)=>{const z=q[Z],J=typeof z;if((J==="object"||J==="function")&&!Object.isFrozen(z))J1(z)}),q},Q1=function(q){return q.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;")},r=function(q,...Z){const z=Object.create(null);for(let J in q)z[J]=q[J];return Z.forEach(function(J){for(let Q in J)z[Q]=J[Q]}),z},B0=function(q){if(!q)return null;if(typeof q==="string")return q;return q.source},W1=function(q){return Q0("(?=",q,")")},q8=function(q){return Q0("(?:",q,")*")},Z8=function(q){return Q0("(?:",q,")?")},Q0=function(...q){return q.map((z)=>B0(z)).join("")},z8=function(q){const Z=q[q.length-1];if(typeof Z==="object"&&Z.constructor===Object)return q.splice(q.length-1,1),Z;else return{}},f0=function(...q){return"("+(z8(q).capture?"":"?:")+q.map((J)=>B0(J)).join("|")+")"},V1=function(q){return new RegExp(q.toString()+"|").exec("").length-1},J8=function(q,Z){const z=q&&q.exec(Z);return z&&z.index===0},E0=function(q,{joinWith:Z}){let z=0;return q.map((J)=>{z+=1;const Q=z;let W=B0(J),$="";while(W.length>0){const X=Q8.exec(W);if(!X){$+=W;break}if($+=W.substring(0,X.index),W=W.substring(X.index+X[0].length),X[0][0]==="\\"&&X[1])$+="\\"+String(Number(X[1])+Q);else if($+=X[0],X[0]==="(")z++}return $}).map((J)=>`(${J})`).join(Z)},L8=function(q,Z){if(q.input[q.index-1]===".")Z.ignoreMatch()},O8=function(q,Z){if(q.className!==void 0)q.scope=q.className,delete q.className},y8=function(q,Z){if(!Z)return;if(!q.beginKeywords)return;if(q.begin="\\b("+q.beginKeywords.split(" ").join("|")+")(?!\\.)(?=\\b|\\s)",q.__beforeBegin=L8,q.keywords=q.keywords||q.beginKeywords,delete q.beginKeywords,q.relevance===void 0)q.relevance=0},A8=function(q,Z){if(!Array.isArray(q.illegal))return;q.illegal=f0(...q.illegal)},b8=function(q,Z){if(!q.match)return;if(q.begin||q.end)throw new Error("begin & end are not supported with match");q.begin=q.match,delete q.match},R8=function(q,Z){if(q.relevance===void 0)q.relevance=1},w1=function(q,Z,z=S8){const J=Object.create(null);if(typeof q==="string")Q(z,q.split(" "));else if(Array.isArray(q))Q(z,q);else Object.keys(q).forEach(function(W){Object.assign(J,w1(q[W],Z,W))});return J;function Q(W,$){if(Z)$=$.map((X)=>X.toLowerCase());$.forEach(function(X){const G=X.split("|");J[G[0]]=[W,_8(G[0],G[1])]})}},_8=function(q,Z){if(Z)return Number(Z);return C8(q)?0:1},C8=function(q){return M8.includes(q.toLowerCase())},U1=function(q,Z,{key:z}){let J=0;const Q=q[z],W={},$={};for(let X=1;X<=Z.length;X++)$[X+J]=Q[X],W[X+J]=!0,J+=V1(Z[X-1]);q[z]=$,q[z]._emit=W,q[z]._multi=!0},T8=function(q){if(!Array.isArray(q.begin))return;if(q.skip||q.excludeBegin||q.returnBegin)throw J0("skip, excludeBegin, returnBegin not compatible with beginScope: {}"),A0;if(typeof q.beginScope!=="object"||q.beginScope===null)throw J0("beginScope must be object"),A0;U1(q,q.begin,{key:"beginScope"}),q.begin=E0(q.begin,{joinWith:""})},x8=function(q){if(!Array.isArray(q.end))return;if(q.skip||q.excludeEnd||q.returnEnd)throw J0("skip, excludeEnd, returnEnd not compatible with endScope: {}"),A0;if(typeof q.endScope!=="object"||q.endScope===null)throw J0("endScope must be object"),A0;U1(q,q.end,{key:"endScope"}),q.end=E0(q.end,{joinWith:""})},f8=function(q){if(q.scope&&typeof q.scope==="object"&&q.scope!==null)q.beginScope=q.scope,delete q.scope},E8=function(q){if(f8(q),typeof q.beginScope==="string")q.beginScope={_wrap:q.beginScope};if(typeof q.endScope==="string")q.endScope={_wrap:q.endScope};T8(q),x8(q)},g8=function(q){function Z($,X){return new RegExp(B0($),"m"+(q.case_insensitive?"i":"")+(q.unicodeRegex?"u":"")+(X?"g":""))}class z{constructor(){this.matchIndexes={},this.regexes=[],this.matchAt=1,this.position=0}addRule($,X){X.position=this.position++,this.matchIndexes[this.matchAt]=X,this.regexes.push([X,$]),this.matchAt+=V1($)+1}compile(){if(this.regexes.length===0)this.exec=()=>null;const $=this.regexes.map((X)=>X[1]);this.matcherRe=Z(E0($,{joinWith:"|"}),!0),this.lastIndex=0}exec($){this.matcherRe.lastIndex=this.lastIndex;const X=this.matcherRe.exec($);if(!X)return null;const G=X.findIndex((v,A)=>A>0&&v!==void 0),K=this.matchIndexes[G];return X.splice(0,G),Object.assign(X,K)}}class J{constructor(){this.rules=[],this.multiRegexes=[],this.count=0,this.lastIndex=0,this.regexIndex=0}getMatcher($){if(this.multiRegexes[$])return this.multiRegexes[$];const X=new z;return this.rules.slice($).forEach(([G,K])=>X.addRule(G,K)),X.compile(),this.multiRegexes[$]=X,X}resumingScanAtSamePosition(){return this.regexIndex!==0}considerAll(){this.regexIndex=0}addRule($,X){if(this.rules.push([$,X]),X.type==="begin")this.count++}exec($){const X=this.getMatcher(this.regexIndex);X.lastIndex=this.lastIndex;let G=X.exec($);if(this.resumingScanAtSamePosition())if(G&&G.index===this.lastIndex);else{const K=this.getMatcher(0);K.lastIndex=this.lastIndex+1,G=K.exec($)}if(G){if(this.regexIndex+=G.position+1,this.regexIndex===this.count)this.considerAll()}return G}}function Q($){const X=new J;if($.contains.forEach((G)=>X.addRule(G.begin,{rule:G,type:"begin"})),$.terminatorEnd)X.addRule($.terminatorEnd,{type:"end"});if($.illegal)X.addRule($.illegal,{type:"illegal"});return X}function W($,X){const G=$;if($.isCompiled)return G;[O8,b8,E8,j8].forEach((v)=>v($,X)),q.compilerExtensions.forEach((v)=>v($,X)),$.__beforeBegin=null,[y8,A8,R8].forEach((v)=>v($,X)),$.isCompiled=!0;let K=null;if(typeof $.keywords==="object"&&$.keywords.$pattern)$.keywords=Object.assign({},$.keywords),K=$.keywords.$pattern,delete $.keywords.$pattern;if(K=K||/\w+/,$.keywords)$.keywords=w1($.keywords,q.case_insensitive);if(G.keywordPatternRe=Z(K,!0),X){if(!$.begin)$.begin=/\B|\b/;if(G.beginRe=Z(G.begin),!$.end&&!$.endsWithParent)$.end=/\B|\b/;if($.end)G.endRe=Z(G.end);if(G.terminatorEnd=B0(G.end)||"",$.endsWithParent&&X.terminatorEnd)G.terminatorEnd+=($.end?"|":"")+X.terminatorEnd}if($.illegal)G.illegalRe=Z($.illegal);if(!$.contains)$.contains=[];if($.contains=[].concat(...$.contains.map(function(v){return N8(v==="self"?$:v)})),$.contains.forEach(function(v){W(v,G)}),$.starts)W($.starts,X);return G.matcher=Q(G),G}if(!q.compilerExtensions)q.compilerExtensions=[];if(q.contains&&q.contains.includes("self"))throw new Error("ERR: contains `self` is not supported at the top-level of a language.  See documentation.");return q.classNameAliases=r(q.classNameAliases||{}),W(q)},v1=function(q){if(!q)return!1;return q.endsWithParent||v1(q.starts)},N8=function(q){if(q.variants&&!q.cachedVariants)q.cachedVariants=q.variants.map(function(Z){return r(q,{variants:null},Z)});if(q.cachedVariants)return q.cachedVariants;if(v1(q))return r(q,{starts:q.starts?r(q.starts):null});if(Object.isFrozen(q))return r(q);return q};class T0{constructor(q){if(q.data===void 0)q.data={};this.data=q.data,this.isMatchIgnored=!1}ignoreMatch(){this.isMatchIgnored=!0}}var o1="</span>",r0=(q)=>{return!!q.scope},e1=(q,{prefix:Z})=>{if(q.startsWith("language:"))return q.replace("language:","language-");if(q.includes(".")){const z=q.split(".");return[`${Z}${z.shift()}`,...z.map((J,Q)=>`${J}${"_".repeat(Q+1)}`)].join(" ")}return`${Z}${q}`};class $1{constructor(q,Z){this.buffer="",this.classPrefix=Z.classPrefix,q.walk(this)}addText(q){this.buffer+=Q1(q)}openNode(q){if(!r0(q))return;const Z=e1(q.scope,{prefix:this.classPrefix});this.span(Z)}closeNode(q){if(!r0(q))return;this.buffer+=o1}value(){return this.buffer}span(q){this.buffer+=`<span class="${q}">`}}var o0=(q={})=>{const Z={children:[]};return Object.assign(Z,q),Z};class x0{constructor(){this.rootNode=o0(),this.stack=[this.rootNode]}get top(){return this.stack[this.stack.length-1]}get root(){return this.rootNode}add(q){this.top.children.push(q)}openNode(q){const Z=o0({scope:q});this.add(Z),this.stack.push(Z)}closeNode(){if(this.stack.length>1)return this.stack.pop();return}closeAllNodes(){while(this.closeNode());}toJSON(){return JSON.stringify(this.rootNode,null,4)}walk(q){return this.constructor._walk(q,this.rootNode)}static _walk(q,Z){if(typeof Z==="string")q.addText(Z);else if(Z.children)q.openNode(Z),Z.children.forEach((z)=>this._walk(q,z)),q.closeNode(Z);return q}static _collapse(q){if(typeof q==="string")return;if(!q.children)return;if(q.children.every((Z)=>typeof Z==="string"))q.children=[q.children.join("")];else q.children.forEach((Z)=>{x0._collapse(Z)})}}class X1 extends x0{constructor(q){super();this.options=q}addText(q){if(q==="")return;this.add(q)}startScope(q){this.openNode(q)}endScope(){this.closeNode()}__addSublanguage(q,Z){const z=q.root;if(Z)z.scope=`language:${Z}`;this.add(z)}toHTML(){return new $1(this,this.options).value()}finalize(){return this.closeAllNodes(),!0}}var Q8=/\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./,$8=/\b\B/,Y1="[a-zA-Z]\\w*",g0="[a-zA-Z_]\\w*",G1="\\b\\d+(\\.\\d+)?",P1="(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)",H1="\\b(0b[01]+)",X8="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~",W8=(q={})=>{const Z=/^#![ ]*\//;if(q.binary)q.begin=Q0(Z,/.*\b/,q.binary,/\b.*/);return r({scope:"meta",begin:Z,end:/$/,relevance:0,"on:begin":(z,J)=>{if(z.index!==0)J.ignoreMatch()}},q)},F0={begin:"\\\\[\\s\\S]",relevance:0},V8={scope:"string",begin:"\'",end:"\'",illegal:"\\n",contains:[F0]},Y8={scope:"string",begin:'"',end:'"',illegal:"\\n",contains:[F0]},G8={begin:/\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/},b0=function(q,Z,z={}){const J=r({scope:"comment",begin:q,end:Z,contains:[]},z);J.contains.push({scope:"doctag",begin:"[ ]*(?=(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):)",end:/(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):/,excludeBegin:!0,relevance:0});const Q=f0("I","a","is","so","us","to","at","if","in","it","on",/[A-Za-z]+['](d|ve|re|ll|t|s|n)/,/[A-Za-z]+[-][a-z]+/,/[A-Za-z][a-z]{2,}/);return J.contains.push({begin:Q0(/[ ]+/,"(",Q,/[.]?[:]?([.][ ]|[ ])/,"){3}")}),J},P8=b0("//","$"),H8=b0("/\\*","\\*/"),w8=b0("#","$"),U8={scope:"number",begin:G1,relevance:0},v8={scope:"number",begin:P1,relevance:0},K8={scope:"number",begin:H1,relevance:0},B8={scope:"regexp",begin:/\/(?=[^/\n]*\/)/,end:/\/[gimuy]*/,contains:[F0,{begin:/\[/,end:/\]/,relevance:0,contains:[F0]}]},F8={scope:"title",begin:Y1,relevance:0},D8={scope:"title",begin:g0,relevance:0},k8={begin:"\\.\\s*"+g0,relevance:0},I8=function(q){return Object.assign(q,{"on:begin":(Z,z)=>{z.data._beginMatch=Z[1]},"on:end":(Z,z)=>{if(z.data._beginMatch!==Z[1])z.ignoreMatch()}})},y0=Object.freeze({__proto__:null,APOS_STRING_MODE:V8,BACKSLASH_ESCAPE:F0,BINARY_NUMBER_MODE:K8,BINARY_NUMBER_RE:H1,COMMENT:b0,C_BLOCK_COMMENT_MODE:H8,C_LINE_COMMENT_MODE:P8,C_NUMBER_MODE:v8,C_NUMBER_RE:P1,END_SAME_AS_BEGIN:I8,HASH_COMMENT_MODE:w8,IDENT_RE:Y1,MATCH_NOTHING_RE:$8,METHOD_GUARD:k8,NUMBER_MODE:U8,NUMBER_RE:G1,PHRASAL_WORDS_MODE:G8,QUOTE_STRING_MODE:Y8,REGEXP_MODE:B8,RE_STARTERS_RE:X8,SHEBANG:W8,TITLE_MODE:F8,UNDERSCORE_IDENT_RE:g0,UNDERSCORE_TITLE_MODE:D8}),j8=(q,Z)=>{if(!q.beforeMatch)return;if(q.starts)throw new Error("beforeMatch cannot be used with starts");const z=Object.assign({},q);Object.keys(q).forEach((J)=>{delete q[J]}),q.keywords=z.keywords,q.begin=Q0(z.beforeMatch,W1(z.begin)),q.starts={relevance:0,contains:[Object.assign(z,{endsParent:!0})]},q.relevance=0,delete z.beforeMatch},M8=["of","and","for","in","not","or","if","then","parent","list","value"],S8="keyword",e0={},J0=(q)=>{console.error(q)},q1=(q,...Z)=>{console.log(`WARN: ${q}`,...Z)},Y0=(q,Z)=>{if(e0[`${q}/${Z}`])return;console.log(`Deprecated as of ${q}. ${Z}`),e0[`${q}/${Z}`]=!0},A0=new Error,p8="11.9.0";class K1 extends Error{constructor(q,Z){super(q);this.name="HTMLInjectionError",this.html=Z}}var C0=Q1,Z1=r,z1=Symbol("nomatch"),u8=7,B1=function(q){const Z=Object.create(null),z=Object.create(null),J=[];let Q=!0;const W="Could not find the language '{}', did you forget to load/include a language module?",$={disableAutodetect:!0,name:"Plain text",contains:[]};let X={ignoreUnescapedHTML:!1,throwUnescapedHTML:!1,noHighlightRe:/^(no-?highlight)$/i,languageDetectRe:/\blang(?:uage)?-([\w-]+)\b/i,classPrefix:"hljs-",cssSelector:"pre code",languages:null,__emitter:X1};function G(V){return X.noHighlightRe.test(V)}function K(V){let Y=V.className+" ";Y+=V.parentNode?V.parentNode.className:"";const w=X.languageDetectRe.exec(Y);if(w){const H=f(w[1]);if(!H)q1(W.replace("{}",w[1])),q1("Falling back to no-highlight mode for this block.",V);return H?w[1]:"no-highlight"}return Y.split(/\s+/).find((H)=>G(H)||f(H))}function v(V,Y,w){let H="",B="";if(typeof Y==="object")H=V,w=Y.ignoreIllegals,B=Y.language;else Y0("10.7.0","highlight(lang, code, ...args) has been deprecated."),Y0("10.7.0","Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277"),B=V,H=Y;if(w===void 0)w=!0;const j={code:H,language:B};m("before:highlight",j);const S=j.result?j.result:A(j.language,j.code,w);return S.code=j.code,m("after:highlight",S),S}function A(V,Y,w,H){const B=Object.create(null);function j(P,U){return P.keywords[U]}function S(){if(!F.keywords){T.addText(R);return}let P=0;F.keywordPatternRe.lastIndex=0;let U=F.keywordPatternRe.exec(R),k="";while(U){k+=R.substring(P,U.index);const L=n.case_insensitive?U[0].toLowerCase():U[0],x=j(F,L);if(x){const[l,_1]=x;if(T.addText(k),k="",B[L]=(B[L]||0)+1,B[L]<=u8)I0+=_1;if(l.startsWith("_"))k+=U[0];else{const C1=n.classNameAliases[l]||l;_(U[0],C1)}}else k+=U[0];P=F.keywordPatternRe.lastIndex,U=F.keywordPatternRe.exec(R)}k+=R.substring(P),T.addText(k)}function c(){if(R==="")return;let P=null;if(typeof F.subLanguage==="string"){if(!Z[F.subLanguage]){T.addText(R);return}P=A(F.subLanguage,R,!0,u0[F.subLanguage]),u0[F.subLanguage]=P._top}else P=O(R,F.subLanguage.length?F.subLanguage:null);if(F.relevance>0)I0+=P.relevance;T.__addSublanguage(P._emitter,P.language)}function C(){if(F.subLanguage!=null)c();else S();R=""}function _(P,U){if(P==="")return;T.startScope(U),T.addText(P),T.endScope()}function q0(P,U){let k=1;const L=U.length-1;while(k<=L){if(!P._emit[k]){k++;continue}const x=n.classNameAliases[P[k]]||P[k],l=U[k];if(x)_(l,x);else R=l,S(),R="";k++}}function i(P,U){if(P.scope&&typeof P.scope==="string")T.openNode(n.classNameAliases[P.scope]||P.scope);if(P.beginScope){if(P.beginScope._wrap)_(R,n.classNameAliases[P.beginScope._wrap]||P.beginScope._wrap),R="";else if(P.beginScope._multi)q0(P.beginScope,U),R=""}return F=Object.create(P,{parent:{value:F}}),F}function V0(P,U,k){let L=J8(P.endRe,k);if(L){if(P["on:end"]){const x=new T0(P);if(P["on:end"](U,x),x.isMatchIgnored)L=!1}if(L){while(P.endsParent&&P.parent)P=P.parent;return P}}if(P.endsWithParent)return V0(P.parent,U,k)}function D0(P){if(F.matcher.regexIndex===0)return R+=P[0],1;else return M0=!0,0}function R1(P){const U=P[0],k=P.rule,L=new T0(k),x=[k.__beforeBegin,k["on:begin"]];for(let l of x){if(!l)continue;if(l(P,L),L.isMatchIgnored)return D0(U)}if(k.skip)R+=U;else{if(k.excludeBegin)R+=U;if(C(),!k.returnBegin&&!k.excludeBegin)R=U}return i(k,P),k.returnBegin?0:U.length}function j1(P){const U=P[0],k=Y.substring(P.index),L=V0(F,P,k);if(!L)return z1;const x=F;if(F.endScope&&F.endScope._wrap)C(),_(U,F.endScope._wrap);else if(F.endScope&&F.endScope._multi)C(),q0(F.endScope,P);else if(x.skip)R+=U;else{if(!(x.returnEnd||x.excludeEnd))R+=U;if(C(),x.excludeEnd)R=U}do{if(F.scope)T.closeNode();if(!F.skip&&!F.subLanguage)I0+=F.relevance;F=F.parent}while(F!==L.parent);if(L.starts)i(L.starts,P);return x.returnEnd?0:U.length}function M1(){const P=[];for(let U=F;U!==n;U=U.parent)if(U.scope)P.unshift(U.scope);P.forEach((U)=>T.openNode(U))}let k0={};function p0(P,U){const k=U&&U[0];if(R+=P,k==null)return C(),0;if(k0.type==="begin"&&U.type==="end"&&k0.index===U.index&&k===""){if(R+=Y.slice(U.index,U.index+1),!Q){const L=new Error(`0 width match regex (${V})`);throw L.languageName=V,L.badRule=k0.rule,L}return 1}if(k0=U,U.type==="begin")return R1(U);else if(U.type==="illegal"&&!w){const L=new Error('Illegal lexeme "'+k+'" for mode "'+(F.scope||"<unnamed>")+'"');throw L.mode=F,L}else if(U.type==="end"){const L=j1(U);if(L!==z1)return L}if(U.type==="illegal"&&k==="")return 1;if(j0>1e5&&j0>U.index*3)throw new Error("potential infinite loop, way more iterations than matches");return R+=k,k.length}const n=f(V);if(!n)throw J0(W.replace("{}",V)),new Error('Unknown language: "'+V+'"');const S1=g8(n);let R0="",F=H||S1;const u0={},T=new X.__emitter(X);M1();let R="",I0=0,Z0=0,j0=0,M0=!1;try{if(!n.__emitTokens){F.matcher.considerAll();for(;;){if(j0++,M0)M0=!1;else F.matcher.considerAll();F.matcher.lastIndex=Z0;const P=F.matcher.exec(Y);if(!P)break;const U=Y.substring(Z0,P.index),k=p0(U,P);Z0=P.index+k}p0(Y.substring(Z0))}else n.__emitTokens(Y,T);return T.finalize(),R0=T.toHTML(),{language:V,value:R0,relevance:I0,illegal:!1,_emitter:T,_top:F}}catch(P){if(P.message&&P.message.includes("Illegal"))return{language:V,value:C0(Y),illegal:!0,relevance:0,_illegalBy:{message:P.message,index:Z0,context:Y.slice(Z0-100,Z0+100),mode:P.mode,resultSoFar:R0},_emitter:T};else if(Q)return{language:V,value:C0(Y),illegal:!1,relevance:0,errorRaised:P,_emitter:T,_top:F};else throw P}}function D(V){const Y={value:C0(V),illegal:!1,relevance:0,_top:$,_emitter:new X.__emitter(X)};return Y._emitter.addText(V),Y}function O(V,Y){Y=Y||X.languages||Object.keys(Z);const w=D(V),H=Y.filter(f).filter(M).map((C)=>A(C,V,!1));H.unshift(w);const B=H.sort((C,_)=>{if(C.relevance!==_.relevance)return _.relevance-C.relevance;if(C.language&&_.language){if(f(C.language).supersetOf===_.language)return 1;else if(f(_.language).supersetOf===C.language)return-1}return 0}),[j,S]=B,c=j;return c.secondBest=S,c}function I(V,Y,w){const H=Y&&z[Y]||w;V.classList.add("hljs"),V.classList.add(`language-${H}`)}function y(V){let Y=null;const w=K(V);if(G(w))return;if(m("before:highlightElement",{el:V,language:w}),V.dataset.highlighted){console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.",V);return}if(V.children.length>0){if(!X.ignoreUnescapedHTML)console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk."),console.warn("https://github.com/highlightjs/highlight.js/wiki/security"),console.warn("The element with unescaped HTML:"),console.warn(V);if(X.throwUnescapedHTML)throw new K1("One of your code blocks includes unescaped HTML.",V.innerHTML)}Y=V;const H=Y.textContent,B=w?v(H,{language:w,ignoreIllegals:!0}):O(H);if(V.innerHTML=B.value,V.dataset.highlighted="yes",I(V,w,B.language),V.result={language:B.language,re:B.relevance,relevance:B.relevance},B.secondBest)V.secondBest={language:B.secondBest.language,relevance:B.secondBest.relevance};m("after:highlightElement",{el:V,result:B,text:H})}function g(V){X=Z1(X,V)}const u=()=>{p(),Y0("10.6.0","initHighlighting() deprecated.  Use highlightAll() now.")};function N(){p(),Y0("10.6.0","initHighlightingOnLoad() deprecated.  Use highlightAll() now.")}let h=!1;function p(){if(document.readyState==="loading"){h=!0;return}document.querySelectorAll(X.cssSelector).forEach(y)}function b(){if(h)p()}if(typeof window!=="undefined"&&window.addEventListener)window.addEventListener("DOMContentLoaded",b,!1);function s(V,Y){let w=null;try{w=Y(q)}catch(H){if(J0("Language definition for '{}' could not be registered.".replace("{}",V)),!Q)throw H;else J0(H);w=$}if(!w.name)w.name=V;if(Z[V]=w,w.rawDefinition=Y.bind(null,q),w.aliases)X0(w.aliases,{languageName:V})}function o(V){delete Z[V];for(let Y of Object.keys(z))if(z[Y]===V)delete z[Y]}function $0(){return Object.keys(Z)}function f(V){return V=(V||"").toLowerCase(),Z[V]||Z[z[V]]}function X0(V,{languageName:Y}){if(typeof V==="string")V=[V];V.forEach((w)=>{z[w.toLowerCase()]=Y})}function M(V){const Y=f(V);return Y&&!Y.disableAutodetect}function a(V){if(V["before:highlightBlock"]&&!V["before:highlightElement"])V["before:highlightElement"]=(Y)=>{V["before:highlightBlock"](Object.assign({block:Y.el},Y))};if(V["after:highlightBlock"]&&!V["after:highlightElement"])V["after:highlightElement"]=(Y)=>{V["after:highlightBlock"](Object.assign({block:Y.el},Y))}}function W0(V){a(V),J.push(V)}function e(V){const Y=J.indexOf(V);if(Y!==-1)J.splice(Y,1)}function m(V,Y){const w=V;J.forEach(function(H){if(H[w])H[w](Y)})}function d(V){return Y0("10.7.0","highlightBlock will be removed entirely in v12.0"),Y0("10.7.0","Please use highlightElement now."),y(V)}Object.assign(q,{highlight:v,highlightAuto:O,highlightAll:p,highlightElement:y,highlightBlock:d,configure:g,initHighlighting:u,initHighlightingOnLoad:N,registerLanguage:s,unregisterLanguage:o,listLanguages:$0,getLanguage:f,registerAliases:X0,autoDetection:M,inherit:Z1,addPlugin:W0,removePlugin:e}),q.debugMode=function(){Q=!1},q.safeMode=function(){Q=!0},q.versionString=p8,q.regex={concat:Q0,lookahead:W1,either:f0,optional:Z8,anyNumberOfTimes:q8};for(let V in y0)if(typeof y0[V]==="object")J1(y0[V]);return Object.assign(q,y0),q},G0=B1({});G0.newInstance=()=>B1({});F1.exports=G0;G0.HighlightJS=G0;G0.default=G0});var p1=function(q,Z){var z=Z.attributes,J,Q,W,$,X;if(Z.nodeType===c0||q.nodeType===c0)return;for(var G=z.length-1;G>=0;G--)if(J=z[G],Q=J.name,W=J.namespaceURI,$=J.value,W){if(Q=J.localName||Q,X=q.getAttributeNS(W,Q),X!==$){if(J.prefix==="xmlns")Q=J.name;q.setAttributeNS(W,Q,$)}}else if(X=q.getAttribute(Q),X!==$)q.setAttribute(Q,$);var K=q.attributes;for(var v=K.length-1;v>=0;v--)if(J=K[v],Q=J.name,W=J.namespaceURI,W){if(Q=J.localName||Q,!Z.hasAttributeNS(W,Q))q.removeAttributeNS(W,Q)}else if(!Z.hasAttribute(Q))q.removeAttribute(Q)},i1=function(q){var Z=E.createElement("template");return Z.innerHTML=q,Z.content.childNodes[0]},s1=function(q){if(!L0)L0=E.createRange(),L0.selectNode(E.body);var Z=L0.createContextualFragment(q);return Z.childNodes[0]},n1=function(q){var Z=E.createElement("body");return Z.innerHTML=q,Z.childNodes[0]},l1=function(q){if(q=q.trim(),h1)return i1(q);else if(c1)return s1(q);return n1(q)},O0=function(q,Z){var z=q.nodeName,J=Z.nodeName,Q,W;if(z===J)return!0;if(Q=z.charCodeAt(0),W=J.charCodeAt(0),Q<=90&&W>=97)return z===J.toUpperCase();else if(W<=90&&Q>=97)return J===z.toUpperCase();else return!1},a1=function(q,Z){return!Z||Z===u1?E.createElement(q):E.createElementNS(Z,q)},m1=function(q,Z){var z=q.firstChild;while(z){var J=z.nextSibling;Z.appendChild(z),z=J}return Z},S0=function(q,Z,z){if(q[z]!==Z[z])if(q[z]=Z[z],q[z])q.setAttribute(z,"");else q.removeAttribute(z)},t=function(){},d1=function(q){if(q)return q.getAttribute&&q.getAttribute("id")||q.id},t1=function(q){return function Z(z,J,Q){if(!Q)Q={};if(typeof J==="string")if(z.nodeName==="#document"||z.nodeName==="HTML"||z.nodeName==="BODY"){var W=J;J=E.createElement("html"),J.innerHTML=W}else J=l1(J);else if(J.nodeType===s0)J=J.firstElementChild;var $=Q.getNodeKey||d1,X=Q.onBeforeNodeAdded||t,G=Q.onNodeAdded||t,K=Q.onBeforeElUpdated||t,v=Q.onElUpdated||t,A=Q.onBeforeNodeDiscarded||t,D=Q.onNodeDiscarded||t,O=Q.onBeforeElChildrenUpdated||t,I=Q.skipFromChildren||t,y=Q.addChild||function(V,Y){return V.appendChild(Y)},g=Q.childrenOnly===!0,u=Object.create(null),N=[];function h(V){N.push(V)}function p(V,Y){if(V.nodeType===H0){var w=V.firstChild;while(w){var H=void 0;if(Y&&(H=$(w)))h(H);else if(D(w),w.firstChild)p(w,Y);w=w.nextSibling}}}function b(V,Y,w){if(A(V)===!1)return;if(Y)Y.removeChild(V);D(V),p(V,w)}function s(V){if(V.nodeType===H0||V.nodeType===s0){var Y=V.firstChild;while(Y){var w=$(Y);if(w)u[w]=Y;s(Y),Y=Y.nextSibling}}}s(z);function o(V){G(V);var Y=V.firstChild;while(Y){var w=Y.nextSibling,H=$(Y);if(H){var B=u[H];if(B&&O0(Y,B))Y.parentNode.replaceChild(B,Y),f(B,Y);else o(Y)}else o(Y);Y=w}}function $0(V,Y,w){while(Y){var H=Y.nextSibling;if(w=$(Y))h(w);else b(Y,V,!0);Y=H}}function f(V,Y,w){var H=$(Y);if(H)delete u[H];if(!w){if(K(V,Y)===!1)return;if(q(V,Y),v(V),O(V,Y)===!1)return}if(V.nodeName!=="TEXTAREA")X0(V,Y);else i0.TEXTAREA(V,Y)}function X0(V,Y){var w=I(V,Y),H=Y.firstChild,B=V.firstChild,j,S,c,C,_;q:while(H){C=H.nextSibling,j=$(H);while(!w&&B){if(c=B.nextSibling,H.isSameNode&&H.isSameNode(B)){H=C,B=c;continue q}S=$(B);var q0=B.nodeType,i=void 0;if(q0===H.nodeType){if(q0===H0){if(j){if(j!==S)if(_=u[j])if(c===_)i=!1;else{if(V.insertBefore(_,B),S)h(S);else b(B,V,!0);B=_,S=$(B)}else i=!1}else if(S)i=!1;if(i=i!==!1&&O0(B,H),i)f(B,H)}else if(q0===n0||q0==l0){if(i=!0,B.nodeValue!==H.nodeValue)B.nodeValue=H.nodeValue}}if(i){H=C,B=c;continue q}if(S)h(S);else b(B,V,!0);B=c}if(j&&(_=u[j])&&O0(_,H)){if(!w)y(V,_);f(_,H)}else{var V0=X(H);if(V0!==!1){if(V0)H=V0;if(H.actualize)H=H.actualize(V.ownerDocument||E);y(V,H),o(H)}}H=C,B=c}$0(V,B,S);var D0=i0[V.nodeName];if(D0)D0(V,Y)}var M=z,a=M.nodeType,W0=J.nodeType;if(!g){if(a===H0)if(W0===H0){if(!O0(z,J))D(z),M=m1(z,a1(J.nodeName,J.namespaceURI))}else M=J;else if(a===n0||a===l0)if(W0===a){if(M.nodeValue!==J.nodeValue)M.nodeValue=J.nodeValue;return M}else M=J}if(M===J)D(z);else{if(J.isSameNode&&J.isSameNode(M))return;if(f(M,J,g),N)for(var e=0,m=N.length;e<m;e++){var d=u[N[e]];if(d)b(d,d.parentNode,!1)}}if(!g&&M!==z&&z.parentNode){if(M.actualize)M=M.actualize(z.ownerDocument||E);z.parentNode.replaceChild(M,z)}return M}},c0=11,L0,u1="http://www.w3.org/1999/xhtml",E=typeof document==="undefined"?void 0:document,h1=!!E&&"content"in E.createElement("template"),c1=!!E&&E.createRange&&"createContextualFragment"in E.createRange(),i0={OPTION:function(q,Z){var z=q.parentNode;if(z){var J=z.nodeName.toUpperCase();if(J==="OPTGROUP")z=z.parentNode,J=z&&z.nodeName.toUpperCase();if(J==="SELECT"&&!z.hasAttribute("multiple")){if(q.hasAttribute("selected")&&!Z.selected)q.setAttribute("selected","selected"),q.removeAttribute("selected");z.selectedIndex=-1}}S0(q,Z,"selected")},INPUT:function(q,Z){if(S0(q,Z,"checked"),S0(q,Z,"disabled"),q.value!==Z.value)q.value=Z.value;if(!Z.hasAttribute("value"))q.removeAttribute("value")},TEXTAREA:function(q,Z){var z=Z.value;if(q.value!==z)q.value=z;var J=q.firstChild;if(J){var Q=J.nodeValue;if(Q==z||!z&&Q==q.placeholder)return;J.nodeValue=z}},SELECT:function(q,Z){if(!Z.hasAttribute("multiple")){var z=-1,J=0,Q=q.firstChild,W,$;while(Q)if($=Q.nodeName&&Q.nodeName.toUpperCase(),$==="OPTGROUP")W=Q,Q=W.firstChild;else{if($==="OPTION"){if(Q.hasAttribute("selected")){z=J;break}J++}if(Q=Q.nextSibling,!Q&&W)Q=W.nextSibling,W=null}q.selectedIndex=z}}},H0=1,s0=11,n0=3,l0=8,r1=t1(p1),w0=r1;class U0{constructor(q,Z,z,J){this.isDev=q,this.previousDives=[],this.ActivePollId=null,this.afterDive=Z,this.poll_path="/api/poll",this.csrfSelector=z,this.csrfHeader=J}obj_to_fd=function(q,Z){if(q instanceof FormData)return q;else{let z=(Q,W,$)=>{let X,G;if(Array.isArray($))for(X in $)G=$[X],z(Q,W+"[]",G);else if(typeof $==="object")for(X in $)G=$[X],z(Q,W+"["+X+"]",G);else Q.append(W,$)};if(!Z)Z=new FormData;let J;for(J in q){let Q=q[J];z(Z,J,Q)}return Z}};_sendsXHROnLoad(q,Z,z,J){if(z.status>=200&&z.status<=302&&z.status!=300){let Q=z.response;if(J=="json")try{Q=JSON.parse(Q)}catch{}q({response:Q,xhr:z})}else Z({status:z.status,statusText:z.statusText})}_sendsXHROnError(q,Z,z){Z({status:z.status,statusText:z.statusText})}sendsXHR({url:q,formInfo:Z,method:z="POST",xhrChangeF:J,csrfContent:Q,csrfHeader:W=this.csrfHeader,csrfSelector:$=this.csrfSelector,confirm:X,withCredentials:G=!0,responseType:K="json",onload:v=this._sendsXHROnLoad,onerror:A=this._sendsXHROnError}){if(!Q)Q=document.querySelector($).content;return new Promise(function(D,O){var I,y;if(I=new XMLHttpRequest,I.withCredentials=G,I.open(z,q),I.responseType=K,I.onload=v.bind(this,D,O,I,K),I.onerror=A.bind(this,D,O,I),y=this.obj_to_fd(Z),I.setRequestHeader(W,Q),I.setRequestHeader("Otty","true"),J)I=J(I);if(X)if(X=X(X),X)I.send(y);else D({returning:"user rejected confirm prompt"});else I.send(y)}.bind(this))}isLocalUrl(q,Z=-2){let z=window.location.hostname,J=new URL(q,window.location).hostname;if(z.split(".").slice(Z).join(".")==J.split(".").slice(Z).join("."))return!0;return!1}xss_pass(q){return this.isLocalUrl(q,-2)}dive(q={}){let{url:Z,baseElement:z,submitter:J}=q;if(q.e!=null){if(z==null)z=q.e.currentTarget;if(J==null)J=q.e.submitter}if(!this.xss_pass(Z))throw Z+" is not a local_url";let Q=((W,$,X)=>{let G,K,v,A,D,O,I,y;if(O=W,!Array.isArray(W))W=[W];G=0,K=new this.afterDive(z,J,$,X,this.isDev);for(y of W){if(!y)continue;if(I=y.dive_id,I){if(this.previousDives.includes(I))continue;this.previousDives.push(I),delete y.dive_id}if(v=Object.keys(y)[0],A=y[v],v=="eval")v="eval2";if(this.isDev)console.log(v,A);if(v=="returning")O=A;else{try{D=K[v](A)}catch(g){if(this.isDev)console.log(v,A,g,g.message)}if(D=="break")break}}$(O)}).bind(this);return new Promise(function(W,$){this.sendsXHR(q).then((X)=>{Q(X.response,W,$)}).catch((X)=>{$(X)})}.bind(this))}async stopGoto(q){let Z=window.location;if(q=new URL(q,Z),Z.origin==q.origin&&q.pathname==Z.pathname)return await this.scrollToLocationHashElement(q);if(Z.origin!=q.origin)return window.location.href=q.origin,!0;return!1}async linkClickedF(q){let Z=q.target.closest("[href]");if(!Z)return;if(Z=Z.getAttribute("href"),!this.isLocalUrl(Z,-99))return;q.preventDefault(),q.stopPropagation(),await this.goto(Z);return}async scrollToLocationHashElement(q){if(q.hash){let Z=document.getElementById(decodeURIComponent(q.hash.slice(1)));if(Z)return await this.waitForImages(),Z.scrollIntoView(),!0}return!1}poll=(q)=>{if(this.ActivePollId!=q.id)return;let Z=((J)=>{if(J=="should_resub")this.subscribeToPoll(q.queues,q.poll_info,q.wait_time);else if(J!="no_updates")q.store=J}).bind(this),z=(()=>{let J=(()=>{this.poll(q)}).bind(this);setTimeout(J,q.wait_time)}).bind(this);this.dives(this.poll_path,{formInfo:{"otty-store":q.store}}).then(Z).finally(z)};subscribeToPoll=(q,Z,z)=>{let J=Math.random();this.ActivePollId=J;let Q={queues:q,poll_info:Z,wait_time:z,id:J},W=((X)=>{if(X=="no_queues"){if(this.isDev)console.log("no_queues",X)}else Q.store=X,this.poll(Q)}).bind(this),$=((X)=>{if(this.isDev)console.error("sub fail",X)}).bind(this);this.dives("/api/pollsub",{formInfo:{queues:Q.queues,...Q.poll_info}}).then(W,$)};async goto(q,Z={}){if(await this.stopGoto(q))return-1;Z={reload:!1,...Z};let z=window.location;q=new URL(q,z);let J=this.sendsXHR({url:q,method:"GET",responseType:"text",xhrChangeF:($)=>{return $.setRequestHeader("Otty-Nav","true"),$}});J=await J;let{response:Q,xhr:W}=J;if(W.responseURL){let $=new URL(W.responseURL);$.hash=q.hash,q=$}return await this.pageReplace(Q,0,q,($,X,G)=>{if(this.replacePageState(z,$,G,X),!Z.reload)this.pushPageState(q,void 0,G)}),q}createStorageDoc(q,Z){q=q.cloneNode(!0);let z=new DOMParser().parseFromString("<!DOCTYPE HTML> <html></html>","text/html");if(q.nodeName=="BODY")z.body=q;else z.body.appendChild(q);return w0(z.head,Z),z}navigationHeadMorph(q){w0(document.head,q)}async pageReplace(q,Z,z,J){let Q=window.scrollY;if(typeof q=="string")q=new DOMParser().parseFromString(q,"text/html");let W,$,X;for(X of this.navigationReplaces)if(W=q.querySelector(X),$=document.querySelector(X),W&&$)break;for(let A of this.qsInclusive($,"[data-unit]"))A._unit?.unitRemoved();let G=this.createStorageDoc($,document.head);if(J)J(G,Q,X);$.replaceWith(W),this.navigationHeadMorph(q.querySelector("head"));let K=z&&!Z,v=!1;if(K)v=await this.scrollToLocationHashElement(z);if(!v){if(Z!=0)await this.waitForImages();window.scroll(0,Z)}}async waitForImages(){let q=Array.from(document.body.querySelectorAll("img")).map((Z)=>{new Promise((z)=>{if(Z.addEventListener("load",z),Z.complete)z()})});for(let Z of q)await Z;return!0}_pageState(q,Z,z,J,Q){this.historyReferences[this.historyReferenceLocation]={replaceSelector:J,doc:Z,scroll:q,url:z,match:Q}}replacePageState(q,Z,z,J){let Q=Math.random();window.history.replaceState({historyReferenceLocation:this.historyReferenceLocation,match:Q},"",q),this._pageState(J,Z,q,z,Q)}pushPageState(q,Z,z){let J=Math.random();this.historyReferenceLocation+=1,this.historyReferences=this.historyReferences.slice(0,this.historyReferenceLocation+1),window.history.pushState({historyReferenceLocation:this.historyReferenceLocation,match:J},"",q),this._pageState(0,Z,q,z,J)}qsInclusive(q,Z){let z=Array.from(q.querySelectorAll(Z));if(q.matches(Z))z.push(q);return z}handleNavigation(q={}){q={navigationReplaces:["body"],...q},this.navigationReplaces=q.navigationReplaces,this.historyReferenceLocation=0,this.historyReferences=[],history.scrollRestoration="manual",document.addEventListener("click",this.linkClickedF.bind(this)),window.addEventListener("popstate",async function(Z){if(Z.state&&Z.state.historyReferenceLocation!=null){let z=this.historyReferences[this.historyReferenceLocation],J=window.scrollY;this.historyReferenceLocation=Z.state.historyReferenceLocation;let Q=this.historyReferences[this.historyReferenceLocation];if(Q&&Q.match==Z.state.match)await this.pageReplace(Q.doc,Q.scroll,Q.url,(W,$,X)=>{z.scroll=$,z.doc=W,z.replaceSelector=X});else this.historyReferenceLocation=0,this.historyReferences=[],this.goto(window.location,{reload:!0})}}.bind(this)),this.scrollToLocationHashElement(window.location)}}class v0{constructor(q,Z,z,J,Q){this.baseElement=q,this.submitter=Z,this.resolve=z,this.reject=J,this.isDev=Q}getThing(q,Z=!1,z=document){let J;if(q.id){if(J=z.getElementById(q.id),!J&&!Z&&this.isDev)console.log("could not find object with id: ",q.id)}else if(q.selector){if(J=this.getSelector(q.selector,z),!J&&!Z&&this.isDev)console.log("could not find object with selector: ",q.selector)}else if(!Z&&this.isDev)console.log('expected a node identifier (either a "selector" field or an "id" field)');return J}getSelector(q,Z=document){if(q=="submitter")return this.submitter;else if(q=="baseElement")return this.baseElement;else return Z.querySelector(q)}log(q){console.log(q)}reload(){Turbo.cache.clear(),otty.goto(window.location.href,{reload:!0})}redirect(q){otty.goto(q)}insert(q){let Z=this.getThing(q);if(!Z)return;let{position:z,html:J}=q;Z.insertAdjacentHTML(z,J)}morph(q){let Z=q,z=q.permanent,J=q.ignore;if(Z==null)Z={};if(J!=null||z!=null){let W=(G,K,v)=>{if(K.matches(G)&&v.matches(G))return!1;else return!0},$=(G,K,v)=>{if(K.matches(G)||v.matches(G))return!1;else return!0},X=(G,K,v,A)=>{if(!Array.isArray(G))G=[G];for(let D=0;D<G.length;D++)if(!K(G[D],v,A))return!1;return!0};Z.onBeforeElChildrenUpdated=(G,K)=>{if(!X(J,$,G,K))return!1;if(!X(z,W,G,K))return!1;return!0}}let Q=this.getThing(q);if(!Q)return;w0(Q,q.html,Z)}remove(q){let Z=this.getThing(q);if(!Z)return;Z.parentNode.removeChild(Z)}replace(q){let Z,z,J,Q,W;if(z=new DOMParser,J=z.parseFromString(q.html,"text/html"),Q=this.getThing(q,!1,J),!Q)return;if(W=q.childrenOnly,Z=this.getThing(q),!Z)return;if(Q==null)if(W)Z.innerHTML=q.html;else Q=J.querySelector("body").children[0],Z.replaceWith(Q);else if(W)Z.innerHTML=Q.innerHTML;else Z.replaceWith(Q)}innerHtml(q){let Z=this.getThing(q);if(!Z)return;Z.innerHTML=q.html}eval2(q){let Z=getThing(q,!0);if(Function("data","selector","baseElement","submitter",`"use strict"; ${q.code};`)(q,Z,this.baseElement,this.submitter)=="break")return resolve(returning),"break"}setData(q){let Z,z,J,Q,W,$,X,G;Z=Object.keys(q);for(z=0;z<Z.length;z++){J=Z[z],Q=this.getSelector(J),W=q[J],$=Object.keys(W);for(X=0;X<$.length;X++)G=$[X],Q.dataset[G]=W[G]}}}var a0={unitName:"Generic",unitRemoved(){this.el._unit=void 0},unitConnected(){},unitEvents:[],addUnitEvent(q,Z){let{action:z,f_name:J,input:Q}=q,W=this[J];if(!W){console.error(`Could not find function ${W} on unit: `,this,"data-on defined on: ",Z);return}let $;if(Q.length>0)$=((K,v)=>W.bind(this)(v,...K)).bind(this,Q);else $=W.bind(this);let X=JSON.stringify(q);if(z=="_remove")this.unitEvents.push({actionNode:Z,action:z,f:$,f_str:X,f_name:J});else if(z=="_parse")Z.addEventListener(z,$),Z.dispatchEvent(new Event(z)),Z.removeEventListener(z,$);else Z.addEventListener(z,$),this.unitEvents.push({actionNode:Z,action:z,f:$,f_str:X,f_name:J})},removeUnitEvent(q,Z){let z=JSON.stringify(q),J=(W)=>Z==W.actionNode&&W.f_str==z,Q=this.unitEvents.find(J);if(Q==null)return Q;if(Q=this.unitEvents.splice(this.unitEvents.indexOf(Q),1)[0],Q.action=="_remove")Q.actionNode.addEventListener(Q.action,Q.f),Q.actionNode.dispatchEvent(new Event(Q.action)),Q.actionNode.removeEventListener(Q.action,Q.f);else Q.actionNode.removeEventListener(Q.action,Q.f);return Q},parentUnit(q){let Z=this.el.parentElement;if(q==null)while(Z!=null&&Z.dataset.unit!=null)Z=Z.parentElement;else while(Z!=null&&!Z.dataset.unit.split(" ").includes(q))Z=Z.parentElement;if(Z==null)return Z;return Z._unit},childUnitsFirstLayer(q){let Z;if(q==null)Z=this.el.qa(":scope [data-unit]:not(:scope [data-unit] [data-unit])");else Z=this.el.qa(":scope [data-unit] [data-unit='"+q+"']:not(:scope [data-unit] [data-unit~='"+q+"'])");return Array.from(Z).map((z)=>z._unit)},childUnitsDirect(q){let Z;if(q==null)Z=this.qa(":scope > [data-unit]");else Z=this.qa(":scope > [data-unit~='"+q+"']");return Array.from(Z).map((z)=>z._unit)},childUnits(q){let Z;if(q==null)Z=this.qa(":scope [data-unit]");else Z=this.qa(":scope [data-unit~='"+q+"']");return Array.from(Z).map((z)=>z._unit)},diveOptParams:["url","method","csrfContent","csrfHeader","csrfSelector","confirm","withCredentials","e","submitter"],diveErrParams:["formInfo","xhrChangeF","baseElement"],relevantData(q){if(q){let Z=this.el.id,z=q.ct.id,J=this.el.dataset,Q=q.ct.dataset;return{unitId:Z,submitterId:z,...J,...Q}}else return{unitId:this.el.id,...this.el.dataset}},diveRepeatDefaultStopF(q){let Z=window.location.href!=q.originalPageLocation,z=q.lastResult=="STOP";return Z||z},diveBehaviors:{repeat:async function(q,Z){if(Z.originalPageLocation=window.location.href,!Z.stopF)Z.stopF=this.diveRepeatDefaultStopF.bind(this);else Z.stopF=this[Z.stopF].bind(this);if(Z.processF)Z.processF=this[Z.processF].bind(this);if(Z.repeats=0,!Z.waitTime)Z.waitTime=3000;let z=this.diveInfo(q,Z);while(!Z.stopF(Z)){if(Z.lastResult=otty.dive(z),Z.processF)Z.processF(Z);Z.repeats+=1;let J=(Q)=>setTimeout(Q,Z.waitTime);await new Promise(J,J)}},default:function(q,Z){return otty.dive(this.diveInfo(q,Z))}},diveInfo(q,Z={}){let z={opts:{e:q,formInfo:{}},data:{...this.relevantData(q)},formData:new FormData,withform:!1};Z={...z,...Z},Z.opts={...z.opts,...Z.opts};let J,Q,W;for(W of Object.keys(Z.data))if(this.diveOptParams.includes(W))Z.opts[W]=Z.data[W];else if(this.diveErrParams.includes(W))console.error("bad key for diveDataset: "+W);else Z.opts.formInfo[W]=Z.data[W];if(Z.withform){if(Q=Array.from(this.el.qsa("input")),this.el.nodeName=="INPUT")Q.push(this.el);for(J of Q)if(J.name!=null&&J.value!=null)Z.formData.append(J.name,J.value)}if(!Z.opts.url)Z.opts.url=Z.opts.formInfo.path;if(Z.withform){if(!Z.opts.url)Z.opts.url=q.ct.getAttribute("formaction");if(!Z.opts.url)Z.opts.url=q.ct.closest("form")?.getAttribute("action")}if(!Z.opts.method)Z.opts.method=Z.opts.formInfo.method;if(Z.withform){if(!Z.opts.method)Z.opts.method=q.ct.getAttribute("formmethod");if(!Z.opts.method)Z.opts.method=q.ct.closest("form")?.getAttribute("method")}if(!Z.opts.method)Z.opts.method="POST";return Z.opts.formInfo=otty.obj_to_fd(Z.opts.formInfo,Z.formData),Z.opts},dive(q,Z){q.preventDefault();let z;if(Z.behavior==null)Z.behavior="default";if(z=this.diveBehaviors[Z.behavior])z.bind(this)(q,Z);else console.error("bad behavior type for a dive")}};Object.defineProperties(a0,{el:{get:function(){return this.element},set:function(q){return this.element=q}}});var z0=a0;class K0{constructor(q,Z){return this.generic=q,this.units=Z,this.shortcuts(),this.handleFirstUnits(),this.createObserver(),this}shortcuts(){Object.defineProperties(Event.prototype,{ct:{get:function(){return this.currentTarget}}}),Object.defineProperties(HTMLElement.prototype,{ds:{get:function(){return this.dataset},set:function(q){return this.dataset=q}}}),HTMLElement.prototype.qs=HTMLElement.prototype.querySelector,HTMLElement.prototype.qsa=HTMLElement.prototype.querySelectorAll,document.qs=document.querySelector,document.qsa=document.querySelectorAll}addUnit(q,Z){if(Z==null)Z=q.dataset.unit.split(" ");let z=[],J=[],Q;if(q._unit==null)q._unit={...this.generic},Q=q._unit,Object.defineProperties(Q,{el:{get:function(){return this.element},set:function($){return this.element=$}}});else Q=q._unit;let W=[Q];for(let $ of Z){let X=this.units[$];if(X==null)console.error("data-unit\'s \'"+$+"\' is not matching any unit names.");else if(X!=this.generic)W.push(X)}for(let $ of W){if($.onConnected)z.push($.onConnected);if($.onRemoved)J.push($.onRemoved)}if(Object.assign(...W),Q.el=q,z.length>0)Q.unitConnected=function($,X){X.bind(this)();for(let G of $)G.bind(this)()}.bind(Q,z,Q.unitConnected);if(J.length>0)Q.unitRemoved=function($,X){for(let G of $)G.bind(this)();X.bind(this)()}.bind(Q,J,Q.unitRemoved);return q}parseEventString(q){if(!q||q.length==0)return[];if(q[q.length-1]!=";")q+=";";let Z=[],z={},J=0;while(J<q.length)if(q.substr(J,2)=="->")z.action=q.substr(0,J),q=q.substr(J+2),J=0;else if(q[J]=="#")z.unit=q.substr(0,J),q=q.substr(J+1),J=0;else if(q[J]=="["){z.f_name=q.substr(0,J),q=q.substr(J),J=0;let Q=void 0,W;for(W=0;W<q.length;W+=1)if(q.substr(W,2)=="];"){try{Q=JSON.parse(q.substr(J,W-J+1))}catch{console.log("failed to parse json"),Q=void 0;continue}break}if(Q==null)console.error("parse issue in data-on, json expected");z.input=Q,q=q.substr(W+1),J=0}else if(q[J]==";"){if(!z.f_name&&J!=0)z.f_name=q.substr(0,J);if(q=q.substr(J+1),J=0,z.f_name&&z.action)Z.push(z);z={}}else J+=1;return Z.map((Q)=>{if(Q.action==null)Q.action="connect";if(Q.input==null)Q.input=[];if(Q.f_name==null||Q.f_name=="")throw new Error("parse issue in data-on, no function name found");return JSON.stringify(Q)}),Z}handleFirstUnits(){let q,Z,z;Z={};for(let W of this.units)Z[W.unitName]=W;this.units=Z;let J=Array.from(document.querySelectorAll("[data-unit]"));for(q of J)this.addUnit(q);let Q=Array.from(document.querySelectorAll("[data-on]"));for(q of Q){let W=this.parseEventString(q.dataset.on);for(let $ of W){if(z=this.getEventUnit($,q),!z)continue;z.addUnitEvent($,q)}}for(q of J)q._unit.unitConnected()}qsInclusive(q,Z){let z=Array.from(q.querySelectorAll(Z));if(q.matches(Z))z.push(q);return z}getEventUnit(q,Z,z){let J=(W,$)=>{if($.unit)return W.closest(`[data-unit~=\'${$.unit}\']`);else return W.closest("[data-unit]")},Q=J(Z,q);if(z&&!Q)Q=J(z,q);if(!Q||!Q._unit){if(otty.isDev)console.log("unit not found for following node:",Z,"event parse data: ",q);return null}return Q._unit}changeEvents(q,Z,z,J){let Q,W,$,X;Z=this.parseEventString(Z),z=this.parseEventString(z),$=Z.filter((G)=>!z.includes(G)),X=z.filter((G)=>!Z.includes(G));for(W of X){if(Q=this.getEventUnit(W,q,J),!Q)continue;Q.removeUnitEvent(W,q)}for(W of $){if(Q=this.getEventUnit(W,q,J),!Q)continue;Q.addUnitEvent(W,q)}}createObserver(){return this.observer=new MutationObserver((q)=>{let Z,z,J,Q,W;z=[],q=Array.from(q),J=q.filter((D)=>{return D.type=="childList"});for(Q of J){for(Z of Q.removedNodes){let D=Q.target;if(!Z.querySelector)continue;let O=this.qsInclusive(Z,"[data-on]");for(let y of O)this.changeEvents(y,"",y.dataset.on,D);let I=this.qsInclusive(Z,"[data-unit]");for(let y of I)y._unit?.unitRemoved()}for(Z of Q.addedNodes){if(!Z.querySelector)continue;let D=this.qsInclusive(Z,"[data-unit]");for(let I of D)z.push(this.addUnit(I));let O=this.qsInclusive(Z,"[data-on]");for(let I of O)this.changeEvents(I,I.dataset.on,"")}}W=q.filter((D)=>{return D.type=="attributes"&&(D.attributeName=="data-unit"||D.attributeName=="data-on")});let $,X,G,K,v,A=new Map([["data-unit",$=new Map],["data-on",X=new Map]]);for(Q of W)if(!A.get(Q.attributeName).get(Q.target))A.get(Q.attributeName).set(Q.target,Q.oldValue);v=$.keys();while(!(G=v.next()).done)if(G=G.value,K=$.get(G),!G.dataset.unit)G._unit?.unitRemoved();else{if(!K)K="";let D=K.split(" "),O=G.dataset.unit.split(" ").filter((I)=>{return!D.includes(I)});if(O.length>0){if(this.addUnit(G,O),!K)z.push(Q.target)}}v=X.keys();while(!(G=v.next()).done)G=G.value,K=X.get(G),this.changeEvents(G,G.dataset.on,K);for(Z of z)Z._unit.unitConnected()}),this.observer.observe(document.documentElement,{childList:!0,attributes:!0,subtree:!0,attributeFilter:["data-on","data-unit"],attributeOldValue:!0}),this.observer}}var _0={unitName:"Debug",unitRemoved(){console.log("unitRemoved")},unitConnected(){console.log("unitConnected")},addUnitEvent(...q){z0.addUnitEvent(...q),console.log("ran addUnitEvent. unitEvents:",this.unitEvents,"args:",...q)},removeUnitEvent(...q){z0.removeUnitEvent(...q),console.log("ran removeUnitEvent. unitEvents:",this.unitEvents,"args:",...q)},log(...q){console.log(this,...q)}};var m0={unitName:"Syntax",onConnected:function(){let q=this.el.ds.language,Z=this.el.innerText,z=otty.highlighter.highlight(Z,{language:q});this.el.innerHTML=z.value}};var d0={unitName:"MoreOtters",otterCount:0,makeOtter:function(){this.el.insertAdjacentText("afterbegin","\uD83E\uDDA6"),this.otterCount+=1}};var t0={unitName:"Expand",tailwindWidths:{sm:"640px",md:"768px",lg:"1024px",xl:"1280px","2xl":"1536px"},unitConnected(q){if(this.menu=this.el.qs("#menu_contents"),this.content=this.el.qs("#content_area"),this.button=this.el.qs("#expand_button"),this.default_self_c=this.button.getAttribute("class"),this.default_menu_c=this.menu.getAttribute("class"),this.default_content_c=this.content.getAttribute("class"),window.innerWidth>parseInt(this.tailwindWidths.sm))this.x=1;else this.x=0;this.toggle()},yeetNextTwoInside(q){console.log("valled",q.ct.nextElementSibling),q.ct.insertAdjacentElement("beforeend",q.ct.nextElementSibling),q.ct.insertAdjacentElement("beforeend",q.ct.nextElementSibling)},content_disp(q){tog=(Z)=>{if(q)Z.classList.remove("hidden"),Z.classList.remove("sm:visible"),Z.classList.remove("sm:block");else Z.classList.add("hidden"),Z.classList.add("sm:visible"),Z.classList.add("sm:block")};for(let Z of this.content.children)if(Z.classList.contains("inline-flex"))tog(Z.children[1]);else tog(Z)},toggle(q){if(this.x%2==0)this.button.setAttribute("class",`${this.default_self_c} rotate-0`),this.menu.setAttribute("class",`${this.default_menu_c} hidden`),this.content.setAttribute("class",`${this.default_content_c} col-span-4`),this.content_disp(!0);else this.button.setAttribute("class",`${this.default_self_c} rotate-180`),this.menu.setAttribute("class",`${this.default_menu_c} col-span-3 sm:col-span-1`),this.content.setAttribute("class",`${this.default_content_c} col-span-1 sm:col-span-3`),this.content_disp(!1);this.x+=1}};var k1=g1(D1(),1);var P0=k1.default;var y1=function(q){const Z=q.regex,z=(Y,{after:w})=>{const H="</"+Y[0].slice(1);return Y.input.indexOf(H,w)!==-1},Q={begin:"<>",end:"</>"},W=/<[A-Za-z0-9\\._:-]+\s*\/>/,$={begin:/<[A-Za-z0-9\\._:-]+/,end:/\/[A-Za-z0-9\\._:-]+>|\/>/,isTrulyOpeningTag:(Y,w)=>{const H=Y[0].length+Y.index,B=Y.input[H];if(B==="<"||B===","){w.ignoreMatch();return}if(B===">"){if(!z(Y,{after:H}))w.ignoreMatch()}let j;const S=Y.input.substring(H);if(j=S.match(/^\s*=/)){w.ignoreMatch();return}if(j=S.match(/^\s+extends\s+/)){if(j.index===0){w.ignoreMatch();return}}}},X={$pattern:"[A-Za-z$_][0-9A-Za-z$_]*",keyword:h8,literal:c8,built_in:s8,"variable.language":i8},A={className:"number",variants:[{begin:"(\\b(0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*)((\\.([0-9](_?[0-9])*))|\\.)?|(\\.([0-9](_?[0-9])*)))[eE][+-]?([0-9](_?[0-9])*)\\b"},{begin:"\\b(0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*)\\b((\\.([0-9](_?[0-9])*))\\b|\\.)?|(\\.([0-9](_?[0-9])*))\\b"},{begin:"\\b(0|[1-9](_?[0-9])*)n\\b"},{begin:"\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b"},{begin:"\\b0[bB][0-1](_?[0-1])*n?\\b"},{begin:"\\b0[oO][0-7](_?[0-7])*n?\\b"},{begin:"\\b0[0-7]+n?\\b"}],relevance:0},D={className:"subst",begin:"\\$\\{",end:"\\}",keywords:X,contains:[]},O={begin:"html`",end:"",starts:{end:"`",returnEnd:!1,contains:[q.BACKSLASH_ESCAPE,D],subLanguage:"xml"}},I={begin:"css`",end:"",starts:{end:"`",returnEnd:!1,contains:[q.BACKSLASH_ESCAPE,D],subLanguage:"css"}},y={begin:"gql`",end:"",starts:{end:"`",returnEnd:!1,contains:[q.BACKSLASH_ESCAPE,D],subLanguage:"graphql"}},g={className:"string",begin:"`",end:"`",contains:[q.BACKSLASH_ESCAPE,D]},N={className:"comment",variants:[q.COMMENT(/\/\*\*(?!\/)/,"\\*/",{relevance:0,contains:[{begin:"(?=@[A-Za-z]+)",relevance:0,contains:[{className:"doctag",begin:"@[A-Za-z]+"},{className:"type",begin:"\\{",end:"\\}",excludeEnd:!0,excludeBegin:!0,relevance:0},{className:"variable",begin:"[A-Za-z$_][0-9A-Za-z$_]*(?=\\s*(-)|$)",endsParent:!0,relevance:0},{begin:/(?=[^\n])\s/,relevance:0}]}]}),q.C_BLOCK_COMMENT_MODE,q.C_LINE_COMMENT_MODE]},h=[q.APOS_STRING_MODE,q.QUOTE_STRING_MODE,O,I,y,g,{match:/\$\d+/},A];D.contains=h.concat({begin:/\{/,end:/\}/,keywords:X,contains:["self"].concat(h)});const p=[].concat(N,D.contains),b=p.concat([{begin:/\(/,end:/\)/,keywords:X,contains:["self"].concat(p)}]),s={className:"params",begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,keywords:X,contains:b},o={variants:[{match:[/class/,/\s+/,"[A-Za-z$_][0-9A-Za-z$_]*",/\s+/,/extends/,/\s+/,Z.concat("[A-Za-z$_][0-9A-Za-z$_]*","(",Z.concat(/\./,"[A-Za-z$_][0-9A-Za-z$_]*"),")*")],scope:{1:"keyword",3:"title.class",5:"keyword",7:"title.class.inherited"}},{match:[/class/,/\s+/,"[A-Za-z$_][0-9A-Za-z$_]*"],scope:{1:"keyword",3:"title.class"}}]},$0={relevance:0,match:Z.either(/\bJSON/,/\b[A-Z][a-z]+([A-Z][a-z]*|\d)*/,/\b[A-Z]{2,}([A-Z][a-z]+|\d)+([A-Z][a-z]*)*/,/\b[A-Z]{2,}[a-z]+([A-Z][a-z]+|\d)*([A-Z][a-z]*)*/),className:"title.class",keywords:{_:[...I1,...L1]}},f={label:"use_strict",className:"meta",relevance:10,begin:/^\s*['"]use (strict|asm)['"]/},X0={variants:[{match:[/function/,/\s+/,"[A-Za-z$_][0-9A-Za-z$_]*",/(?=\s*\()/]},{match:[/function/,/\s*(?=\()/]}],className:{1:"keyword",3:"title.function"},label:"func.def",contains:[s],illegal:/%/},M={relevance:0,match:/\b[A-Z][A-Z_0-9]+\b/,className:"variable.constant"};function a(Y){return Z.concat("(?!",Y.join("|"),")")}const W0={match:Z.concat(/\b/,a([...O1,"super","import"]),"[A-Za-z$_][0-9A-Za-z$_]*",Z.lookahead(/\(/)),className:"title.function",relevance:0},e={begin:Z.concat(/\./,Z.lookahead(Z.concat("[A-Za-z$_][0-9A-Za-z$_]*",/(?![0-9A-Za-z$_(])/))),end:"[A-Za-z$_][0-9A-Za-z$_]*",excludeBegin:!0,keywords:"prototype",className:"property",relevance:0},m={match:[/get|set/,/\s+/,"[A-Za-z$_][0-9A-Za-z$_]*",/(?=\()/],className:{1:"keyword",3:"title.function"},contains:[{begin:/\(\)/},s]},d="(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|"+q.UNDERSCORE_IDENT_RE+")\\s*=>",V={match:[/const|var|let/,/\s+/,"[A-Za-z$_][0-9A-Za-z$_]*",/\s*/,/=\s*/,/(async\s*)?/,Z.lookahead(d)],keywords:"async",className:{1:"keyword",3:"title.function"},contains:[s]};return{name:"JavaScript",aliases:["js","jsx","mjs","cjs"],keywords:X,exports:{PARAMS_CONTAINS:b,CLASS_REFERENCE:$0},illegal:/#(?![$_A-z])/,contains:[q.SHEBANG({label:"shebang",binary:"node",relevance:5}),f,q.APOS_STRING_MODE,q.QUOTE_STRING_MODE,O,I,y,g,N,{match:/\$\d+/},A,$0,{className:"attr",begin:"[A-Za-z$_][0-9A-Za-z$_]*"+Z.lookahead(":"),relevance:0},V,{begin:"("+q.RE_STARTERS_RE+"|\\b(case|return|throw)\\b)\\s*",keywords:"return throw case",relevance:0,contains:[N,q.REGEXP_MODE,{className:"function",begin:d,returnBegin:!0,end:"\\s*=>",contains:[{className:"params",variants:[{begin:q.UNDERSCORE_IDENT_RE,relevance:0},{className:null,begin:/\(\s*\)/,skip:!0},{begin:/\(/,end:/\)/,excludeBegin:!0,excludeEnd:!0,keywords:X,contains:b}]}]},{begin:/,/,relevance:0},{match:/\s+/,relevance:0},{variants:[{begin:Q.begin,end:Q.end},{match:W},{begin:$.begin,"on:begin":$.isTrulyOpeningTag,end:$.end}],subLanguage:"xml",contains:[{begin:$.begin,end:$.end,skip:!0,contains:["self"]}]}]},X0,{beginKeywords:"while if switch catch for"},{begin:"\\b(?!function)"+q.UNDERSCORE_IDENT_RE+"\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{",returnBegin:!0,label:"func.def",contains:[s,q.inherit(q.TITLE_MODE,{begin:"[A-Za-z$_][0-9A-Za-z$_]*",className:"title.function"})]},{match:/\.\.\./,relevance:0},e,{match:"\\$[A-Za-z$_][0-9A-Za-z$_]*",relevance:0},{match:[/\bconstructor(?=\s*\()/],className:{1:"title.function"},contains:[s]},W0,M,o,m,{match:/\$[(.]/}]}};var h8=["as","in","of","if","for","while","finally","var","new","function","do","return","void","else","break","catch","instanceof","with","throw","case","default","try","switch","continue","typeof","delete","let","yield","const","class","debugger","async","await","static","import","from","export","extends"],c8=["true","false","null","undefined","NaN","Infinity"],I1=["Object","Function","Boolean","Symbol","Math","Date","Number","BigInt","String","RegExp","Array","Float32Array","Float64Array","Int8Array","Uint8Array","Uint8ClampedArray","Int16Array","Int32Array","Uint16Array","Uint32Array","BigInt64Array","BigUint64Array","Set","Map","WeakSet","WeakMap","ArrayBuffer","SharedArrayBuffer","Atomics","DataView","JSON","Promise","Generator","GeneratorFunction","AsyncFunction","Reflect","Proxy","Intl","WebAssembly"],L1=["Error","EvalError","InternalError","RangeError","ReferenceError","SyntaxError","TypeError","URIError"],O1=["setInterval","setTimeout","clearInterval","clearTimeout","require","exports","eval","isFinite","isNaN","parseFloat","parseInt","decodeURI","decodeURIComponent","encodeURI","encodeURIComponent","escape","unescape"],i8=["arguments","this","super","console","window","document","localStorage","sessionStorage","module","global"],s8=[].concat(O1,I1,L1);var A1=function(q){const Z=q.regex,z=Z.concat(/[\p{L}_]/u,Z.optional(/[\p{L}0-9_.-]*:/u),/[\p{L}0-9_.-]*/u),J=/[\p{L}0-9._:-]+/u,Q={className:"symbol",begin:/&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/},W={begin:/\s/,contains:[{className:"keyword",begin:/#?[a-z_][a-z1-9_-]+/,illegal:/\n/}]},$=q.inherit(W,{begin:/\(/,end:/\)/}),X=q.inherit(q.APOS_STRING_MODE,{className:"string"}),G=q.inherit(q.QUOTE_STRING_MODE,{className:"string"}),K={endsWithParent:!0,illegal:/</,relevance:0,contains:[{className:"attr",begin:J,relevance:0},{begin:/=\s*/,relevance:0,contains:[{className:"string",endsParent:!0,variants:[{begin:/"/,end:/"/,contains:[Q]},{begin:/'/,end:/'/,contains:[Q]},{begin:/[^\s"'=<>`]+/}]}]}]};return{name:"HTML, XML",aliases:["html","xhtml","rss","atom","xjb","xsd","xsl","plist","wsf","svg"],case_insensitive:!0,unicodeRegex:!0,contains:[{className:"meta",begin:/<![a-z]/,end:/>/,relevance:10,contains:[W,G,X,$,{begin:/\[/,end:/\]/,contains:[{className:"meta",begin:/<![a-z]/,end:/>/,contains:[W,$,G,X]}]}]},q.COMMENT(/<!--/,/-->/,{relevance:10}),{begin:/<!\[CDATA\[/,end:/\]\]>/,relevance:10},Q,{className:"meta",end:/\?>/,variants:[{begin:/<\?xml/,relevance:10,contains:[G]},{begin:/<\?[a-z][a-z0-9]+/}]},{className:"tag",begin:/<style(?=\s|>)/,end:/>/,keywords:{name:"style"},contains:[K],starts:{end:/<\/style>/,returnEnd:!0,subLanguage:["css","xml"]}},{className:"tag",begin:/<script(?=\s|>)/,end:/>/,keywords:{name:"script"},contains:[K],starts:{end:/<\/script>/,returnEnd:!0,subLanguage:["javascript","handlebars","xml"]}},{className:"tag",begin:/<>|<\/>/},{className:"tag",begin:Z.concat(/</,Z.lookahead(Z.concat(z,Z.either(/\/>/,/>/,/\s/)))),end:/\/?>/,contains:[{className:"name",begin:z,relevance:0,starts:K}]},{className:"tag",begin:Z.concat(/<\//,Z.lookahead(Z.concat(z,/>/))),contains:[{className:"name",begin:z,relevance:0},{begin:/>/,relevance:0,endsParent:!0}]}]}};var N0=function(q){const Z=q.regex,$={$pattern:"[a-zA-Z_][a-zA-Z0-9_.]*(!|\\?)?",keyword:["after","alias","and","case","catch","cond","defstruct","defguard","do","else","end","fn","for","if","import","in","not","or","quote","raise","receive","require","reraise","rescue","try","unless","unquote","unquote_splicing","use","when","with|0"],literal:["false","nil","true"]},X={className:"subst",begin:/#\{/,end:/\}/,keywords:$},G={className:"number",begin:"(\\b0o[0-7_]+)|(\\b0b[01_]+)|(\\b0x[0-9a-fA-F_]+)|(-?\\b[0-9][0-9_]*(\\.[0-9_]+([eE][-+]?[0-9]+)?)?)",relevance:0},v={match:/\\[\s\S]/,scope:"char.escape",relevance:0},D=[{begin:/"/,end:/"/},{begin:/'/,end:/'/},{begin:/\//,end:/\//},{begin:/\|/,end:/\|/},{begin:/\(/,end:/\)/},{begin:/\[/,end:/\]/},{begin:/\{/,end:/\}/},{begin:/</,end:/>/}],O=(b)=>{return{scope:"char.escape",begin:Z.concat(/\\/,b),relevance:0}},I={className:"string",begin:'~[a-z](?=[/|([{<"\'])',contains:D.map((b)=>q.inherit(b,{contains:[O(b.end),v,X]}))},y={className:"string",begin:'~[A-Z](?=[/|([{<"\'])',contains:D.map((b)=>q.inherit(b,{contains:[O(b.end)]}))},g={className:"regex",variants:[{begin:'~r(?=[/|([{<"\'])',contains:D.map((b)=>q.inherit(b,{end:Z.concat(b.end,/[uismxfU]{0,7}/),contains:[O(b.end),v,X]}))},{begin:'~R(?=[/|([{<"\'])',contains:D.map((b)=>q.inherit(b,{end:Z.concat(b.end,/[uismxfU]{0,7}/),contains:[O(b.end)]}))}]},u={className:"string",contains:[q.BACKSLASH_ESCAPE,X],variants:[{begin:/"""/,end:/"""/},{begin:/'''/,end:/'''/},{begin:/~S"""/,end:/"""/,contains:[]},{begin:/~S"/,end:/"/,contains:[]},{begin:/~S'''/,end:/'''/,contains:[]},{begin:/~S'/,end:/'/,contains:[]},{begin:/'/,end:/'/},{begin:/"/,end:/"/}]},N={className:"function",beginKeywords:"def defp defmacro defmacrop",end:/\B\b/,contains:[q.inherit(q.TITLE_MODE,{begin:"[a-zA-Z_][a-zA-Z0-9_.]*(!|\\?)?",endsParent:!0})]},h=q.inherit(N,{className:"class",beginKeywords:"defimpl defmodule defprotocol defrecord",end:/\bdo\b|$|;/}),p=[u,g,y,I,q.HASH_COMMENT_MODE,h,N,{begin:"::"},{className:"symbol",begin:":(?![\\s:])",contains:[u,{begin:"[a-zA-Z_]\\w*[!?=]?|[-+~]@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?"}],relevance:0},{className:"symbol",begin:"[a-zA-Z_][a-zA-Z0-9_.]*(!|\\?)?:(?!:)",relevance:0},{className:"title.class",begin:/(\b[A-Z][a-zA-Z0-9_]+)/,relevance:0},G,{className:"variable",begin:"(\\$\\W)|((\\$|@@?)(\\w+))"}];return X.contains=p,{name:"Elixir",aliases:["ex","exs"],keywords:$,contains:p}};var n8=()=>{let q='meta[name="csrf-token"]',Z="X-CSRF-Token",z=!0;window.otty=new U0(z,v0,q,Z),P0.registerLanguage("javascript",y1),P0.registerLanguage("html",A1),P0.registerLanguage("elixir",N0),P0.registerLanguage("json",N0),otty.highlighter=P0,otty.unitHandler=new K0(z0,[z0,_0,m0,d0,t0]),otty.handleNavigation({navigationReplaces:["#replace-area","body"]})},b1=1;if(window.otterlySite&&window.otterlySite.version!=b1)window.location.reload();else if(!window.otterlySite)window.otterlySite={version:b1},n8();
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getProtoOf = Object.getPrototypeOf;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __toESM = (mod, isNodeMode, target) => {
+  target = mod != null ? __create(__getProtoOf(mod)) : {};
+  const to = isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target;
+  for (let key of __getOwnPropNames(mod))
+    if (!__hasOwnProp.call(to, key))
+      __defProp(to, key, {
+        get: () => mod[key],
+        enumerable: true
+      });
+  return to;
+};
+var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
+
+// node_modules/highlight.js/lib/core.js
+var require_core = __commonJS((exports, module) => {
+  var deepFreeze = function(obj) {
+    if (obj instanceof Map) {
+      obj.clear = obj.delete = obj.set = function() {
+        throw new Error("map is read-only");
+      };
+    } else if (obj instanceof Set) {
+      obj.add = obj.clear = obj.delete = function() {
+        throw new Error("set is read-only");
+      };
+    }
+    Object.freeze(obj);
+    Object.getOwnPropertyNames(obj).forEach((name) => {
+      const prop = obj[name];
+      const type = typeof prop;
+      if ((type === "object" || type === "function") && !Object.isFrozen(prop)) {
+        deepFreeze(prop);
+      }
+    });
+    return obj;
+  };
+  var escapeHTML = function(value) {
+    return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
+  };
+  var inherit$1 = function(original, ...objects) {
+    const result = Object.create(null);
+    for (const key in original) {
+      result[key] = original[key];
+    }
+    objects.forEach(function(obj) {
+      for (const key in obj) {
+        result[key] = obj[key];
+      }
+    });
+    return result;
+  };
+  var source = function(re) {
+    if (!re)
+      return null;
+    if (typeof re === "string")
+      return re;
+    return re.source;
+  };
+  var lookahead = function(re) {
+    return concat("(?=", re, ")");
+  };
+  var anyNumberOfTimes = function(re) {
+    return concat("(?:", re, ")*");
+  };
+  var optional = function(re) {
+    return concat("(?:", re, ")?");
+  };
+  var concat = function(...args) {
+    const joined = args.map((x) => source(x)).join("");
+    return joined;
+  };
+  var stripOptionsFromArgs = function(args) {
+    const opts = args[args.length - 1];
+    if (typeof opts === "object" && opts.constructor === Object) {
+      args.splice(args.length - 1, 1);
+      return opts;
+    } else {
+      return {};
+    }
+  };
+  var either = function(...args) {
+    const opts = stripOptionsFromArgs(args);
+    const joined = "(" + (opts.capture ? "" : "?:") + args.map((x) => source(x)).join("|") + ")";
+    return joined;
+  };
+  var countMatchGroups = function(re) {
+    return new RegExp(re.toString() + "|").exec("").length - 1;
+  };
+  var startsWith = function(re, lexeme) {
+    const match = re && re.exec(lexeme);
+    return match && match.index === 0;
+  };
+  var _rewriteBackreferences = function(regexps, { joinWith }) {
+    let numCaptures = 0;
+    return regexps.map((regex) => {
+      numCaptures += 1;
+      const offset = numCaptures;
+      let re = source(regex);
+      let out = "";
+      while (re.length > 0) {
+        const match = BACKREF_RE.exec(re);
+        if (!match) {
+          out += re;
+          break;
+        }
+        out += re.substring(0, match.index);
+        re = re.substring(match.index + match[0].length);
+        if (match[0][0] === "\\" && match[1]) {
+          out += "\\" + String(Number(match[1]) + offset);
+        } else {
+          out += match[0];
+          if (match[0] === "(") {
+            numCaptures++;
+          }
+        }
+      }
+      return out;
+    }).map((re) => `(${re})`).join(joinWith);
+  };
+  var skipIfHasPrecedingDot = function(match, response) {
+    const before = match.input[match.index - 1];
+    if (before === ".") {
+      response.ignoreMatch();
+    }
+  };
+  var scopeClassName = function(mode, _parent) {
+    if (mode.className !== undefined) {
+      mode.scope = mode.className;
+      delete mode.className;
+    }
+  };
+  var beginKeywords = function(mode, parent) {
+    if (!parent)
+      return;
+    if (!mode.beginKeywords)
+      return;
+    mode.begin = "\\b(" + mode.beginKeywords.split(" ").join("|") + ")(?!\\.)(?=\\b|\\s)";
+    mode.__beforeBegin = skipIfHasPrecedingDot;
+    mode.keywords = mode.keywords || mode.beginKeywords;
+    delete mode.beginKeywords;
+    if (mode.relevance === undefined)
+      mode.relevance = 0;
+  };
+  var compileIllegal = function(mode, _parent) {
+    if (!Array.isArray(mode.illegal))
+      return;
+    mode.illegal = either(...mode.illegal);
+  };
+  var compileMatch = function(mode, _parent) {
+    if (!mode.match)
+      return;
+    if (mode.begin || mode.end)
+      throw new Error("begin & end are not supported with match");
+    mode.begin = mode.match;
+    delete mode.match;
+  };
+  var compileRelevance = function(mode, _parent) {
+    if (mode.relevance === undefined)
+      mode.relevance = 1;
+  };
+  var compileKeywords = function(rawKeywords, caseInsensitive, scopeName = DEFAULT_KEYWORD_SCOPE) {
+    const compiledKeywords = Object.create(null);
+    if (typeof rawKeywords === "string") {
+      compileList(scopeName, rawKeywords.split(" "));
+    } else if (Array.isArray(rawKeywords)) {
+      compileList(scopeName, rawKeywords);
+    } else {
+      Object.keys(rawKeywords).forEach(function(scopeName2) {
+        Object.assign(compiledKeywords, compileKeywords(rawKeywords[scopeName2], caseInsensitive, scopeName2));
+      });
+    }
+    return compiledKeywords;
+    function compileList(scopeName2, keywordList) {
+      if (caseInsensitive) {
+        keywordList = keywordList.map((x) => x.toLowerCase());
+      }
+      keywordList.forEach(function(keyword) {
+        const pair = keyword.split("|");
+        compiledKeywords[pair[0]] = [scopeName2, scoreForKeyword(pair[0], pair[1])];
+      });
+    }
+  };
+  var scoreForKeyword = function(keyword, providedScore) {
+    if (providedScore) {
+      return Number(providedScore);
+    }
+    return commonKeyword(keyword) ? 0 : 1;
+  };
+  var commonKeyword = function(keyword) {
+    return COMMON_KEYWORDS.includes(keyword.toLowerCase());
+  };
+  var remapScopeNames = function(mode, regexes, { key }) {
+    let offset = 0;
+    const scopeNames = mode[key];
+    const emit = {};
+    const positions = {};
+    for (let i = 1;i <= regexes.length; i++) {
+      positions[i + offset] = scopeNames[i];
+      emit[i + offset] = true;
+      offset += countMatchGroups(regexes[i - 1]);
+    }
+    mode[key] = positions;
+    mode[key]._emit = emit;
+    mode[key]._multi = true;
+  };
+  var beginMultiClass = function(mode) {
+    if (!Array.isArray(mode.begin))
+      return;
+    if (mode.skip || mode.excludeBegin || mode.returnBegin) {
+      error("skip, excludeBegin, returnBegin not compatible with beginScope: {}");
+      throw MultiClassError;
+    }
+    if (typeof mode.beginScope !== "object" || mode.beginScope === null) {
+      error("beginScope must be object");
+      throw MultiClassError;
+    }
+    remapScopeNames(mode, mode.begin, { key: "beginScope" });
+    mode.begin = _rewriteBackreferences(mode.begin, { joinWith: "" });
+  };
+  var endMultiClass = function(mode) {
+    if (!Array.isArray(mode.end))
+      return;
+    if (mode.skip || mode.excludeEnd || mode.returnEnd) {
+      error("skip, excludeEnd, returnEnd not compatible with endScope: {}");
+      throw MultiClassError;
+    }
+    if (typeof mode.endScope !== "object" || mode.endScope === null) {
+      error("endScope must be object");
+      throw MultiClassError;
+    }
+    remapScopeNames(mode, mode.end, { key: "endScope" });
+    mode.end = _rewriteBackreferences(mode.end, { joinWith: "" });
+  };
+  var scopeSugar = function(mode) {
+    if (mode.scope && typeof mode.scope === "object" && mode.scope !== null) {
+      mode.beginScope = mode.scope;
+      delete mode.scope;
+    }
+  };
+  var MultiClass = function(mode) {
+    scopeSugar(mode);
+    if (typeof mode.beginScope === "string") {
+      mode.beginScope = { _wrap: mode.beginScope };
+    }
+    if (typeof mode.endScope === "string") {
+      mode.endScope = { _wrap: mode.endScope };
+    }
+    beginMultiClass(mode);
+    endMultiClass(mode);
+  };
+  var compileLanguage = function(language) {
+    function langRe(value, global) {
+      return new RegExp(source(value), "m" + (language.case_insensitive ? "i" : "") + (language.unicodeRegex ? "u" : "") + (global ? "g" : ""));
+    }
+
+    class MultiRegex {
+      constructor() {
+        this.matchIndexes = {};
+        this.regexes = [];
+        this.matchAt = 1;
+        this.position = 0;
+      }
+      addRule(re, opts) {
+        opts.position = this.position++;
+        this.matchIndexes[this.matchAt] = opts;
+        this.regexes.push([opts, re]);
+        this.matchAt += countMatchGroups(re) + 1;
+      }
+      compile() {
+        if (this.regexes.length === 0) {
+          this.exec = () => null;
+        }
+        const terminators = this.regexes.map((el) => el[1]);
+        this.matcherRe = langRe(_rewriteBackreferences(terminators, { joinWith: "|" }), true);
+        this.lastIndex = 0;
+      }
+      exec(s) {
+        this.matcherRe.lastIndex = this.lastIndex;
+        const match = this.matcherRe.exec(s);
+        if (!match) {
+          return null;
+        }
+        const i = match.findIndex((el, i2) => i2 > 0 && el !== undefined);
+        const matchData = this.matchIndexes[i];
+        match.splice(0, i);
+        return Object.assign(match, matchData);
+      }
+    }
+
+    class ResumableMultiRegex {
+      constructor() {
+        this.rules = [];
+        this.multiRegexes = [];
+        this.count = 0;
+        this.lastIndex = 0;
+        this.regexIndex = 0;
+      }
+      getMatcher(index) {
+        if (this.multiRegexes[index])
+          return this.multiRegexes[index];
+        const matcher = new MultiRegex;
+        this.rules.slice(index).forEach(([re, opts]) => matcher.addRule(re, opts));
+        matcher.compile();
+        this.multiRegexes[index] = matcher;
+        return matcher;
+      }
+      resumingScanAtSamePosition() {
+        return this.regexIndex !== 0;
+      }
+      considerAll() {
+        this.regexIndex = 0;
+      }
+      addRule(re, opts) {
+        this.rules.push([re, opts]);
+        if (opts.type === "begin")
+          this.count++;
+      }
+      exec(s) {
+        const m = this.getMatcher(this.regexIndex);
+        m.lastIndex = this.lastIndex;
+        let result = m.exec(s);
+        if (this.resumingScanAtSamePosition()) {
+          if (result && result.index === this.lastIndex)
+            ;
+          else {
+            const m2 = this.getMatcher(0);
+            m2.lastIndex = this.lastIndex + 1;
+            result = m2.exec(s);
+          }
+        }
+        if (result) {
+          this.regexIndex += result.position + 1;
+          if (this.regexIndex === this.count) {
+            this.considerAll();
+          }
+        }
+        return result;
+      }
+    }
+    function buildModeRegex(mode) {
+      const mm = new ResumableMultiRegex;
+      mode.contains.forEach((term) => mm.addRule(term.begin, { rule: term, type: "begin" }));
+      if (mode.terminatorEnd) {
+        mm.addRule(mode.terminatorEnd, { type: "end" });
+      }
+      if (mode.illegal) {
+        mm.addRule(mode.illegal, { type: "illegal" });
+      }
+      return mm;
+    }
+    function compileMode(mode, parent) {
+      const cmode = mode;
+      if (mode.isCompiled)
+        return cmode;
+      [
+        scopeClassName,
+        compileMatch,
+        MultiClass,
+        beforeMatchExt
+      ].forEach((ext) => ext(mode, parent));
+      language.compilerExtensions.forEach((ext) => ext(mode, parent));
+      mode.__beforeBegin = null;
+      [
+        beginKeywords,
+        compileIllegal,
+        compileRelevance
+      ].forEach((ext) => ext(mode, parent));
+      mode.isCompiled = true;
+      let keywordPattern = null;
+      if (typeof mode.keywords === "object" && mode.keywords.$pattern) {
+        mode.keywords = Object.assign({}, mode.keywords);
+        keywordPattern = mode.keywords.$pattern;
+        delete mode.keywords.$pattern;
+      }
+      keywordPattern = keywordPattern || /\w+/;
+      if (mode.keywords) {
+        mode.keywords = compileKeywords(mode.keywords, language.case_insensitive);
+      }
+      cmode.keywordPatternRe = langRe(keywordPattern, true);
+      if (parent) {
+        if (!mode.begin)
+          mode.begin = /\B|\b/;
+        cmode.beginRe = langRe(cmode.begin);
+        if (!mode.end && !mode.endsWithParent)
+          mode.end = /\B|\b/;
+        if (mode.end)
+          cmode.endRe = langRe(cmode.end);
+        cmode.terminatorEnd = source(cmode.end) || "";
+        if (mode.endsWithParent && parent.terminatorEnd) {
+          cmode.terminatorEnd += (mode.end ? "|" : "") + parent.terminatorEnd;
+        }
+      }
+      if (mode.illegal)
+        cmode.illegalRe = langRe(mode.illegal);
+      if (!mode.contains)
+        mode.contains = [];
+      mode.contains = [].concat(...mode.contains.map(function(c) {
+        return expandOrCloneMode(c === "self" ? mode : c);
+      }));
+      mode.contains.forEach(function(c) {
+        compileMode(c, cmode);
+      });
+      if (mode.starts) {
+        compileMode(mode.starts, parent);
+      }
+      cmode.matcher = buildModeRegex(cmode);
+      return cmode;
+    }
+    if (!language.compilerExtensions)
+      language.compilerExtensions = [];
+    if (language.contains && language.contains.includes("self")) {
+      throw new Error("ERR: contains `self` is not supported at the top-level of a language.  See documentation.");
+    }
+    language.classNameAliases = inherit$1(language.classNameAliases || {});
+    return compileMode(language);
+  };
+  var dependencyOnParent = function(mode) {
+    if (!mode)
+      return false;
+    return mode.endsWithParent || dependencyOnParent(mode.starts);
+  };
+  var expandOrCloneMode = function(mode) {
+    if (mode.variants && !mode.cachedVariants) {
+      mode.cachedVariants = mode.variants.map(function(variant) {
+        return inherit$1(mode, { variants: null }, variant);
+      });
+    }
+    if (mode.cachedVariants) {
+      return mode.cachedVariants;
+    }
+    if (dependencyOnParent(mode)) {
+      return inherit$1(mode, { starts: mode.starts ? inherit$1(mode.starts) : null });
+    }
+    if (Object.isFrozen(mode)) {
+      return inherit$1(mode);
+    }
+    return mode;
+  };
+
+  class Response {
+    constructor(mode) {
+      if (mode.data === undefined)
+        mode.data = {};
+      this.data = mode.data;
+      this.isMatchIgnored = false;
+    }
+    ignoreMatch() {
+      this.isMatchIgnored = true;
+    }
+  }
+  var SPAN_CLOSE = "</span>";
+  var emitsWrappingTags = (node) => {
+    return !!node.scope;
+  };
+  var scopeToCSSClass = (name, { prefix }) => {
+    if (name.startsWith("language:")) {
+      return name.replace("language:", "language-");
+    }
+    if (name.includes(".")) {
+      const pieces = name.split(".");
+      return [
+        `${prefix}${pieces.shift()}`,
+        ...pieces.map((x, i) => `${x}${"_".repeat(i + 1)}`)
+      ].join(" ");
+    }
+    return `${prefix}${name}`;
+  };
+
+  class HTMLRenderer {
+    constructor(parseTree, options) {
+      this.buffer = "";
+      this.classPrefix = options.classPrefix;
+      parseTree.walk(this);
+    }
+    addText(text) {
+      this.buffer += escapeHTML(text);
+    }
+    openNode(node) {
+      if (!emitsWrappingTags(node))
+        return;
+      const className = scopeToCSSClass(node.scope, { prefix: this.classPrefix });
+      this.span(className);
+    }
+    closeNode(node) {
+      if (!emitsWrappingTags(node))
+        return;
+      this.buffer += SPAN_CLOSE;
+    }
+    value() {
+      return this.buffer;
+    }
+    span(className) {
+      this.buffer += `<span class="${className}">`;
+    }
+  }
+  var newNode = (opts = {}) => {
+    const result = { children: [] };
+    Object.assign(result, opts);
+    return result;
+  };
+
+  class TokenTree {
+    constructor() {
+      this.rootNode = newNode();
+      this.stack = [this.rootNode];
+    }
+    get top() {
+      return this.stack[this.stack.length - 1];
+    }
+    get root() {
+      return this.rootNode;
+    }
+    add(node) {
+      this.top.children.push(node);
+    }
+    openNode(scope) {
+      const node = newNode({ scope });
+      this.add(node);
+      this.stack.push(node);
+    }
+    closeNode() {
+      if (this.stack.length > 1) {
+        return this.stack.pop();
+      }
+      return;
+    }
+    closeAllNodes() {
+      while (this.closeNode())
+        ;
+    }
+    toJSON() {
+      return JSON.stringify(this.rootNode, null, 4);
+    }
+    walk(builder) {
+      return this.constructor._walk(builder, this.rootNode);
+    }
+    static _walk(builder, node) {
+      if (typeof node === "string") {
+        builder.addText(node);
+      } else if (node.children) {
+        builder.openNode(node);
+        node.children.forEach((child) => this._walk(builder, child));
+        builder.closeNode(node);
+      }
+      return builder;
+    }
+    static _collapse(node) {
+      if (typeof node === "string")
+        return;
+      if (!node.children)
+        return;
+      if (node.children.every((el) => typeof el === "string")) {
+        node.children = [node.children.join("")];
+      } else {
+        node.children.forEach((child) => {
+          TokenTree._collapse(child);
+        });
+      }
+    }
+  }
+
+  class TokenTreeEmitter extends TokenTree {
+    constructor(options) {
+      super();
+      this.options = options;
+    }
+    addText(text) {
+      if (text === "") {
+        return;
+      }
+      this.add(text);
+    }
+    startScope(scope) {
+      this.openNode(scope);
+    }
+    endScope() {
+      this.closeNode();
+    }
+    __addSublanguage(emitter, name) {
+      const node = emitter.root;
+      if (name)
+        node.scope = `language:${name}`;
+      this.add(node);
+    }
+    toHTML() {
+      const renderer = new HTMLRenderer(this, this.options);
+      return renderer.value();
+    }
+    finalize() {
+      this.closeAllNodes();
+      return true;
+    }
+  }
+  var BACKREF_RE = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./;
+  var MATCH_NOTHING_RE = /\b\B/;
+  var IDENT_RE = "[a-zA-Z]\\w*";
+  var UNDERSCORE_IDENT_RE = "[a-zA-Z_]\\w*";
+  var NUMBER_RE = "\\b\\d+(\\.\\d+)?";
+  var C_NUMBER_RE = "(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";
+  var BINARY_NUMBER_RE = "\\b(0b[01]+)";
+  var RE_STARTERS_RE = "!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";
+  var SHEBANG = (opts = {}) => {
+    const beginShebang = /^#![ ]*\//;
+    if (opts.binary) {
+      opts.begin = concat(beginShebang, /.*\b/, opts.binary, /\b.*/);
+    }
+    return inherit$1({
+      scope: "meta",
+      begin: beginShebang,
+      end: /$/,
+      relevance: 0,
+      "on:begin": (m, resp) => {
+        if (m.index !== 0)
+          resp.ignoreMatch();
+      }
+    }, opts);
+  };
+  var BACKSLASH_ESCAPE = {
+    begin: "\\\\[\\s\\S]",
+    relevance: 0
+  };
+  var APOS_STRING_MODE = {
+    scope: "string",
+    begin: "\'",
+    end: "\'",
+    illegal: "\\n",
+    contains: [BACKSLASH_ESCAPE]
+  };
+  var QUOTE_STRING_MODE = {
+    scope: "string",
+    begin: '"',
+    end: '"',
+    illegal: "\\n",
+    contains: [BACKSLASH_ESCAPE]
+  };
+  var PHRASAL_WORDS_MODE = {
+    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
+  };
+  var COMMENT = function(begin, end, modeOptions = {}) {
+    const mode = inherit$1({
+      scope: "comment",
+      begin,
+      end,
+      contains: []
+    }, modeOptions);
+    mode.contains.push({
+      scope: "doctag",
+      begin: "[ ]*(?=(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):)",
+      end: /(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):/,
+      excludeBegin: true,
+      relevance: 0
+    });
+    const ENGLISH_WORD = either("I", "a", "is", "so", "us", "to", "at", "if", "in", "it", "on", /[A-Za-z]+['](d|ve|re|ll|t|s|n)/, /[A-Za-z]+[-][a-z]+/, /[A-Za-z][a-z]{2,}/);
+    mode.contains.push({
+      begin: concat(/[ ]+/, "(", ENGLISH_WORD, /[.]?[:]?([.][ ]|[ ])/, "){3}")
+    });
+    return mode;
+  };
+  var C_LINE_COMMENT_MODE = COMMENT("//", "$");
+  var C_BLOCK_COMMENT_MODE = COMMENT("/\\*", "\\*/");
+  var HASH_COMMENT_MODE = COMMENT("#", "$");
+  var NUMBER_MODE = {
+    scope: "number",
+    begin: NUMBER_RE,
+    relevance: 0
+  };
+  var C_NUMBER_MODE = {
+    scope: "number",
+    begin: C_NUMBER_RE,
+    relevance: 0
+  };
+  var BINARY_NUMBER_MODE = {
+    scope: "number",
+    begin: BINARY_NUMBER_RE,
+    relevance: 0
+  };
+  var REGEXP_MODE = {
+    scope: "regexp",
+    begin: /\/(?=[^/\n]*\/)/,
+    end: /\/[gimuy]*/,
+    contains: [
+      BACKSLASH_ESCAPE,
+      {
+        begin: /\[/,
+        end: /\]/,
+        relevance: 0,
+        contains: [BACKSLASH_ESCAPE]
+      }
+    ]
+  };
+  var TITLE_MODE = {
+    scope: "title",
+    begin: IDENT_RE,
+    relevance: 0
+  };
+  var UNDERSCORE_TITLE_MODE = {
+    scope: "title",
+    begin: UNDERSCORE_IDENT_RE,
+    relevance: 0
+  };
+  var METHOD_GUARD = {
+    begin: "\\.\\s*" + UNDERSCORE_IDENT_RE,
+    relevance: 0
+  };
+  var END_SAME_AS_BEGIN = function(mode) {
+    return Object.assign(mode, {
+      "on:begin": (m, resp) => {
+        resp.data._beginMatch = m[1];
+      },
+      "on:end": (m, resp) => {
+        if (resp.data._beginMatch !== m[1])
+          resp.ignoreMatch();
+      }
+    });
+  };
+  var MODES = Object.freeze({
+    __proto__: null,
+    APOS_STRING_MODE,
+    BACKSLASH_ESCAPE,
+    BINARY_NUMBER_MODE,
+    BINARY_NUMBER_RE,
+    COMMENT,
+    C_BLOCK_COMMENT_MODE,
+    C_LINE_COMMENT_MODE,
+    C_NUMBER_MODE,
+    C_NUMBER_RE,
+    END_SAME_AS_BEGIN,
+    HASH_COMMENT_MODE,
+    IDENT_RE,
+    MATCH_NOTHING_RE,
+    METHOD_GUARD,
+    NUMBER_MODE,
+    NUMBER_RE,
+    PHRASAL_WORDS_MODE,
+    QUOTE_STRING_MODE,
+    REGEXP_MODE,
+    RE_STARTERS_RE,
+    SHEBANG,
+    TITLE_MODE,
+    UNDERSCORE_IDENT_RE,
+    UNDERSCORE_TITLE_MODE
+  });
+  var beforeMatchExt = (mode, parent) => {
+    if (!mode.beforeMatch)
+      return;
+    if (mode.starts)
+      throw new Error("beforeMatch cannot be used with starts");
+    const originalMode = Object.assign({}, mode);
+    Object.keys(mode).forEach((key) => {
+      delete mode[key];
+    });
+    mode.keywords = originalMode.keywords;
+    mode.begin = concat(originalMode.beforeMatch, lookahead(originalMode.begin));
+    mode.starts = {
+      relevance: 0,
+      contains: [
+        Object.assign(originalMode, { endsParent: true })
+      ]
+    };
+    mode.relevance = 0;
+    delete originalMode.beforeMatch;
+  };
+  var COMMON_KEYWORDS = [
+    "of",
+    "and",
+    "for",
+    "in",
+    "not",
+    "or",
+    "if",
+    "then",
+    "parent",
+    "list",
+    "value"
+  ];
+  var DEFAULT_KEYWORD_SCOPE = "keyword";
+  var seenDeprecations = {};
+  var error = (message) => {
+    console.error(message);
+  };
+  var warn = (message, ...args) => {
+    console.log(`WARN: ${message}`, ...args);
+  };
+  var deprecated = (version2, message) => {
+    if (seenDeprecations[`${version2}/${message}`])
+      return;
+    console.log(`Deprecated as of ${version2}. ${message}`);
+    seenDeprecations[`${version2}/${message}`] = true;
+  };
+  var MultiClassError = new Error;
+  var version = "11.9.0";
+
+  class HTMLInjectionError extends Error {
+    constructor(reason, html) {
+      super(reason);
+      this.name = "HTMLInjectionError";
+      this.html = html;
+    }
+  }
+  var escape = escapeHTML;
+  var inherit = inherit$1;
+  var NO_MATCH = Symbol("nomatch");
+  var MAX_KEYWORD_HITS = 7;
+  var HLJS = function(hljs) {
+    const languages = Object.create(null);
+    const aliases = Object.create(null);
+    const plugins = [];
+    let SAFE_MODE = true;
+    const LANGUAGE_NOT_FOUND = "Could not find the language '{}', did you forget to load/include a language module?";
+    const PLAINTEXT_LANGUAGE = { disableAutodetect: true, name: "Plain text", contains: [] };
+    let options = {
+      ignoreUnescapedHTML: false,
+      throwUnescapedHTML: false,
+      noHighlightRe: /^(no-?highlight)$/i,
+      languageDetectRe: /\blang(?:uage)?-([\w-]+)\b/i,
+      classPrefix: "hljs-",
+      cssSelector: "pre code",
+      languages: null,
+      __emitter: TokenTreeEmitter
+    };
+    function shouldNotHighlight(languageName) {
+      return options.noHighlightRe.test(languageName);
+    }
+    function blockLanguage(block) {
+      let classes = block.className + " ";
+      classes += block.parentNode ? block.parentNode.className : "";
+      const match = options.languageDetectRe.exec(classes);
+      if (match) {
+        const language = getLanguage(match[1]);
+        if (!language) {
+          warn(LANGUAGE_NOT_FOUND.replace("{}", match[1]));
+          warn("Falling back to no-highlight mode for this block.", block);
+        }
+        return language ? match[1] : "no-highlight";
+      }
+      return classes.split(/\s+/).find((_class) => shouldNotHighlight(_class) || getLanguage(_class));
+    }
+    function highlight2(codeOrLanguageName, optionsOrCode, ignoreIllegals) {
+      let code = "";
+      let languageName = "";
+      if (typeof optionsOrCode === "object") {
+        code = codeOrLanguageName;
+        ignoreIllegals = optionsOrCode.ignoreIllegals;
+        languageName = optionsOrCode.language;
+      } else {
+        deprecated("10.7.0", "highlight(lang, code, ...args) has been deprecated.");
+        deprecated("10.7.0", "Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277");
+        languageName = codeOrLanguageName;
+        code = optionsOrCode;
+      }
+      if (ignoreIllegals === undefined) {
+        ignoreIllegals = true;
+      }
+      const context = {
+        code,
+        language: languageName
+      };
+      fire("before:highlight", context);
+      const result = context.result ? context.result : _highlight(context.language, context.code, ignoreIllegals);
+      result.code = context.code;
+      fire("after:highlight", result);
+      return result;
+    }
+    function _highlight(languageName, codeToHighlight, ignoreIllegals, continuation) {
+      const keywordHits = Object.create(null);
+      function keywordData(mode, matchText) {
+        return mode.keywords[matchText];
+      }
+      function processKeywords() {
+        if (!top.keywords) {
+          emitter.addText(modeBuffer);
+          return;
+        }
+        let lastIndex = 0;
+        top.keywordPatternRe.lastIndex = 0;
+        let match = top.keywordPatternRe.exec(modeBuffer);
+        let buf = "";
+        while (match) {
+          buf += modeBuffer.substring(lastIndex, match.index);
+          const word = language.case_insensitive ? match[0].toLowerCase() : match[0];
+          const data = keywordData(top, word);
+          if (data) {
+            const [kind, keywordRelevance] = data;
+            emitter.addText(buf);
+            buf = "";
+            keywordHits[word] = (keywordHits[word] || 0) + 1;
+            if (keywordHits[word] <= MAX_KEYWORD_HITS)
+              relevance += keywordRelevance;
+            if (kind.startsWith("_")) {
+              buf += match[0];
+            } else {
+              const cssClass = language.classNameAliases[kind] || kind;
+              emitKeyword(match[0], cssClass);
+            }
+          } else {
+            buf += match[0];
+          }
+          lastIndex = top.keywordPatternRe.lastIndex;
+          match = top.keywordPatternRe.exec(modeBuffer);
+        }
+        buf += modeBuffer.substring(lastIndex);
+        emitter.addText(buf);
+      }
+      function processSubLanguage() {
+        if (modeBuffer === "")
+          return;
+        let result2 = null;
+        if (typeof top.subLanguage === "string") {
+          if (!languages[top.subLanguage]) {
+            emitter.addText(modeBuffer);
+            return;
+          }
+          result2 = _highlight(top.subLanguage, modeBuffer, true, continuations[top.subLanguage]);
+          continuations[top.subLanguage] = result2._top;
+        } else {
+          result2 = highlightAuto(modeBuffer, top.subLanguage.length ? top.subLanguage : null);
+        }
+        if (top.relevance > 0) {
+          relevance += result2.relevance;
+        }
+        emitter.__addSublanguage(result2._emitter, result2.language);
+      }
+      function processBuffer() {
+        if (top.subLanguage != null) {
+          processSubLanguage();
+        } else {
+          processKeywords();
+        }
+        modeBuffer = "";
+      }
+      function emitKeyword(keyword, scope) {
+        if (keyword === "")
+          return;
+        emitter.startScope(scope);
+        emitter.addText(keyword);
+        emitter.endScope();
+      }
+      function emitMultiClass(scope, match) {
+        let i = 1;
+        const max = match.length - 1;
+        while (i <= max) {
+          if (!scope._emit[i]) {
+            i++;
+            continue;
+          }
+          const klass = language.classNameAliases[scope[i]] || scope[i];
+          const text = match[i];
+          if (klass) {
+            emitKeyword(text, klass);
+          } else {
+            modeBuffer = text;
+            processKeywords();
+            modeBuffer = "";
+          }
+          i++;
+        }
+      }
+      function startNewMode(mode, match) {
+        if (mode.scope && typeof mode.scope === "string") {
+          emitter.openNode(language.classNameAliases[mode.scope] || mode.scope);
+        }
+        if (mode.beginScope) {
+          if (mode.beginScope._wrap) {
+            emitKeyword(modeBuffer, language.classNameAliases[mode.beginScope._wrap] || mode.beginScope._wrap);
+            modeBuffer = "";
+          } else if (mode.beginScope._multi) {
+            emitMultiClass(mode.beginScope, match);
+            modeBuffer = "";
+          }
+        }
+        top = Object.create(mode, { parent: { value: top } });
+        return top;
+      }
+      function endOfMode(mode, match, matchPlusRemainder) {
+        let matched = startsWith(mode.endRe, matchPlusRemainder);
+        if (matched) {
+          if (mode["on:end"]) {
+            const resp = new Response(mode);
+            mode["on:end"](match, resp);
+            if (resp.isMatchIgnored)
+              matched = false;
+          }
+          if (matched) {
+            while (mode.endsParent && mode.parent) {
+              mode = mode.parent;
+            }
+            return mode;
+          }
+        }
+        if (mode.endsWithParent) {
+          return endOfMode(mode.parent, match, matchPlusRemainder);
+        }
+      }
+      function doIgnore(lexeme) {
+        if (top.matcher.regexIndex === 0) {
+          modeBuffer += lexeme[0];
+          return 1;
+        } else {
+          resumeScanAtSamePosition = true;
+          return 0;
+        }
+      }
+      function doBeginMatch(match) {
+        const lexeme = match[0];
+        const newMode = match.rule;
+        const resp = new Response(newMode);
+        const beforeCallbacks = [newMode.__beforeBegin, newMode["on:begin"]];
+        for (const cb of beforeCallbacks) {
+          if (!cb)
+            continue;
+          cb(match, resp);
+          if (resp.isMatchIgnored)
+            return doIgnore(lexeme);
+        }
+        if (newMode.skip) {
+          modeBuffer += lexeme;
+        } else {
+          if (newMode.excludeBegin) {
+            modeBuffer += lexeme;
+          }
+          processBuffer();
+          if (!newMode.returnBegin && !newMode.excludeBegin) {
+            modeBuffer = lexeme;
+          }
+        }
+        startNewMode(newMode, match);
+        return newMode.returnBegin ? 0 : lexeme.length;
+      }
+      function doEndMatch(match) {
+        const lexeme = match[0];
+        const matchPlusRemainder = codeToHighlight.substring(match.index);
+        const endMode = endOfMode(top, match, matchPlusRemainder);
+        if (!endMode) {
+          return NO_MATCH;
+        }
+        const origin = top;
+        if (top.endScope && top.endScope._wrap) {
+          processBuffer();
+          emitKeyword(lexeme, top.endScope._wrap);
+        } else if (top.endScope && top.endScope._multi) {
+          processBuffer();
+          emitMultiClass(top.endScope, match);
+        } else if (origin.skip) {
+          modeBuffer += lexeme;
+        } else {
+          if (!(origin.returnEnd || origin.excludeEnd)) {
+            modeBuffer += lexeme;
+          }
+          processBuffer();
+          if (origin.excludeEnd) {
+            modeBuffer = lexeme;
+          }
+        }
+        do {
+          if (top.scope) {
+            emitter.closeNode();
+          }
+          if (!top.skip && !top.subLanguage) {
+            relevance += top.relevance;
+          }
+          top = top.parent;
+        } while (top !== endMode.parent);
+        if (endMode.starts) {
+          startNewMode(endMode.starts, match);
+        }
+        return origin.returnEnd ? 0 : lexeme.length;
+      }
+      function processContinuations() {
+        const list = [];
+        for (let current = top;current !== language; current = current.parent) {
+          if (current.scope) {
+            list.unshift(current.scope);
+          }
+        }
+        list.forEach((item) => emitter.openNode(item));
+      }
+      let lastMatch = {};
+      function processLexeme(textBeforeMatch, match) {
+        const lexeme = match && match[0];
+        modeBuffer += textBeforeMatch;
+        if (lexeme == null) {
+          processBuffer();
+          return 0;
+        }
+        if (lastMatch.type === "begin" && match.type === "end" && lastMatch.index === match.index && lexeme === "") {
+          modeBuffer += codeToHighlight.slice(match.index, match.index + 1);
+          if (!SAFE_MODE) {
+            const err = new Error(`0 width match regex (${languageName})`);
+            err.languageName = languageName;
+            err.badRule = lastMatch.rule;
+            throw err;
+          }
+          return 1;
+        }
+        lastMatch = match;
+        if (match.type === "begin") {
+          return doBeginMatch(match);
+        } else if (match.type === "illegal" && !ignoreIllegals) {
+          const err = new Error('Illegal lexeme "' + lexeme + '" for mode "' + (top.scope || "<unnamed>") + '"');
+          err.mode = top;
+          throw err;
+        } else if (match.type === "end") {
+          const processed = doEndMatch(match);
+          if (processed !== NO_MATCH) {
+            return processed;
+          }
+        }
+        if (match.type === "illegal" && lexeme === "") {
+          return 1;
+        }
+        if (iterations > 1e5 && iterations > match.index * 3) {
+          const err = new Error("potential infinite loop, way more iterations than matches");
+          throw err;
+        }
+        modeBuffer += lexeme;
+        return lexeme.length;
+      }
+      const language = getLanguage(languageName);
+      if (!language) {
+        error(LANGUAGE_NOT_FOUND.replace("{}", languageName));
+        throw new Error('Unknown language: "' + languageName + '"');
+      }
+      const md = compileLanguage(language);
+      let result = "";
+      let top = continuation || md;
+      const continuations = {};
+      const emitter = new options.__emitter(options);
+      processContinuations();
+      let modeBuffer = "";
+      let relevance = 0;
+      let index = 0;
+      let iterations = 0;
+      let resumeScanAtSamePosition = false;
+      try {
+        if (!language.__emitTokens) {
+          top.matcher.considerAll();
+          for (;; ) {
+            iterations++;
+            if (resumeScanAtSamePosition) {
+              resumeScanAtSamePosition = false;
+            } else {
+              top.matcher.considerAll();
+            }
+            top.matcher.lastIndex = index;
+            const match = top.matcher.exec(codeToHighlight);
+            if (!match)
+              break;
+            const beforeMatch = codeToHighlight.substring(index, match.index);
+            const processedCount = processLexeme(beforeMatch, match);
+            index = match.index + processedCount;
+          }
+          processLexeme(codeToHighlight.substring(index));
+        } else {
+          language.__emitTokens(codeToHighlight, emitter);
+        }
+        emitter.finalize();
+        result = emitter.toHTML();
+        return {
+          language: languageName,
+          value: result,
+          relevance,
+          illegal: false,
+          _emitter: emitter,
+          _top: top
+        };
+      } catch (err) {
+        if (err.message && err.message.includes("Illegal")) {
+          return {
+            language: languageName,
+            value: escape(codeToHighlight),
+            illegal: true,
+            relevance: 0,
+            _illegalBy: {
+              message: err.message,
+              index,
+              context: codeToHighlight.slice(index - 100, index + 100),
+              mode: err.mode,
+              resultSoFar: result
+            },
+            _emitter: emitter
+          };
+        } else if (SAFE_MODE) {
+          return {
+            language: languageName,
+            value: escape(codeToHighlight),
+            illegal: false,
+            relevance: 0,
+            errorRaised: err,
+            _emitter: emitter,
+            _top: top
+          };
+        } else {
+          throw err;
+        }
+      }
+    }
+    function justTextHighlightResult(code) {
+      const result = {
+        value: escape(code),
+        illegal: false,
+        relevance: 0,
+        _top: PLAINTEXT_LANGUAGE,
+        _emitter: new options.__emitter(options)
+      };
+      result._emitter.addText(code);
+      return result;
+    }
+    function highlightAuto(code, languageSubset) {
+      languageSubset = languageSubset || options.languages || Object.keys(languages);
+      const plaintext = justTextHighlightResult(code);
+      const results = languageSubset.filter(getLanguage).filter(autoDetection).map((name) => _highlight(name, code, false));
+      results.unshift(plaintext);
+      const sorted = results.sort((a, b) => {
+        if (a.relevance !== b.relevance)
+          return b.relevance - a.relevance;
+        if (a.language && b.language) {
+          if (getLanguage(a.language).supersetOf === b.language) {
+            return 1;
+          } else if (getLanguage(b.language).supersetOf === a.language) {
+            return -1;
+          }
+        }
+        return 0;
+      });
+      const [best, secondBest] = sorted;
+      const result = best;
+      result.secondBest = secondBest;
+      return result;
+    }
+    function updateClassName(element, currentLang, resultLang) {
+      const language = currentLang && aliases[currentLang] || resultLang;
+      element.classList.add("hljs");
+      element.classList.add(`language-${language}`);
+    }
+    function highlightElement(element) {
+      let node = null;
+      const language = blockLanguage(element);
+      if (shouldNotHighlight(language))
+        return;
+      fire("before:highlightElement", { el: element, language });
+      if (element.dataset.highlighted) {
+        console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.", element);
+        return;
+      }
+      if (element.children.length > 0) {
+        if (!options.ignoreUnescapedHTML) {
+          console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk.");
+          console.warn("https://github.com/highlightjs/highlight.js/wiki/security");
+          console.warn("The element with unescaped HTML:");
+          console.warn(element);
+        }
+        if (options.throwUnescapedHTML) {
+          const err = new HTMLInjectionError("One of your code blocks includes unescaped HTML.", element.innerHTML);
+          throw err;
+        }
+      }
+      node = element;
+      const text = node.textContent;
+      const result = language ? highlight2(text, { language, ignoreIllegals: true }) : highlightAuto(text);
+      element.innerHTML = result.value;
+      element.dataset.highlighted = "yes";
+      updateClassName(element, language, result.language);
+      element.result = {
+        language: result.language,
+        re: result.relevance,
+        relevance: result.relevance
+      };
+      if (result.secondBest) {
+        element.secondBest = {
+          language: result.secondBest.language,
+          relevance: result.secondBest.relevance
+        };
+      }
+      fire("after:highlightElement", { el: element, result, text });
+    }
+    function configure(userOptions) {
+      options = inherit(options, userOptions);
+    }
+    const initHighlighting = () => {
+      highlightAll();
+      deprecated("10.6.0", "initHighlighting() deprecated.  Use highlightAll() now.");
+    };
+    function initHighlightingOnLoad() {
+      highlightAll();
+      deprecated("10.6.0", "initHighlightingOnLoad() deprecated.  Use highlightAll() now.");
+    }
+    let wantsHighlight = false;
+    function highlightAll() {
+      if (document.readyState === "loading") {
+        wantsHighlight = true;
+        return;
+      }
+      const blocks = document.querySelectorAll(options.cssSelector);
+      blocks.forEach(highlightElement);
+    }
+    function boot() {
+      if (wantsHighlight)
+        highlightAll();
+    }
+    if (typeof window !== "undefined" && window.addEventListener) {
+      window.addEventListener("DOMContentLoaded", boot, false);
+    }
+    function registerLanguage(languageName, languageDefinition) {
+      let lang = null;
+      try {
+        lang = languageDefinition(hljs);
+      } catch (error$1) {
+        error("Language definition for '{}' could not be registered.".replace("{}", languageName));
+        if (!SAFE_MODE) {
+          throw error$1;
+        } else {
+          error(error$1);
+        }
+        lang = PLAINTEXT_LANGUAGE;
+      }
+      if (!lang.name)
+        lang.name = languageName;
+      languages[languageName] = lang;
+      lang.rawDefinition = languageDefinition.bind(null, hljs);
+      if (lang.aliases) {
+        registerAliases(lang.aliases, { languageName });
+      }
+    }
+    function unregisterLanguage(languageName) {
+      delete languages[languageName];
+      for (const alias of Object.keys(aliases)) {
+        if (aliases[alias] === languageName) {
+          delete aliases[alias];
+        }
+      }
+    }
+    function listLanguages() {
+      return Object.keys(languages);
+    }
+    function getLanguage(name) {
+      name = (name || "").toLowerCase();
+      return languages[name] || languages[aliases[name]];
+    }
+    function registerAliases(aliasList, { languageName }) {
+      if (typeof aliasList === "string") {
+        aliasList = [aliasList];
+      }
+      aliasList.forEach((alias) => {
+        aliases[alias.toLowerCase()] = languageName;
+      });
+    }
+    function autoDetection(name) {
+      const lang = getLanguage(name);
+      return lang && !lang.disableAutodetect;
+    }
+    function upgradePluginAPI(plugin) {
+      if (plugin["before:highlightBlock"] && !plugin["before:highlightElement"]) {
+        plugin["before:highlightElement"] = (data) => {
+          plugin["before:highlightBlock"](Object.assign({ block: data.el }, data));
+        };
+      }
+      if (plugin["after:highlightBlock"] && !plugin["after:highlightElement"]) {
+        plugin["after:highlightElement"] = (data) => {
+          plugin["after:highlightBlock"](Object.assign({ block: data.el }, data));
+        };
+      }
+    }
+    function addPlugin(plugin) {
+      upgradePluginAPI(plugin);
+      plugins.push(plugin);
+    }
+    function removePlugin(plugin) {
+      const index = plugins.indexOf(plugin);
+      if (index !== -1) {
+        plugins.splice(index, 1);
+      }
+    }
+    function fire(event, args) {
+      const cb = event;
+      plugins.forEach(function(plugin) {
+        if (plugin[cb]) {
+          plugin[cb](args);
+        }
+      });
+    }
+    function deprecateHighlightBlock(el) {
+      deprecated("10.7.0", "highlightBlock will be removed entirely in v12.0");
+      deprecated("10.7.0", "Please use highlightElement now.");
+      return highlightElement(el);
+    }
+    Object.assign(hljs, {
+      highlight: highlight2,
+      highlightAuto,
+      highlightAll,
+      highlightElement,
+      highlightBlock: deprecateHighlightBlock,
+      configure,
+      initHighlighting,
+      initHighlightingOnLoad,
+      registerLanguage,
+      unregisterLanguage,
+      listLanguages,
+      getLanguage,
+      registerAliases,
+      autoDetection,
+      inherit,
+      addPlugin,
+      removePlugin
+    });
+    hljs.debugMode = function() {
+      SAFE_MODE = false;
+    };
+    hljs.safeMode = function() {
+      SAFE_MODE = true;
+    };
+    hljs.versionString = version;
+    hljs.regex = {
+      concat,
+      lookahead,
+      either,
+      optional,
+      anyNumberOfTimes
+    };
+    for (const key in MODES) {
+      if (typeof MODES[key] === "object") {
+        deepFreeze(MODES[key]);
+      }
+    }
+    Object.assign(hljs, MODES);
+    return hljs;
+  };
+  var highlight = HLJS({});
+  highlight.newInstance = () => HLJS({});
+  module.exports = highlight;
+  highlight.HighlightJS = highlight;
+  highlight.default = highlight;
+});
+
+// node_modules/morphdom/dist/morphdom-esm.js
+var morphAttrs = function(fromNode, toNode) {
+  var toNodeAttrs = toNode.attributes;
+  var attr;
+  var attrName;
+  var attrNamespaceURI;
+  var attrValue;
+  var fromValue;
+  if (toNode.nodeType === DOCUMENT_FRAGMENT_NODE || fromNode.nodeType === DOCUMENT_FRAGMENT_NODE) {
+    return;
+  }
+  for (var i = toNodeAttrs.length - 1;i >= 0; i--) {
+    attr = toNodeAttrs[i];
+    attrName = attr.name;
+    attrNamespaceURI = attr.namespaceURI;
+    attrValue = attr.value;
+    if (attrNamespaceURI) {
+      attrName = attr.localName || attrName;
+      fromValue = fromNode.getAttributeNS(attrNamespaceURI, attrName);
+      if (fromValue !== attrValue) {
+        if (attr.prefix === "xmlns") {
+          attrName = attr.name;
+        }
+        fromNode.setAttributeNS(attrNamespaceURI, attrName, attrValue);
+      }
+    } else {
+      fromValue = fromNode.getAttribute(attrName);
+      if (fromValue !== attrValue) {
+        fromNode.setAttribute(attrName, attrValue);
+      }
+    }
+  }
+  var fromNodeAttrs = fromNode.attributes;
+  for (var d = fromNodeAttrs.length - 1;d >= 0; d--) {
+    attr = fromNodeAttrs[d];
+    attrName = attr.name;
+    attrNamespaceURI = attr.namespaceURI;
+    if (attrNamespaceURI) {
+      attrName = attr.localName || attrName;
+      if (!toNode.hasAttributeNS(attrNamespaceURI, attrName)) {
+        fromNode.removeAttributeNS(attrNamespaceURI, attrName);
+      }
+    } else {
+      if (!toNode.hasAttribute(attrName)) {
+        fromNode.removeAttribute(attrName);
+      }
+    }
+  }
+};
+var createFragmentFromTemplate = function(str) {
+  var template = doc.createElement("template");
+  template.innerHTML = str;
+  return template.content.childNodes[0];
+};
+var createFragmentFromRange = function(str) {
+  if (!range) {
+    range = doc.createRange();
+    range.selectNode(doc.body);
+  }
+  var fragment = range.createContextualFragment(str);
+  return fragment.childNodes[0];
+};
+var createFragmentFromWrap = function(str) {
+  var fragment = doc.createElement("body");
+  fragment.innerHTML = str;
+  return fragment.childNodes[0];
+};
+var toElement = function(str) {
+  str = str.trim();
+  if (HAS_TEMPLATE_SUPPORT) {
+    return createFragmentFromTemplate(str);
+  } else if (HAS_RANGE_SUPPORT) {
+    return createFragmentFromRange(str);
+  }
+  return createFragmentFromWrap(str);
+};
+var compareNodeNames = function(fromEl, toEl) {
+  var fromNodeName = fromEl.nodeName;
+  var toNodeName = toEl.nodeName;
+  var fromCodeStart, toCodeStart;
+  if (fromNodeName === toNodeName) {
+    return true;
+  }
+  fromCodeStart = fromNodeName.charCodeAt(0);
+  toCodeStart = toNodeName.charCodeAt(0);
+  if (fromCodeStart <= 90 && toCodeStart >= 97) {
+    return fromNodeName === toNodeName.toUpperCase();
+  } else if (toCodeStart <= 90 && fromCodeStart >= 97) {
+    return toNodeName === fromNodeName.toUpperCase();
+  } else {
+    return false;
+  }
+};
+var createElementNS = function(name, namespaceURI) {
+  return !namespaceURI || namespaceURI === NS_XHTML ? doc.createElement(name) : doc.createElementNS(namespaceURI, name);
+};
+var moveChildren = function(fromEl, toEl) {
+  var curChild = fromEl.firstChild;
+  while (curChild) {
+    var nextChild = curChild.nextSibling;
+    toEl.appendChild(curChild);
+    curChild = nextChild;
+  }
+  return toEl;
+};
+var syncBooleanAttrProp = function(fromEl, toEl, name) {
+  if (fromEl[name] !== toEl[name]) {
+    fromEl[name] = toEl[name];
+    if (fromEl[name]) {
+      fromEl.setAttribute(name, "");
+    } else {
+      fromEl.removeAttribute(name);
+    }
+  }
+};
+var noop = function() {
+};
+var defaultGetNodeKey = function(node) {
+  if (node) {
+    return node.getAttribute && node.getAttribute("id") || node.id;
+  }
+};
+var morphdomFactory = function(morphAttrs2) {
+  return function morphdom(fromNode, toNode, options) {
+    if (!options) {
+      options = {};
+    }
+    if (typeof toNode === "string") {
+      if (fromNode.nodeName === "#document" || fromNode.nodeName === "HTML" || fromNode.nodeName === "BODY") {
+        var toNodeHtml = toNode;
+        toNode = doc.createElement("html");
+        toNode.innerHTML = toNodeHtml;
+      } else {
+        toNode = toElement(toNode);
+      }
+    } else if (toNode.nodeType === DOCUMENT_FRAGMENT_NODE$1) {
+      toNode = toNode.firstElementChild;
+    }
+    var getNodeKey = options.getNodeKey || defaultGetNodeKey;
+    var onBeforeNodeAdded = options.onBeforeNodeAdded || noop;
+    var onNodeAdded = options.onNodeAdded || noop;
+    var onBeforeElUpdated = options.onBeforeElUpdated || noop;
+    var onElUpdated = options.onElUpdated || noop;
+    var onBeforeNodeDiscarded = options.onBeforeNodeDiscarded || noop;
+    var onNodeDiscarded = options.onNodeDiscarded || noop;
+    var onBeforeElChildrenUpdated = options.onBeforeElChildrenUpdated || noop;
+    var skipFromChildren = options.skipFromChildren || noop;
+    var addChild = options.addChild || function(parent, child) {
+      return parent.appendChild(child);
+    };
+    var childrenOnly = options.childrenOnly === true;
+    var fromNodesLookup = Object.create(null);
+    var keyedRemovalList = [];
+    function addKeyedRemoval(key) {
+      keyedRemovalList.push(key);
+    }
+    function walkDiscardedChildNodes(node, skipKeyedNodes) {
+      if (node.nodeType === ELEMENT_NODE) {
+        var curChild = node.firstChild;
+        while (curChild) {
+          var key = undefined;
+          if (skipKeyedNodes && (key = getNodeKey(curChild))) {
+            addKeyedRemoval(key);
+          } else {
+            onNodeDiscarded(curChild);
+            if (curChild.firstChild) {
+              walkDiscardedChildNodes(curChild, skipKeyedNodes);
+            }
+          }
+          curChild = curChild.nextSibling;
+        }
+      }
+    }
+    function removeNode(node, parentNode, skipKeyedNodes) {
+      if (onBeforeNodeDiscarded(node) === false) {
+        return;
+      }
+      if (parentNode) {
+        parentNode.removeChild(node);
+      }
+      onNodeDiscarded(node);
+      walkDiscardedChildNodes(node, skipKeyedNodes);
+    }
+    function indexTree(node) {
+      if (node.nodeType === ELEMENT_NODE || node.nodeType === DOCUMENT_FRAGMENT_NODE$1) {
+        var curChild = node.firstChild;
+        while (curChild) {
+          var key = getNodeKey(curChild);
+          if (key) {
+            fromNodesLookup[key] = curChild;
+          }
+          indexTree(curChild);
+          curChild = curChild.nextSibling;
+        }
+      }
+    }
+    indexTree(fromNode);
+    function handleNodeAdded(el) {
+      onNodeAdded(el);
+      var curChild = el.firstChild;
+      while (curChild) {
+        var nextSibling = curChild.nextSibling;
+        var key = getNodeKey(curChild);
+        if (key) {
+          var unmatchedFromEl = fromNodesLookup[key];
+          if (unmatchedFromEl && compareNodeNames(curChild, unmatchedFromEl)) {
+            curChild.parentNode.replaceChild(unmatchedFromEl, curChild);
+            morphEl(unmatchedFromEl, curChild);
+          } else {
+            handleNodeAdded(curChild);
+          }
+        } else {
+          handleNodeAdded(curChild);
+        }
+        curChild = nextSibling;
+      }
+    }
+    function cleanupFromEl(fromEl, curFromNodeChild, curFromNodeKey) {
+      while (curFromNodeChild) {
+        var fromNextSibling = curFromNodeChild.nextSibling;
+        if (curFromNodeKey = getNodeKey(curFromNodeChild)) {
+          addKeyedRemoval(curFromNodeKey);
+        } else {
+          removeNode(curFromNodeChild, fromEl, true);
+        }
+        curFromNodeChild = fromNextSibling;
+      }
+    }
+    function morphEl(fromEl, toEl, childrenOnly2) {
+      var toElKey = getNodeKey(toEl);
+      if (toElKey) {
+        delete fromNodesLookup[toElKey];
+      }
+      if (!childrenOnly2) {
+        if (onBeforeElUpdated(fromEl, toEl) === false) {
+          return;
+        }
+        morphAttrs2(fromEl, toEl);
+        onElUpdated(fromEl);
+        if (onBeforeElChildrenUpdated(fromEl, toEl) === false) {
+          return;
+        }
+      }
+      if (fromEl.nodeName !== "TEXTAREA") {
+        morphChildren(fromEl, toEl);
+      } else {
+        specialElHandlers.TEXTAREA(fromEl, toEl);
+      }
+    }
+    function morphChildren(fromEl, toEl) {
+      var skipFrom = skipFromChildren(fromEl, toEl);
+      var curToNodeChild = toEl.firstChild;
+      var curFromNodeChild = fromEl.firstChild;
+      var curToNodeKey;
+      var curFromNodeKey;
+      var fromNextSibling;
+      var toNextSibling;
+      var matchingFromEl;
+      outer:
+        while (curToNodeChild) {
+          toNextSibling = curToNodeChild.nextSibling;
+          curToNodeKey = getNodeKey(curToNodeChild);
+          while (!skipFrom && curFromNodeChild) {
+            fromNextSibling = curFromNodeChild.nextSibling;
+            if (curToNodeChild.isSameNode && curToNodeChild.isSameNode(curFromNodeChild)) {
+              curToNodeChild = toNextSibling;
+              curFromNodeChild = fromNextSibling;
+              continue outer;
+            }
+            curFromNodeKey = getNodeKey(curFromNodeChild);
+            var curFromNodeType = curFromNodeChild.nodeType;
+            var isCompatible = undefined;
+            if (curFromNodeType === curToNodeChild.nodeType) {
+              if (curFromNodeType === ELEMENT_NODE) {
+                if (curToNodeKey) {
+                  if (curToNodeKey !== curFromNodeKey) {
+                    if (matchingFromEl = fromNodesLookup[curToNodeKey]) {
+                      if (fromNextSibling === matchingFromEl) {
+                        isCompatible = false;
+                      } else {
+                        fromEl.insertBefore(matchingFromEl, curFromNodeChild);
+                        if (curFromNodeKey) {
+                          addKeyedRemoval(curFromNodeKey);
+                        } else {
+                          removeNode(curFromNodeChild, fromEl, true);
+                        }
+                        curFromNodeChild = matchingFromEl;
+                        curFromNodeKey = getNodeKey(curFromNodeChild);
+                      }
+                    } else {
+                      isCompatible = false;
+                    }
+                  }
+                } else if (curFromNodeKey) {
+                  isCompatible = false;
+                }
+                isCompatible = isCompatible !== false && compareNodeNames(curFromNodeChild, curToNodeChild);
+                if (isCompatible) {
+                  morphEl(curFromNodeChild, curToNodeChild);
+                }
+              } else if (curFromNodeType === TEXT_NODE || curFromNodeType == COMMENT_NODE) {
+                isCompatible = true;
+                if (curFromNodeChild.nodeValue !== curToNodeChild.nodeValue) {
+                  curFromNodeChild.nodeValue = curToNodeChild.nodeValue;
+                }
+              }
+            }
+            if (isCompatible) {
+              curToNodeChild = toNextSibling;
+              curFromNodeChild = fromNextSibling;
+              continue outer;
+            }
+            if (curFromNodeKey) {
+              addKeyedRemoval(curFromNodeKey);
+            } else {
+              removeNode(curFromNodeChild, fromEl, true);
+            }
+            curFromNodeChild = fromNextSibling;
+          }
+          if (curToNodeKey && (matchingFromEl = fromNodesLookup[curToNodeKey]) && compareNodeNames(matchingFromEl, curToNodeChild)) {
+            if (!skipFrom) {
+              addChild(fromEl, matchingFromEl);
+            }
+            morphEl(matchingFromEl, curToNodeChild);
+          } else {
+            var onBeforeNodeAddedResult = onBeforeNodeAdded(curToNodeChild);
+            if (onBeforeNodeAddedResult !== false) {
+              if (onBeforeNodeAddedResult) {
+                curToNodeChild = onBeforeNodeAddedResult;
+              }
+              if (curToNodeChild.actualize) {
+                curToNodeChild = curToNodeChild.actualize(fromEl.ownerDocument || doc);
+              }
+              addChild(fromEl, curToNodeChild);
+              handleNodeAdded(curToNodeChild);
+            }
+          }
+          curToNodeChild = toNextSibling;
+          curFromNodeChild = fromNextSibling;
+        }
+      cleanupFromEl(fromEl, curFromNodeChild, curFromNodeKey);
+      var specialElHandler = specialElHandlers[fromEl.nodeName];
+      if (specialElHandler) {
+        specialElHandler(fromEl, toEl);
+      }
+    }
+    var morphedNode = fromNode;
+    var morphedNodeType = morphedNode.nodeType;
+    var toNodeType = toNode.nodeType;
+    if (!childrenOnly) {
+      if (morphedNodeType === ELEMENT_NODE) {
+        if (toNodeType === ELEMENT_NODE) {
+          if (!compareNodeNames(fromNode, toNode)) {
+            onNodeDiscarded(fromNode);
+            morphedNode = moveChildren(fromNode, createElementNS(toNode.nodeName, toNode.namespaceURI));
+          }
+        } else {
+          morphedNode = toNode;
+        }
+      } else if (morphedNodeType === TEXT_NODE || morphedNodeType === COMMENT_NODE) {
+        if (toNodeType === morphedNodeType) {
+          if (morphedNode.nodeValue !== toNode.nodeValue) {
+            morphedNode.nodeValue = toNode.nodeValue;
+          }
+          return morphedNode;
+        } else {
+          morphedNode = toNode;
+        }
+      }
+    }
+    if (morphedNode === toNode) {
+      onNodeDiscarded(fromNode);
+    } else {
+      if (toNode.isSameNode && toNode.isSameNode(morphedNode)) {
+        return;
+      }
+      morphEl(morphedNode, toNode, childrenOnly);
+      if (keyedRemovalList) {
+        for (var i = 0, len = keyedRemovalList.length;i < len; i++) {
+          var elToRemove = fromNodesLookup[keyedRemovalList[i]];
+          if (elToRemove) {
+            removeNode(elToRemove, elToRemove.parentNode, false);
+          }
+        }
+      }
+    }
+    if (!childrenOnly && morphedNode !== fromNode && fromNode.parentNode) {
+      if (morphedNode.actualize) {
+        morphedNode = morphedNode.actualize(fromNode.ownerDocument || doc);
+      }
+      fromNode.parentNode.replaceChild(morphedNode, fromNode);
+    }
+    return morphedNode;
+  };
+};
+var DOCUMENT_FRAGMENT_NODE = 11;
+var range;
+var NS_XHTML = "http://www.w3.org/1999/xhtml";
+var doc = typeof document === "undefined" ? undefined : document;
+var HAS_TEMPLATE_SUPPORT = !!doc && "content" in doc.createElement("template");
+var HAS_RANGE_SUPPORT = !!doc && doc.createRange && "createContextualFragment" in doc.createRange();
+var specialElHandlers = {
+  OPTION: function(fromEl, toEl) {
+    var parentNode = fromEl.parentNode;
+    if (parentNode) {
+      var parentName = parentNode.nodeName.toUpperCase();
+      if (parentName === "OPTGROUP") {
+        parentNode = parentNode.parentNode;
+        parentName = parentNode && parentNode.nodeName.toUpperCase();
+      }
+      if (parentName === "SELECT" && !parentNode.hasAttribute("multiple")) {
+        if (fromEl.hasAttribute("selected") && !toEl.selected) {
+          fromEl.setAttribute("selected", "selected");
+          fromEl.removeAttribute("selected");
+        }
+        parentNode.selectedIndex = -1;
+      }
+    }
+    syncBooleanAttrProp(fromEl, toEl, "selected");
+  },
+  INPUT: function(fromEl, toEl) {
+    syncBooleanAttrProp(fromEl, toEl, "checked");
+    syncBooleanAttrProp(fromEl, toEl, "disabled");
+    if (fromEl.value !== toEl.value) {
+      fromEl.value = toEl.value;
+    }
+    if (!toEl.hasAttribute("value")) {
+      fromEl.removeAttribute("value");
+    }
+  },
+  TEXTAREA: function(fromEl, toEl) {
+    var newValue = toEl.value;
+    if (fromEl.value !== newValue) {
+      fromEl.value = newValue;
+    }
+    var firstChild = fromEl.firstChild;
+    if (firstChild) {
+      var oldValue = firstChild.nodeValue;
+      if (oldValue == newValue || !newValue && oldValue == fromEl.placeholder) {
+        return;
+      }
+      firstChild.nodeValue = newValue;
+    }
+  },
+  SELECT: function(fromEl, toEl) {
+    if (!toEl.hasAttribute("multiple")) {
+      var selectedIndex = -1;
+      var i = 0;
+      var curChild = fromEl.firstChild;
+      var optgroup;
+      var nodeName;
+      while (curChild) {
+        nodeName = curChild.nodeName && curChild.nodeName.toUpperCase();
+        if (nodeName === "OPTGROUP") {
+          optgroup = curChild;
+          curChild = optgroup.firstChild;
+        } else {
+          if (nodeName === "OPTION") {
+            if (curChild.hasAttribute("selected")) {
+              selectedIndex = i;
+              break;
+            }
+            i++;
+          }
+          curChild = curChild.nextSibling;
+          if (!curChild && optgroup) {
+            curChild = optgroup.nextSibling;
+            optgroup = null;
+          }
+        }
+      }
+      fromEl.selectedIndex = selectedIndex;
+    }
+  }
+};
+var ELEMENT_NODE = 1;
+var DOCUMENT_FRAGMENT_NODE$1 = 11;
+var TEXT_NODE = 3;
+var COMMENT_NODE = 8;
+var morphdom = morphdomFactory(morphAttrs);
+var morphdom_esm_default = morphdom;
+
+// assets/otterly/otty.js
+class Otty {
+  constructor(isDev, afterDive, csrfSelector, csrfHeader) {
+    this.isDev = isDev;
+    this.previousDives = [];
+    this.ActivePollId = null;
+    this.afterDive = afterDive;
+    this.poll_path = "/api/poll";
+    this.csrfSelector = csrfSelector;
+    this.csrfHeader = csrfHeader;
+  }
+  obj_to_fd = function(formInfo, formData) {
+    if (formInfo instanceof FormData) {
+      return formInfo;
+    } else {
+      let recursed = (formData2, key2, item) => {
+        let key22, item2;
+        if (Array.isArray(item)) {
+          for (key22 in item) {
+            item2 = item[key22];
+            recursed(formData2, key2 + "[]", item2);
+          }
+        } else if (typeof item === "object") {
+          for (key22 in item) {
+            item2 = item[key22];
+            recursed(formData2, key2 + "[" + key22 + "]", item2);
+          }
+        } else {
+          formData2.append(key2, item);
+        }
+      };
+      if (!formData) {
+        formData = new FormData;
+      }
+      let key;
+      for (key in formInfo) {
+        let item = formInfo[key];
+        recursed(formData, key, item);
+      }
+      return formData;
+    }
+  };
+  _sendsXHROnLoad(resolve2, reject, xhr, responseType) {
+    if (xhr.status >= 200 && xhr.status <= 302 && xhr.status != 300) {
+      let rsp = xhr.response;
+      if (responseType == "json") {
+        try {
+          rsp = JSON.parse(rsp);
+        } catch {
+        }
+      }
+      resolve2({ response: rsp, xhr });
+    } else {
+      reject({ status: xhr.status, statusText: xhr.statusText });
+    }
+  }
+  _sendsXHROnError(resolve2, reject, xhr) {
+    reject({
+      status: xhr.status,
+      statusText: xhr.statusText
+    });
+  }
+  sendsXHR({
+    url,
+    formInfo,
+    method = "POST",
+    xhrChangeF,
+    csrfContent,
+    csrfHeader = this.csrfHeader,
+    csrfSelector = this.csrfSelector,
+    confirm,
+    withCredentials = true,
+    responseType = "json",
+    onload = this._sendsXHROnLoad,
+    onerror = this._sendsXHROnError
+  }) {
+    if (!csrfContent) {
+      csrfContent = document.querySelector(csrfSelector).content;
+    }
+    return new Promise(function(resolve2, reject) {
+      var xhr, form_data;
+      xhr = new XMLHttpRequest;
+      xhr.withCredentials = withCredentials;
+      xhr.open(method, url);
+      xhr.responseType = responseType;
+      xhr.onload = onload.bind(this, resolve2, reject, xhr, responseType);
+      xhr.onerror = onerror.bind(this, resolve2, reject, xhr);
+      form_data = this.obj_to_fd(formInfo);
+      xhr.setRequestHeader(csrfHeader, csrfContent);
+      xhr.setRequestHeader("Otty", "true");
+      if (xhrChangeF) {
+        xhr = xhrChangeF(xhr);
+      }
+      if (confirm) {
+        confirm = confirm(confirm);
+        if (confirm) {
+          xhr.send(form_data);
+        } else {
+          resolve2({ returning: "user rejected confirm prompt" });
+        }
+      } else {
+        xhr.send(form_data);
+      }
+    }.bind(this));
+  }
+  isLocalUrl(url, subdomainAccuracy = -2) {
+    let d = window.location.hostname;
+    let urld = new URL(url, window.location).hostname;
+    if (d.split(".").slice(subdomainAccuracy).join(".") == urld.split(".").slice(subdomainAccuracy).join(".")) {
+      return true;
+    }
+    return false;
+  }
+  xss_pass(url) {
+    return this.isLocalUrl(url, -2);
+  }
+  dive(opts = {}) {
+    let url = opts.url;
+    let baseElement = opts.baseElement;
+    let submitter = opts.submitter;
+    if (opts.e != null) {
+      if (baseElement == null) {
+        baseElement = opts.e.currentTarget;
+      }
+      if (submitter == null) {
+        submitter = opts.e.submitter;
+      }
+    }
+    if (!this.xss_pass(url)) {
+      throw url + " is not a local_url";
+    }
+    let handle_response = ((actions, resolve2, reject) => {
+      let y, ottys_capabilities, task, data, out, returning2, dive_id, action;
+      returning2 = actions;
+      if (!Array.isArray(actions)) {
+        actions = [actions];
+      }
+      y = 0;
+      ottys_capabilities = new this.afterDive(baseElement, submitter, resolve2, reject, this.isDev);
+      for (action of actions) {
+        if (!action) {
+          continue;
+        }
+        dive_id = action.dive_id;
+        if (dive_id) {
+          if (this.previousDives.includes(dive_id)) {
+            continue;
+          }
+          this.previousDives.push(dive_id);
+          delete action.dive_id;
+        }
+        task = Object.keys(action)[0];
+        data = action[task];
+        if (task == "eval") {
+          task = "eval2";
+        }
+        if (this.isDev) {
+          console.log(task, data);
+        }
+        if (task == "returning") {
+          returning2 = data;
+        } else {
+          try {
+            out = ottys_capabilities[task](data);
+          } catch (err) {
+            if (this.isDev) {
+              console.log(task, data, err, err.message);
+            }
+          }
+          if (out == "break") {
+            break;
+          }
+        }
+      }
+      resolve2(returning2);
+    }).bind(this);
+    return new Promise(function(resolve2, reject) {
+      this.sendsXHR(opts).then((obj) => {
+        handle_response(obj.response, resolve2, reject);
+      }).catch((e) => {
+        reject(e);
+      });
+    }.bind(this));
+  }
+  async stopGoto(href) {
+    let loc = window.location;
+    href = new URL(href, loc);
+    if (loc.origin == href.origin && href.pathname == loc.pathname) {
+      return await this.scrollToLocationHashElement(href);
+    }
+    if (loc.origin != href.origin) {
+      window.location.href = href.origin;
+      return true;
+    }
+    return false;
+  }
+  async linkClickedF(e) {
+    let href = e.target.closest("[href]");
+    if (!href) {
+      return;
+    }
+    href = href.getAttribute("href");
+    if (!this.isLocalUrl(href, -99)) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    await this.goto(href);
+    return;
+  }
+  async scrollToLocationHashElement(loc) {
+    if (loc.hash) {
+      let e = document.getElementById(decodeURIComponent(loc.hash.slice(1)));
+      if (e) {
+        await this.waitForImages();
+        e.scrollIntoView();
+        return true;
+      }
+    }
+    return false;
+  }
+  poll = (dat) => {
+    if (this.ActivePollId != dat.id) {
+      return;
+    }
+    let maybe_resub = ((x) => {
+      if (x == "should_resub") {
+        this.subscribeToPoll(dat.queues, dat.poll_info, dat.wait_time);
+      } else if (!(x == "no_updates")) {
+        dat.store = x;
+      }
+    }).bind(this);
+    let continue_polling = (() => {
+      let poll = (() => {
+        this.poll(dat);
+      }).bind(this);
+      setTimeout(poll, dat.wait_time);
+    }).bind(this);
+    this.dives(this.poll_path, {
+      formInfo: {
+        "otty-store": dat.store
+      }
+    }).then(maybe_resub).finally(continue_polling);
+  };
+  subscribeToPoll = (queues, poll_info, wait_time) => {
+    let id = Math.random();
+    this.ActivePollId = id;
+    let dat = {
+      queues,
+      poll_info,
+      wait_time,
+      id
+    };
+    let poll = ((out) => {
+      if (out == "no_queues") {
+        if (this.isDev) {
+          console.log("no_queues", out);
+        }
+      } else {
+        dat.store = out;
+        this.poll(dat);
+      }
+    }).bind(this);
+    let err_log = ((x) => {
+      if (this.isDev) {
+        console.error("sub fail", x);
+      }
+    }).bind(this);
+    this.dives("/api/pollsub", {
+      formInfo: {
+        queues: dat.queues,
+        ...dat.poll_info
+      }
+    }).then(poll, err_log);
+  };
+  async goto(href, opts = {}) {
+    if (await this.stopGoto(href)) {
+      return -1;
+    }
+    opts = { reload: false, ...opts };
+    let loc = window.location;
+    href = new URL(href, loc);
+    let prom = this.sendsXHR({
+      url: href,
+      method: "GET",
+      responseType: "text",
+      xhrChangeF: (xhr2) => {
+        xhr2.setRequestHeader("Otty-Nav", "true");
+        return xhr2;
+      }
+    });
+    prom = await prom;
+    let { response: page, xhr } = prom;
+    if (xhr.responseURL) {
+      let nhref = new URL(xhr.responseURL);
+      nhref.hash = href.hash;
+      href = nhref;
+    }
+    await this.pageReplace(page, 0, href, (BefBodyClone, befY, replaceSelector) => {
+      this.replacePageState(loc, BefBodyClone, replaceSelector, befY);
+      if (!opts.reload) {
+        this.pushPageState(href, undefined, replaceSelector);
+      }
+    });
+    return href;
+  }
+  createStorageDoc(orienter, head) {
+    orienter = orienter.cloneNode(true);
+    let storeDoc = new DOMParser().parseFromString("<!DOCTYPE HTML> <html></html>", "text/html");
+    if (orienter.nodeName == "BODY") {
+      storeDoc.body = orienter;
+    } else {
+      storeDoc.body.appendChild(orienter);
+    }
+    morphdom_esm_default(storeDoc.head, head);
+    return storeDoc;
+  }
+  navigationHeadMorph(tempdocHead) {
+    morphdom_esm_default(document.head, tempdocHead);
+  }
+  async pageReplace(tempdoc, scroll, url, beforeReplace) {
+    let befY = window.scrollY;
+    if (typeof tempdoc == "string") {
+      tempdoc = new DOMParser().parseFromString(tempdoc, "text/html");
+    }
+    let tmpOrienter, orienter, replaceSelector;
+    for (replaceSelector of this.navigationReplaces) {
+      tmpOrienter = tempdoc.querySelector(replaceSelector);
+      orienter = document.querySelector(replaceSelector);
+      if (tmpOrienter && orienter) {
+        break;
+      }
+    }
+    for (let unitEl of this.qsInclusive(orienter, "[data-unit]")) {
+      unitEl._unit?.unitRemoved();
+    }
+    let storeDoc = this.createStorageDoc(orienter, document.head);
+    if (beforeReplace) {
+      beforeReplace(storeDoc, befY, replaceSelector);
+    }
+    orienter.replaceWith(tmpOrienter);
+    this.navigationHeadMorph(tempdoc.querySelector("head"));
+    let shouldScrollToEl = url && !scroll;
+    let scrolled = false;
+    if (shouldScrollToEl) {
+      scrolled = await this.scrollToLocationHashElement(url);
+    }
+    if (!scrolled) {
+      if (scroll != 0) {
+        await this.waitForImages();
+      }
+      window.scroll(0, scroll);
+    }
+  }
+  async waitForImages() {
+    let arr = Array.from(document.body.querySelectorAll("img")).map((im) => {
+      new Promise((resolve2) => {
+        im.addEventListener("load", resolve2);
+        if (im.complete) {
+          resolve2();
+        }
+      });
+    });
+    for (let a of arr) {
+      await a;
+    }
+    return true;
+  }
+  _pageState(scroll, doc2, url, replaceSelector, match) {
+    this.historyReferences[this.historyReferenceLocation] = {
+      replaceSelector,
+      doc: doc2,
+      scroll,
+      url,
+      match
+    };
+  }
+  replacePageState(url, doc2, replaceSelector, scroll) {
+    let matcher = Math.random();
+    window.history.replaceState({
+      historyReferenceLocation: this.historyReferenceLocation,
+      match: matcher
+    }, "", url);
+    this._pageState(scroll, doc2, url, replaceSelector, matcher);
+  }
+  pushPageState(url, doc2, replaceSelector) {
+    let matcher = Math.random();
+    this.historyReferenceLocation += 1;
+    this.historyReferences = this.historyReferences.slice(0, this.historyReferenceLocation + 1);
+    window.history.pushState({
+      historyReferenceLocation: this.historyReferenceLocation,
+      match: matcher
+    }, "", url);
+    this._pageState(0, doc2, url, replaceSelector, matcher);
+  }
+  qsInclusive(n, pat) {
+    let units = Array.from(n.querySelectorAll(pat));
+    if (n.matches(pat)) {
+      units.push(n);
+    }
+    return units;
+  }
+  handleNavigation(opts = {}) {
+    opts = { navigationReplaces: ["body"], ...opts };
+    this.navigationReplaces = opts.navigationReplaces;
+    this.historyReferenceLocation = 0;
+    this.historyReferences = [];
+    history.scrollRestoration = "manual";
+    document.addEventListener("click", this.linkClickedF.bind(this));
+    window.addEventListener("popstate", async function(e) {
+      if (e.state && e.state.historyReferenceLocation != null) {
+        let lastInf = this.historyReferences[this.historyReferenceLocation];
+        let lastScroll = window.scrollY;
+        this.historyReferenceLocation = e.state.historyReferenceLocation;
+        let hr = this.historyReferences[this.historyReferenceLocation];
+        if (hr && hr.match == e.state.match) {
+          await this.pageReplace(hr.doc, hr.scroll, hr.url, (befBodyClone, befY, replaceSelector) => {
+            lastInf.scroll = befY;
+            lastInf.doc = befBodyClone;
+            lastInf.replaceSelector = replaceSelector;
+          });
+        } else {
+          this.historyReferenceLocation = 0;
+          this.historyReferences = [];
+          this.goto(window.location, { reload: true });
+        }
+      }
+    }.bind(this));
+    this.scrollToLocationHashElement(window.location);
+  }
+}
+
+// assets/otterly/after_dive.js
+class AfterDive {
+  constructor(baseElement, submitter, resolve2, reject, isDev) {
+    this.baseElement = baseElement;
+    this.submitter = submitter;
+    this.resolve = resolve2;
+    this.reject = reject;
+    this.isDev = isDev;
+  }
+  getThing(obj, optional = false, doc2 = document) {
+    let el;
+    if (obj.id) {
+      el = doc2.getElementById(obj.id);
+      if (!el && !optional && this.isDev) {
+        console.log("could not find object with id: ", obj.id);
+      }
+    } else if (obj.selector) {
+      el = this.getSelector(obj.selector, doc2);
+      if (!el && !optional && this.isDev) {
+        console.log("could not find object with selector: ", obj.selector);
+      }
+    } else if (!optional && this.isDev) {
+      console.log('expected a node identifier (either a "selector" field or an "id" field)');
+    }
+    return el;
+  }
+  getSelector(str, doc2 = document) {
+    if (str == "submitter") {
+      return this.submitter;
+    } else if (str == "baseElement") {
+      return this.baseElement;
+    } else {
+      return doc2.querySelector(str);
+    }
+  }
+  log(obj) {
+    console.log(obj);
+  }
+  reload() {
+    Turbo.cache.clear();
+    otty.goto(window.location.href, { reload: true });
+  }
+  redirect(obj) {
+    otty.goto(obj);
+  }
+  insert(obj) {
+    let sel = this.getThing(obj);
+    if (!sel) {
+      return;
+    }
+    let pos = obj["position"];
+    let html = obj["html"];
+    sel.insertAdjacentHTML(pos, html);
+  }
+  morph(x) {
+    let opts = x;
+    let perm = x["permanent"];
+    let ign = x["ignore"];
+    if (opts == null) {
+      opts = {};
+    }
+    if (ign != null || perm != null) {
+      let m_parse_p = (selector, from, to) => {
+        if (from.matches(selector) && to.matches(selector)) {
+          return false;
+        } else {
+          return true;
+        }
+      };
+      let m_parse_i = (selector, from, to) => {
+        if (from.matches(selector) || to.matches(selector)) {
+          return false;
+        } else {
+          return true;
+        }
+      };
+      let m_parse = (selectors, inner_parse, from, to) => {
+        if (!Array.isArray(selectors)) {
+          selectors = [selectors];
+        }
+        for (let y = 0;y < selectors.length; y++) {
+          if (!inner_parse(selectors[y], from, to)) {
+            return false;
+          }
+        }
+        return true;
+      };
+      opts["onBeforeElChildrenUpdated"] = (from, to) => {
+        if (!m_parse(ign, m_parse_i, from, to)) {
+          return false;
+        }
+        if (!m_parse(perm, m_parse_p, from, to)) {
+          return false;
+        }
+        return true;
+      };
+    }
+    let s = this.getThing(x);
+    if (!s) {
+      return;
+    }
+    morphdom_esm_default(s, x["html"], opts);
+  }
+  remove(obj) {
+    let s = this.getThing(obj);
+    if (!s) {
+      return;
+    }
+    s.parentNode.removeChild(s);
+  }
+  replace(obj) {
+    let sel, parser, tempdoc, orienter, childrenOnly;
+    parser = new DOMParser;
+    tempdoc = parser.parseFromString(obj["html"], "text/html");
+    orienter = this.getThing(obj, false, tempdoc);
+    if (!orienter) {
+      return;
+    }
+    childrenOnly = obj["childrenOnly"];
+    sel = this.getThing(obj);
+    if (!sel) {
+      return;
+    }
+    if (orienter == null) {
+      if (childrenOnly) {
+        sel.innerHTML = obj["html"];
+      } else {
+        orienter = tempdoc.querySelector("body").children[0];
+        sel.replaceWith(orienter);
+      }
+    } else {
+      if (childrenOnly) {
+        sel.innerHTML = orienter.innerHTML;
+      } else {
+        sel.replaceWith(orienter);
+      }
+    }
+  }
+  innerHtml(obj) {
+    let s = this.getThing(obj);
+    if (!s) {
+      return;
+    }
+    s.innerHTML = obj["html"];
+  }
+  eval2(data) {
+    let selector = getThing(data, true);
+    let x = Function("data", "selector", "baseElement", "submitter", `"use strict"; ${data["code"]};`)(data, selector, this.baseElement, this.submitter);
+    if (x == "break") {
+      resolve(returning);
+      return "break";
+    }
+  }
+  setData(data) {
+    let keys, x, key, obj, attrs, attr_keys, y, attr_key;
+    keys = Object.keys(data);
+    for (x = 0;x < keys.length; x++) {
+      key = keys[x];
+      obj = this.getSelector(key);
+      attrs = data[key];
+      attr_keys = Object.keys(attrs);
+      for (y = 0;y < attr_keys.length; y++) {
+        attr_key = attr_keys[y];
+        obj.dataset[attr_key] = attrs[attr_key];
+      }
+    }
+  }
+}
+
+// assets/otterly/units/generic.js
+var generic = {
+  unitName: "Generic",
+  unitRemoved() {
+    this.el._unit = undefined;
+  },
+  unitConnected() {
+  },
+  unitEvents: [],
+  addUnitEvent(evInfo, actionNode) {
+    let action = evInfo.action;
+    let f_name = evInfo.f_name;
+    let input = evInfo.input;
+    let f = this[f_name];
+    if (!f) {
+      console.error(`Could not find function ${f} on unit: `, this, "data-on defined on: ", actionNode);
+      return;
+    }
+    let f3;
+    if (input.length > 0) {
+      let f2 = (input2, event) => f.bind(this)(event, ...input2);
+      f3 = f2.bind(this, input);
+    } else {
+      f3 = f.bind(this);
+    }
+    let f_str = JSON.stringify(evInfo);
+    if (action == "_remove") {
+      this.unitEvents.push({ actionNode, action, f: f3, f_str, f_name });
+    } else if (action == "_parse") {
+      actionNode.addEventListener(action, f3);
+      actionNode.dispatchEvent(new Event(action));
+      actionNode.removeEventListener(action, f3);
+    } else {
+      actionNode.addEventListener(action, f3);
+      this.unitEvents.push({ actionNode, action, f: f3, f_str, f_name });
+    }
+  },
+  removeUnitEvent(evInfo, actionNode) {
+    let f_str = JSON.stringify(evInfo);
+    let comp = (ue) => actionNode == ue.actionNode && ue.f_str == f_str;
+    let e = this.unitEvents.find(comp);
+    if (e == undefined) {
+      return e;
+    }
+    e = this.unitEvents.splice(this.unitEvents.indexOf(e), 1)[0];
+    if (e.action == "_remove") {
+      e.actionNode.addEventListener(e.action, e.f);
+      e.actionNode.dispatchEvent(new Event(e.action));
+      e.actionNode.removeEventListener(e.action, e.f);
+    } else {
+      e.actionNode.removeEventListener(e.action, e.f);
+    }
+    return e;
+  },
+  parentUnit(unitc) {
+    let p = this.el.parentElement;
+    if (unitc == undefined) {
+      while (p != null && !(p.dataset.unit == undefined)) {
+        p = p.parentElement;
+      }
+    } else {
+      while (p != null && !p.dataset.unit.split(" ").includes(unitc)) {
+        p = p.parentElement;
+      }
+    }
+    if (p == undefined) {
+      return p;
+    }
+    return p._unit;
+  },
+  childUnitsFirstLayer(unitc) {
+    let arr;
+    if (unitc == undefined) {
+      arr = this.el.qa(":scope [data-unit]:not(:scope [data-unit] [data-unit])");
+    } else {
+      arr = this.el.qa(":scope [data-unit] [data-unit='" + unitc + "']:not(:scope [data-unit] [data-unit~='" + unitc + "'])");
+    }
+    return Array.from(arr).map((el) => el._unit);
+  },
+  childUnitsDirect(unitc) {
+    let arr;
+    if (unitc == undefined) {
+      arr = this.qa(":scope > [data-unit]");
+    } else {
+      arr = this.qa(":scope > [data-unit~='" + unitc + "']");
+    }
+    return Array.from(arr).map((el) => el._unit);
+  },
+  childUnits(unitc) {
+    let arr;
+    if (unitc == undefined) {
+      arr = this.qa(":scope [data-unit]");
+    } else {
+      arr = this.qa(":scope [data-unit~='" + unitc + "']");
+    }
+    return Array.from(arr).map((el) => el._unit);
+  },
+  diveOptParams: [
+    "url",
+    "method",
+    "csrfContent",
+    "csrfHeader",
+    "csrfSelector",
+    "confirm",
+    "withCredentials",
+    "e",
+    "submitter"
+  ],
+  diveErrParams: ["formInfo", "xhrChangeF", "baseElement"],
+  relevantData(e) {
+    if (e) {
+      let unitId = this.el.id;
+      let submitterId = e.ct.id;
+      let d1 = this.el.dataset;
+      let d2 = e.ct.dataset;
+      let out = { unitId, submitterId, ...d1, ...d2 };
+      return out;
+    } else {
+      return { unitId: this.el.id, ...this.el.dataset };
+    }
+  },
+  diveRepeatDefaultStopF(h) {
+    let pageChanged = window.location.href != h.originalPageLocation;
+    let askedToStop = h.lastResult == "STOP";
+    return pageChanged || askedToStop;
+  },
+  diveBehaviors: {
+    repeat: async function(e, h) {
+      h.originalPageLocation = window.location.href;
+      if (!h.stopF) {
+        h.stopF = this.diveRepeatDefaultStopF.bind(this);
+      } else {
+        h.stopF = this[h.stopF].bind(this);
+      }
+      if (h.processF) {
+        h.processF = this[h.processF].bind(this);
+      }
+      h.repeats = 0;
+      if (!h.waitTime) {
+        h.waitTime = 3000;
+      }
+      let inf = this.diveInfo(e, h);
+      while (!h.stopF(h)) {
+        h.lastResult = otty.dive(inf);
+        if (h.processF) {
+          h.processF(h);
+        }
+        h.repeats += 1;
+        let justWait = (resolver) => setTimeout(resolver, h.waitTime);
+        await new Promise(justWait, justWait);
+      }
+    },
+    default: function(e, h) {
+      return otty.dive(this.diveInfo(e, h));
+    }
+  },
+  diveInfo(e, h = {}) {
+    let defaults = {
+      opts: { e, formInfo: {} },
+      data: { ...this.relevantData(e) },
+      formData: new FormData,
+      withform: false
+    };
+    h = { ...defaults, ...h };
+    h.opts = { ...defaults.opts, ...h.opts };
+    let inp, els, k;
+    for (k of Object.keys(h.data)) {
+      if (this.diveOptParams.includes(k)) {
+        h.opts[k] = h.data[k];
+      } else if (this.diveErrParams.includes(k)) {
+        console.error("bad key for diveDataset: " + k);
+      } else {
+        h.opts.formInfo[k] = h.data[k];
+      }
+    }
+    if (h.withform) {
+      els = Array.from(this.el.qsa("input"));
+      if (this.el.nodeName == "INPUT") {
+        els.push(this.el);
+      }
+      for (inp of els) {
+        if (inp.name != null && inp.value != null) {
+          h.formData.append(inp.name, inp.value);
+        }
+      }
+    }
+    if (!h.opts.url) {
+      h.opts.url = h.opts.formInfo.path;
+    }
+    if (h.withform) {
+      if (!h.opts.url) {
+        h.opts.url = e.ct.getAttribute("formaction");
+      }
+      if (!h.opts.url) {
+        h.opts.url = e.ct.closest("form")?.getAttribute("action");
+      }
+    }
+    if (!h.opts.method) {
+      h.opts.method = h.opts.formInfo.method;
+    }
+    if (h.withform) {
+      if (!h.opts.method) {
+        h.opts.method = e.ct.getAttribute("formmethod");
+      }
+      if (!h.opts.method) {
+        h.opts.method = e.ct.closest("form")?.getAttribute("method");
+      }
+    }
+    if (!h.opts.method) {
+      h.opts.method = "POST";
+    }
+    h.opts.formInfo = otty.obj_to_fd(h.opts.formInfo, h.formData);
+    return h.opts;
+  },
+  dive(e, h) {
+    e.preventDefault();
+    let act;
+    if (h.behavior == undefined) {
+      h.behavior = "default";
+    }
+    if (act = this.diveBehaviors[h.behavior]) {
+      act.bind(this)(e, h);
+    } else {
+      console.error("bad behavior type for a dive");
+    }
+  }
+};
+Object.defineProperties(generic, {
+  el: {
+    get: function() {
+      return this.element;
+    },
+    set: function(v) {
+      return this.element = v;
+    }
+  }
+});
+var generic_default = generic;
+
+// assets/otterly/unit_handler.js
+class UnitHandler {
+  constructor(generic2, unit_list) {
+    this.generic = generic2;
+    this.units = unit_list;
+    this.shortcuts();
+    this.handleFirstUnits();
+    this.createObserver();
+    return this;
+  }
+  shortcuts() {
+    Object.defineProperties(Event.prototype, {
+      ct: {
+        get: function() {
+          return this.currentTarget;
+        }
+      }
+    });
+    Object.defineProperties(HTMLElement.prototype, {
+      ds: {
+        get: function() {
+          return this.dataset;
+        },
+        set: function(v) {
+          return this.dataset = v;
+        }
+      }
+    });
+    HTMLElement.prototype.qs = HTMLElement.prototype.querySelector;
+    HTMLElement.prototype.qsa = HTMLElement.prototype.querySelectorAll;
+    document.qs = document.querySelector;
+    document.qsa = document.querySelectorAll;
+  }
+  addUnit(ob, nms) {
+    if (nms == undefined) {
+      nms = ob.dataset.unit.split(" ");
+    }
+    let onConnected = [];
+    let onRemoved = [];
+    let u;
+    if (ob._unit == undefined) {
+      ob._unit = { ...this.generic };
+      u = ob._unit;
+      Object.defineProperties(u, {
+        el: {
+          get: function() {
+            return this.element;
+          },
+          set: function(v) {
+            return this.element = v;
+          }
+        }
+      });
+    } else {
+      u = ob._unit;
+    }
+    let cs = [u];
+    for (let nm of nms) {
+      let c = this.units[nm];
+      if (c == undefined) {
+        console.error("data-unit\'s \'" + nm + "\' is not matching any unit names.");
+      } else if (!(c == this.generic)) {
+        cs.push(c);
+      }
+    }
+    for (let u2 of cs) {
+      if (u2.onConnected) {
+        onConnected.push(u2.onConnected);
+      }
+      if (u2.onRemoved) {
+        onRemoved.push(u2.onRemoved);
+      }
+    }
+    Object.assign(...cs);
+    u.el = ob;
+    if (onConnected.length > 0) {
+      u.unitConnected = function(oc, uc) {
+        uc.bind(this)();
+        for (let f of oc) {
+          f.bind(this)();
+        }
+      }.bind(u, onConnected, u.unitConnected);
+    }
+    if (onRemoved.length > 0) {
+      u.unitRemoved = function(or, ur) {
+        for (let f of or) {
+          f.bind(this)();
+        }
+        ur.bind(this)();
+      }.bind(u, onRemoved, u.unitRemoved);
+    }
+    return ob;
+  }
+  parseEventString(x) {
+    if (!x || x.length == 0) {
+      return [];
+    }
+    if (x[x.length - 1] != ";") {
+      x += ";";
+    }
+    let all = [];
+    let current = {};
+    let i = 0;
+    while (i < x.length) {
+      if (x.substr(i, 2) == "->") {
+        current.action = x.substr(0, i);
+        x = x.substr(i + 2);
+        i = 0;
+      } else if (x[i] == "#") {
+        current.unit = x.substr(0, i);
+        x = x.substr(i + 1);
+        i = 0;
+      } else if (x[i] == "[") {
+        current.f_name = x.substr(0, i);
+        x = x.substr(i);
+        i = 0;
+        let json = undefined;
+        let end;
+        for (end = 0;end < x.length; end += 1) {
+          if (x.substr(end, 2) == "];") {
+            try {
+              json = JSON.parse(x.substr(i, end - i + 1));
+            } catch {
+              console.log("failed to parse json");
+              json = undefined;
+              continue;
+            }
+            break;
+          }
+        }
+        if (json == undefined) {
+          console.error("parse issue in data-on, json expected");
+        }
+        current.input = json;
+        x = x.substr(end + 1);
+        i = 0;
+      } else if (x[i] == ";") {
+        if (!current.f_name && i != 0) {
+          current.f_name = x.substr(0, i);
+        }
+        x = x.substr(i + 1);
+        i = 0;
+        if (current.f_name && current.action) {
+          all.push(current);
+        }
+        current = {};
+      } else {
+        i += 1;
+      }
+    }
+    all.map((current2) => {
+      if (current2.action == undefined) {
+        current2.action = "connect";
+      }
+      if (current2.input == undefined) {
+        current2.input = [];
+      }
+      if (current2.f_name == undefined || current2.f_name == "") {
+        throw new Error("parse issue in data-on, no function name found");
+      }
+      return JSON.stringify(current2);
+    });
+    return all;
+  }
+  handleFirstUnits() {
+    let node, x, unit;
+    x = {};
+    for (let u of this.units) {
+      x[u.unitName] = u;
+    }
+    this.units = x;
+    let load_units = Array.from(document.querySelectorAll("[data-unit]"));
+    for (node of load_units) {
+      this.addUnit(node);
+    }
+    let load_xs = Array.from(document.querySelectorAll("[data-on]"));
+    for (node of load_xs) {
+      let evs = this.parseEventString(node.dataset.on);
+      for (let ev of evs) {
+        unit = this.getEventUnit(ev, node);
+        if (!unit) {
+          continue;
+        }
+        unit.addUnitEvent(ev, node);
+      }
+    }
+    for (node of load_units) {
+      node._unit.unitConnected();
+    }
+  }
+  qsInclusive(n, pat) {
+    let units = Array.from(n.querySelectorAll(pat));
+    if (n.matches(pat)) {
+      units.push(n);
+    }
+    return units;
+  }
+  getEventUnit(x, xNode, brokenParent) {
+    let getUnit = (from, x2) => {
+      if (x2.unit) {
+        return from.closest(`[data-unit~=\'${x2.unit}\']`);
+      } else {
+        return from.closest("[data-unit]");
+      }
+    };
+    let unit = getUnit(xNode, x);
+    if (brokenParent && !unit) {
+      unit = getUnit(brokenParent, x);
+    }
+    if (!unit || !unit._unit) {
+      if (otty.isDev) {
+        console.log("unit not found for following node:", xNode, "event parse data: ", x);
+      }
+      return null;
+    }
+    return unit._unit;
+  }
+  changeEvents(node, new_x, old_x, brokenParent) {
+    let unit, x, nx, ox;
+    new_x = this.parseEventString(new_x);
+    old_x = this.parseEventString(old_x);
+    nx = new_x.filter((x2) => !old_x.includes(x2));
+    ox = old_x.filter((x2) => !new_x.includes(x2));
+    for (x of ox) {
+      unit = this.getEventUnit(x, node, brokenParent);
+      if (!unit) {
+        continue;
+      }
+      unit.removeUnitEvent(x, node);
+    }
+    for (x of nx) {
+      unit = this.getEventUnit(x, node, brokenParent);
+      if (!unit) {
+        continue;
+      }
+      unit.addUnitEvent(x, node);
+    }
+  }
+  createObserver() {
+    this.observer = new MutationObserver((ma) => {
+      let n, ns, chls, mut, attrs;
+      ns = [];
+      ma = Array.from(ma);
+      chls = ma.filter((m) => {
+        return m.type == "childList";
+      });
+      for (mut of chls) {
+        for (n of mut.removedNodes) {
+          let brokenParent = mut.target;
+          if (!n.querySelector) {
+            continue;
+          }
+          let evNodes = this.qsInclusive(n, "[data-on]");
+          for (let evNode of evNodes) {
+            this.changeEvents(evNode, "", evNode.dataset.on, brokenParent);
+          }
+          let units = this.qsInclusive(n, "[data-unit]");
+          for (let u of units) {
+            u._unit?.unitRemoved();
+          }
+        }
+        for (n of mut.addedNodes) {
+          if (!n.querySelector) {
+            continue;
+          }
+          let units = this.qsInclusive(n, "[data-unit]");
+          for (let u of units) {
+            ns.push(this.addUnit(u));
+          }
+          let evNodes = this.qsInclusive(n, "[data-on]");
+          for (let evNode of evNodes) {
+            this.changeEvents(evNode, evNode.dataset.on, "");
+          }
+        }
+      }
+      attrs = ma.filter((m) => {
+        return m.type == "attributes" && (m.attributeName == "data-unit" || m.attributeName == "data-on");
+      });
+      let dus, xs, target, oldValue, it;
+      let mattrs = new Map([
+        ["data-unit", dus = new Map],
+        ["data-on", xs = new Map]
+      ]);
+      for (mut of attrs) {
+        if (!mattrs.get(mut.attributeName).get(mut.target)) {
+          mattrs.get(mut.attributeName).set(mut.target, mut.oldValue);
+        }
+      }
+      it = dus.keys();
+      while (!(target = it.next()).done) {
+        target = target.value;
+        oldValue = dus.get(target);
+        if (!target.dataset.unit) {
+          target._unit?.unitRemoved();
+        } else {
+          if (!oldValue) {
+            oldValue = "";
+          }
+          let ol = oldValue.split(" ");
+          let added = target.dataset.unit.split(" ").filter((z) => {
+            return !ol.includes(z);
+          });
+          if (added.length > 0) {
+            this.addUnit(target, added);
+            if (!oldValue) {
+              ns.push(mut.target);
+            }
+          }
+        }
+      }
+      it = xs.keys();
+      while (!(target = it.next()).done) {
+        target = target.value;
+        oldValue = xs.get(target);
+        this.changeEvents(target, target.dataset.on, oldValue);
+      }
+      for (n of ns) {
+        n._unit.unitConnected();
+      }
+    });
+    this.observer.observe(document.documentElement, {
+      childList: true,
+      attributes: true,
+      subtree: true,
+      attributeFilter: ["data-on", "data-unit"],
+      attributeOldValue: true
+    });
+    return this.observer;
+  }
+}
+
+// assets/otterly/units/debug.js
+var debug_default = {
+  unitName: "Debug",
+  unitRemoved() {
+    console.log("unitRemoved");
+  },
+  unitConnected() {
+    console.log("unitConnected");
+  },
+  addUnitEvent(...args) {
+    generic_default.addUnitEvent(...args);
+    console.log("ran addUnitEvent. unitEvents:", this.unitEvents, "args:", ...args);
+  },
+  removeUnitEvent(...args) {
+    generic_default.removeUnitEvent(...args);
+    console.log("ran removeUnitEvent. unitEvents:", this.unitEvents, "args:", ...args);
+  },
+  log(...args) {
+    console.log(this, ...args);
+  }
+};
+
+// assets/js/units/syntax.js
+var syntax_default = {
+  unitName: "Syntax",
+  onConnected: function() {
+    let lang = this.el.ds.language;
+    let txt = this.el.innerText;
+    let out = otty.highlighter.highlight(txt, { language: lang });
+    this.el.innerHTML = out.value;
+  }
+};
+
+// assets/js/units/more_otters.js
+var more_otters_default = {
+  unitName: "MoreOtters",
+  otterCount: 0,
+  makeOtter: function() {
+    this.el.insertAdjacentText("afterbegin", "\uD83E\uDDA6");
+    this.otterCount += 1;
+  }
+};
+
+// assets/js/units/expand.js
+var expand_default = {
+  unitName: "Expand",
+  tailwindWidths: {
+    sm: "640px",
+    md: "768px",
+    lg: "1024px",
+    xl: "1280px",
+    "2xl": "1536px"
+  },
+  unitConnected(e) {
+    this.menu = this.el.qs("#menu_contents");
+    this.content = this.el.qs("#content_area");
+    this.button = this.el.qs("#expand_button");
+    this.default_self_c = this.button.getAttribute("class");
+    this.default_menu_c = this.menu.getAttribute("class");
+    this.default_content_c = this.content.getAttribute("class");
+    if (window.innerWidth > parseInt(this.tailwindWidths.sm)) {
+      this.x = 1;
+    } else {
+      this.x = 0;
+    }
+    this.toggle();
+  },
+  yeetNextTwoInside(e) {
+    console.log("valled", e.ct.nextElementSibling);
+    e.ct.insertAdjacentElement("beforeend", e.ct.nextElementSibling);
+    e.ct.insertAdjacentElement("beforeend", e.ct.nextElementSibling);
+  },
+  content_disp(show) {
+    tog = (o) => {
+      if (show) {
+        o.classList.remove("hidden");
+        o.classList.remove("sm:visible");
+        o.classList.remove("sm:block");
+      } else {
+        o.classList.add("hidden");
+        o.classList.add("sm:visible");
+        o.classList.add("sm:block");
+      }
+    };
+    for (let o of this.content.children) {
+      if (o.classList.contains("inline-flex")) {
+        tog(o.children[1]);
+      } else {
+        tog(o);
+      }
+    }
+  },
+  toggle(e) {
+    if (this.x % 2 == 0) {
+      this.button.setAttribute("class", `${this.default_self_c} rotate-0`);
+      this.menu.setAttribute("class", `${this.default_menu_c} hidden`);
+      this.content.setAttribute("class", `${this.default_content_c} col-span-4`);
+      this.content_disp(true);
+    } else {
+      this.button.setAttribute("class", `${this.default_self_c} rotate-180`);
+      this.menu.setAttribute("class", `${this.default_menu_c} col-span-3 sm:col-span-1`);
+      this.content.setAttribute("class", `${this.default_content_c} col-span-1 sm:col-span-3`);
+      this.content_disp(false);
+    }
+    this.x += 1;
+  }
+};
+
+// node_modules/highlight.js/es/core.js
+var core = __toESM(require_core(), 1);
+var core_default = core.default;
+
+// node_modules/highlight.js/es/languages/javascript.js
+var javascript = function(hljs) {
+  const regex = hljs.regex;
+  const hasClosingTag = (match, { after }) => {
+    const tag = "</" + match[0].slice(1);
+    const pos = match.input.indexOf(tag, after);
+    return pos !== -1;
+  };
+  const IDENT_RE$1 = IDENT_RE;
+  const FRAGMENT = {
+    begin: "<>",
+    end: "</>"
+  };
+  const XML_SELF_CLOSING = /<[A-Za-z0-9\\._:-]+\s*\/>/;
+  const XML_TAG = {
+    begin: /<[A-Za-z0-9\\._:-]+/,
+    end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
+    isTrulyOpeningTag: (match, response) => {
+      const afterMatchIndex = match[0].length + match.index;
+      const nextChar = match.input[afterMatchIndex];
+      if (nextChar === "<" || nextChar === ",") {
+        response.ignoreMatch();
+        return;
+      }
+      if (nextChar === ">") {
+        if (!hasClosingTag(match, { after: afterMatchIndex })) {
+          response.ignoreMatch();
+        }
+      }
+      let m;
+      const afterMatch = match.input.substring(afterMatchIndex);
+      if (m = afterMatch.match(/^\s*=/)) {
+        response.ignoreMatch();
+        return;
+      }
+      if (m = afterMatch.match(/^\s+extends\s+/)) {
+        if (m.index === 0) {
+          response.ignoreMatch();
+          return;
+        }
+      }
+    }
+  };
+  const KEYWORDS$1 = {
+    $pattern: IDENT_RE,
+    keyword: KEYWORDS,
+    literal: LITERALS,
+    built_in: BUILT_INS,
+    "variable.language": BUILT_IN_VARIABLES
+  };
+  const decimalDigits = "[0-9](_?[0-9])*";
+  const frac = `\\.(${decimalDigits})`;
+  const decimalInteger = `0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*`;
+  const NUMBER = {
+    className: "number",
+    variants: [
+      { begin: `(\\b(${decimalInteger})((${frac})|\\.)?|(${frac}))` + `[eE][+-]?(${decimalDigits})\\b` },
+      { begin: `\\b(${decimalInteger})\\b((${frac})\\b|\\.)?|(${frac})\\b` },
+      { begin: `\\b(0|[1-9](_?[0-9])*)n\\b` },
+      { begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b" },
+      { begin: "\\b0[bB][0-1](_?[0-1])*n?\\b" },
+      { begin: "\\b0[oO][0-7](_?[0-7])*n?\\b" },
+      { begin: "\\b0[0-7]+n?\\b" }
+    ],
+    relevance: 0
+  };
+  const SUBST = {
+    className: "subst",
+    begin: "\\$\\{",
+    end: "\\}",
+    keywords: KEYWORDS$1,
+    contains: []
+  };
+  const HTML_TEMPLATE = {
+    begin: "html`",
+    end: "",
+    starts: {
+      end: "`",
+      returnEnd: false,
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
+      ],
+      subLanguage: "xml"
+    }
+  };
+  const CSS_TEMPLATE = {
+    begin: "css`",
+    end: "",
+    starts: {
+      end: "`",
+      returnEnd: false,
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
+      ],
+      subLanguage: "css"
+    }
+  };
+  const GRAPHQL_TEMPLATE = {
+    begin: "gql`",
+    end: "",
+    starts: {
+      end: "`",
+      returnEnd: false,
+      contains: [
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
+      ],
+      subLanguage: "graphql"
+    }
+  };
+  const TEMPLATE_STRING = {
+    className: "string",
+    begin: "`",
+    end: "`",
+    contains: [
+      hljs.BACKSLASH_ESCAPE,
+      SUBST
+    ]
+  };
+  const JSDOC_COMMENT = hljs.COMMENT(/\/\*\*(?!\/)/, "\\*/", {
+    relevance: 0,
+    contains: [
+      {
+        begin: "(?=@[A-Za-z]+)",
+        relevance: 0,
+        contains: [
+          {
+            className: "doctag",
+            begin: "@[A-Za-z]+"
+          },
+          {
+            className: "type",
+            begin: "\\{",
+            end: "\\}",
+            excludeEnd: true,
+            excludeBegin: true,
+            relevance: 0
+          },
+          {
+            className: "variable",
+            begin: IDENT_RE$1 + "(?=\\s*(-)|$)",
+            endsParent: true,
+            relevance: 0
+          },
+          {
+            begin: /(?=[^\n])\s/,
+            relevance: 0
+          }
+        ]
+      }
+    ]
+  });
+  const COMMENT = {
+    className: "comment",
+    variants: [
+      JSDOC_COMMENT,
+      hljs.C_BLOCK_COMMENT_MODE,
+      hljs.C_LINE_COMMENT_MODE
+    ]
+  };
+  const SUBST_INTERNALS = [
+    hljs.APOS_STRING_MODE,
+    hljs.QUOTE_STRING_MODE,
+    HTML_TEMPLATE,
+    CSS_TEMPLATE,
+    GRAPHQL_TEMPLATE,
+    TEMPLATE_STRING,
+    { match: /\$\d+/ },
+    NUMBER
+  ];
+  SUBST.contains = SUBST_INTERNALS.concat({
+    begin: /\{/,
+    end: /\}/,
+    keywords: KEYWORDS$1,
+    contains: [
+      "self"
+    ].concat(SUBST_INTERNALS)
+  });
+  const SUBST_AND_COMMENTS = [].concat(COMMENT, SUBST.contains);
+  const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([
+    {
+      begin: /\(/,
+      end: /\)/,
+      keywords: KEYWORDS$1,
+      contains: ["self"].concat(SUBST_AND_COMMENTS)
+    }
+  ]);
+  const PARAMS = {
+    className: "params",
+    begin: /\(/,
+    end: /\)/,
+    excludeBegin: true,
+    excludeEnd: true,
+    keywords: KEYWORDS$1,
+    contains: PARAMS_CONTAINS
+  };
+  const CLASS_OR_EXTENDS = {
+    variants: [
+      {
+        match: [
+          /class/,
+          /\s+/,
+          IDENT_RE$1,
+          /\s+/,
+          /extends/,
+          /\s+/,
+          regex.concat(IDENT_RE$1, "(", regex.concat(/\./, IDENT_RE$1), ")*")
+        ],
+        scope: {
+          1: "keyword",
+          3: "title.class",
+          5: "keyword",
+          7: "title.class.inherited"
+        }
+      },
+      {
+        match: [
+          /class/,
+          /\s+/,
+          IDENT_RE$1
+        ],
+        scope: {
+          1: "keyword",
+          3: "title.class"
+        }
+      }
+    ]
+  };
+  const CLASS_REFERENCE = {
+    relevance: 0,
+    match: regex.either(/\bJSON/, /\b[A-Z][a-z]+([A-Z][a-z]*|\d)*/, /\b[A-Z]{2,}([A-Z][a-z]+|\d)+([A-Z][a-z]*)*/, /\b[A-Z]{2,}[a-z]+([A-Z][a-z]+|\d)*([A-Z][a-z]*)*/),
+    className: "title.class",
+    keywords: {
+      _: [
+        ...TYPES,
+        ...ERROR_TYPES
+      ]
+    }
+  };
+  const USE_STRICT = {
+    label: "use_strict",
+    className: "meta",
+    relevance: 10,
+    begin: /^\s*['"]use (strict|asm)['"]/
+  };
+  const FUNCTION_DEFINITION = {
+    variants: [
+      {
+        match: [
+          /function/,
+          /\s+/,
+          IDENT_RE$1,
+          /(?=\s*\()/
+        ]
+      },
+      {
+        match: [
+          /function/,
+          /\s*(?=\()/
+        ]
+      }
+    ],
+    className: {
+      1: "keyword",
+      3: "title.function"
+    },
+    label: "func.def",
+    contains: [PARAMS],
+    illegal: /%/
+  };
+  const UPPER_CASE_CONSTANT = {
+    relevance: 0,
+    match: /\b[A-Z][A-Z_0-9]+\b/,
+    className: "variable.constant"
+  };
+  function noneOf(list) {
+    return regex.concat("(?!", list.join("|"), ")");
+  }
+  const FUNCTION_CALL = {
+    match: regex.concat(/\b/, noneOf([
+      ...BUILT_IN_GLOBALS,
+      "super",
+      "import"
+    ]), IDENT_RE$1, regex.lookahead(/\(/)),
+    className: "title.function",
+    relevance: 0
+  };
+  const PROPERTY_ACCESS = {
+    begin: regex.concat(/\./, regex.lookahead(regex.concat(IDENT_RE$1, /(?![0-9A-Za-z$_(])/))),
+    end: IDENT_RE$1,
+    excludeBegin: true,
+    keywords: "prototype",
+    className: "property",
+    relevance: 0
+  };
+  const GETTER_OR_SETTER = {
+    match: [
+      /get|set/,
+      /\s+/,
+      IDENT_RE$1,
+      /(?=\()/
+    ],
+    className: {
+      1: "keyword",
+      3: "title.function"
+    },
+    contains: [
+      {
+        begin: /\(\)/
+      },
+      PARAMS
+    ]
+  };
+  const FUNC_LEAD_IN_RE = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + hljs.UNDERSCORE_IDENT_RE + ")\\s*=>";
+  const FUNCTION_VARIABLE = {
+    match: [
+      /const|var|let/,
+      /\s+/,
+      IDENT_RE$1,
+      /\s*/,
+      /=\s*/,
+      /(async\s*)?/,
+      regex.lookahead(FUNC_LEAD_IN_RE)
+    ],
+    keywords: "async",
+    className: {
+      1: "keyword",
+      3: "title.function"
+    },
+    contains: [
+      PARAMS
+    ]
+  };
+  return {
+    name: "JavaScript",
+    aliases: ["js", "jsx", "mjs", "cjs"],
+    keywords: KEYWORDS$1,
+    exports: { PARAMS_CONTAINS, CLASS_REFERENCE },
+    illegal: /#(?![$_A-z])/,
+    contains: [
+      hljs.SHEBANG({
+        label: "shebang",
+        binary: "node",
+        relevance: 5
+      }),
+      USE_STRICT,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      HTML_TEMPLATE,
+      CSS_TEMPLATE,
+      GRAPHQL_TEMPLATE,
+      TEMPLATE_STRING,
+      COMMENT,
+      { match: /\$\d+/ },
+      NUMBER,
+      CLASS_REFERENCE,
+      {
+        className: "attr",
+        begin: IDENT_RE$1 + regex.lookahead(":"),
+        relevance: 0
+      },
+      FUNCTION_VARIABLE,
+      {
+        begin: "(" + hljs.RE_STARTERS_RE + "|\\b(case|return|throw)\\b)\\s*",
+        keywords: "return throw case",
+        relevance: 0,
+        contains: [
+          COMMENT,
+          hljs.REGEXP_MODE,
+          {
+            className: "function",
+            begin: FUNC_LEAD_IN_RE,
+            returnBegin: true,
+            end: "\\s*=>",
+            contains: [
+              {
+                className: "params",
+                variants: [
+                  {
+                    begin: hljs.UNDERSCORE_IDENT_RE,
+                    relevance: 0
+                  },
+                  {
+                    className: null,
+                    begin: /\(\s*\)/,
+                    skip: true
+                  },
+                  {
+                    begin: /\(/,
+                    end: /\)/,
+                    excludeBegin: true,
+                    excludeEnd: true,
+                    keywords: KEYWORDS$1,
+                    contains: PARAMS_CONTAINS
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            begin: /,/,
+            relevance: 0
+          },
+          {
+            match: /\s+/,
+            relevance: 0
+          },
+          {
+            variants: [
+              { begin: FRAGMENT.begin, end: FRAGMENT.end },
+              { match: XML_SELF_CLOSING },
+              {
+                begin: XML_TAG.begin,
+                "on:begin": XML_TAG.isTrulyOpeningTag,
+                end: XML_TAG.end
+              }
+            ],
+            subLanguage: "xml",
+            contains: [
+              {
+                begin: XML_TAG.begin,
+                end: XML_TAG.end,
+                skip: true,
+                contains: ["self"]
+              }
+            ]
+          }
+        ]
+      },
+      FUNCTION_DEFINITION,
+      {
+        beginKeywords: "while if switch catch for"
+      },
+      {
+        begin: "\\b(?!function)" + hljs.UNDERSCORE_IDENT_RE + "\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{",
+        returnBegin: true,
+        label: "func.def",
+        contains: [
+          PARAMS,
+          hljs.inherit(hljs.TITLE_MODE, { begin: IDENT_RE$1, className: "title.function" })
+        ]
+      },
+      {
+        match: /\.\.\./,
+        relevance: 0
+      },
+      PROPERTY_ACCESS,
+      {
+        match: "\\$" + IDENT_RE$1,
+        relevance: 0
+      },
+      {
+        match: [/\bconstructor(?=\s*\()/],
+        className: { 1: "title.function" },
+        contains: [PARAMS]
+      },
+      FUNCTION_CALL,
+      UPPER_CASE_CONSTANT,
+      CLASS_OR_EXTENDS,
+      GETTER_OR_SETTER,
+      {
+        match: /\$[(.]/
+      }
+    ]
+  };
+};
+var IDENT_RE = "[A-Za-z$_][0-9A-Za-z$_]*";
+var KEYWORDS = [
+  "as",
+  "in",
+  "of",
+  "if",
+  "for",
+  "while",
+  "finally",
+  "var",
+  "new",
+  "function",
+  "do",
+  "return",
+  "void",
+  "else",
+  "break",
+  "catch",
+  "instanceof",
+  "with",
+  "throw",
+  "case",
+  "default",
+  "try",
+  "switch",
+  "continue",
+  "typeof",
+  "delete",
+  "let",
+  "yield",
+  "const",
+  "class",
+  "debugger",
+  "async",
+  "await",
+  "static",
+  "import",
+  "from",
+  "export",
+  "extends"
+];
+var LITERALS = [
+  "true",
+  "false",
+  "null",
+  "undefined",
+  "NaN",
+  "Infinity"
+];
+var TYPES = [
+  "Object",
+  "Function",
+  "Boolean",
+  "Symbol",
+  "Math",
+  "Date",
+  "Number",
+  "BigInt",
+  "String",
+  "RegExp",
+  "Array",
+  "Float32Array",
+  "Float64Array",
+  "Int8Array",
+  "Uint8Array",
+  "Uint8ClampedArray",
+  "Int16Array",
+  "Int32Array",
+  "Uint16Array",
+  "Uint32Array",
+  "BigInt64Array",
+  "BigUint64Array",
+  "Set",
+  "Map",
+  "WeakSet",
+  "WeakMap",
+  "ArrayBuffer",
+  "SharedArrayBuffer",
+  "Atomics",
+  "DataView",
+  "JSON",
+  "Promise",
+  "Generator",
+  "GeneratorFunction",
+  "AsyncFunction",
+  "Reflect",
+  "Proxy",
+  "Intl",
+  "WebAssembly"
+];
+var ERROR_TYPES = [
+  "Error",
+  "EvalError",
+  "InternalError",
+  "RangeError",
+  "ReferenceError",
+  "SyntaxError",
+  "TypeError",
+  "URIError"
+];
+var BUILT_IN_GLOBALS = [
+  "setInterval",
+  "setTimeout",
+  "clearInterval",
+  "clearTimeout",
+  "require",
+  "exports",
+  "eval",
+  "isFinite",
+  "isNaN",
+  "parseFloat",
+  "parseInt",
+  "decodeURI",
+  "decodeURIComponent",
+  "encodeURI",
+  "encodeURIComponent",
+  "escape",
+  "unescape"
+];
+var BUILT_IN_VARIABLES = [
+  "arguments",
+  "this",
+  "super",
+  "console",
+  "window",
+  "document",
+  "localStorage",
+  "sessionStorage",
+  "module",
+  "global"
+];
+var BUILT_INS = [].concat(BUILT_IN_GLOBALS, TYPES, ERROR_TYPES);
+
+// node_modules/highlight.js/es/languages/xml.js
+var xml = function(hljs) {
+  const regex = hljs.regex;
+  const TAG_NAME_RE = regex.concat(/[\p{L}_]/u, regex.optional(/[\p{L}0-9_.-]*:/u), /[\p{L}0-9_.-]*/u);
+  const XML_IDENT_RE = /[\p{L}0-9._:-]+/u;
+  const XML_ENTITIES = {
+    className: "symbol",
+    begin: /&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/
+  };
+  const XML_META_KEYWORDS = {
+    begin: /\s/,
+    contains: [
+      {
+        className: "keyword",
+        begin: /#?[a-z_][a-z1-9_-]+/,
+        illegal: /\n/
+      }
+    ]
+  };
+  const XML_META_PAR_KEYWORDS = hljs.inherit(XML_META_KEYWORDS, {
+    begin: /\(/,
+    end: /\)/
+  });
+  const APOS_META_STRING_MODE = hljs.inherit(hljs.APOS_STRING_MODE, { className: "string" });
+  const QUOTE_META_STRING_MODE = hljs.inherit(hljs.QUOTE_STRING_MODE, { className: "string" });
+  const TAG_INTERNALS = {
+    endsWithParent: true,
+    illegal: /</,
+    relevance: 0,
+    contains: [
+      {
+        className: "attr",
+        begin: XML_IDENT_RE,
+        relevance: 0
+      },
+      {
+        begin: /=\s*/,
+        relevance: 0,
+        contains: [
+          {
+            className: "string",
+            endsParent: true,
+            variants: [
+              {
+                begin: /"/,
+                end: /"/,
+                contains: [XML_ENTITIES]
+              },
+              {
+                begin: /'/,
+                end: /'/,
+                contains: [XML_ENTITIES]
+              },
+              { begin: /[^\s"'=<>`]+/ }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+  return {
+    name: "HTML, XML",
+    aliases: [
+      "html",
+      "xhtml",
+      "rss",
+      "atom",
+      "xjb",
+      "xsd",
+      "xsl",
+      "plist",
+      "wsf",
+      "svg"
+    ],
+    case_insensitive: true,
+    unicodeRegex: true,
+    contains: [
+      {
+        className: "meta",
+        begin: /<![a-z]/,
+        end: />/,
+        relevance: 10,
+        contains: [
+          XML_META_KEYWORDS,
+          QUOTE_META_STRING_MODE,
+          APOS_META_STRING_MODE,
+          XML_META_PAR_KEYWORDS,
+          {
+            begin: /\[/,
+            end: /\]/,
+            contains: [
+              {
+                className: "meta",
+                begin: /<![a-z]/,
+                end: />/,
+                contains: [
+                  XML_META_KEYWORDS,
+                  XML_META_PAR_KEYWORDS,
+                  QUOTE_META_STRING_MODE,
+                  APOS_META_STRING_MODE
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      hljs.COMMENT(/<!--/, /-->/, { relevance: 10 }),
+      {
+        begin: /<!\[CDATA\[/,
+        end: /\]\]>/,
+        relevance: 10
+      },
+      XML_ENTITIES,
+      {
+        className: "meta",
+        end: /\?>/,
+        variants: [
+          {
+            begin: /<\?xml/,
+            relevance: 10,
+            contains: [
+              QUOTE_META_STRING_MODE
+            ]
+          },
+          {
+            begin: /<\?[a-z][a-z0-9]+/
+          }
+        ]
+      },
+      {
+        className: "tag",
+        begin: /<style(?=\s|>)/,
+        end: />/,
+        keywords: { name: "style" },
+        contains: [TAG_INTERNALS],
+        starts: {
+          end: /<\/style>/,
+          returnEnd: true,
+          subLanguage: [
+            "css",
+            "xml"
+          ]
+        }
+      },
+      {
+        className: "tag",
+        begin: /<script(?=\s|>)/,
+        end: />/,
+        keywords: { name: "script" },
+        contains: [TAG_INTERNALS],
+        starts: {
+          end: /<\/script>/,
+          returnEnd: true,
+          subLanguage: [
+            "javascript",
+            "handlebars",
+            "xml"
+          ]
+        }
+      },
+      {
+        className: "tag",
+        begin: /<>|<\/>/
+      },
+      {
+        className: "tag",
+        begin: regex.concat(/</, regex.lookahead(regex.concat(TAG_NAME_RE, regex.either(/\/>/, />/, /\s/)))),
+        end: /\/?>/,
+        contains: [
+          {
+            className: "name",
+            begin: TAG_NAME_RE,
+            relevance: 0,
+            starts: TAG_INTERNALS
+          }
+        ]
+      },
+      {
+        className: "tag",
+        begin: regex.concat(/<\//, regex.lookahead(regex.concat(TAG_NAME_RE, />/))),
+        contains: [
+          {
+            className: "name",
+            begin: TAG_NAME_RE,
+            relevance: 0
+          },
+          {
+            begin: />/,
+            relevance: 0,
+            endsParent: true
+          }
+        ]
+      }
+    ]
+  };
+};
+
+// node_modules/highlight.js/es/languages/elixir.js
+var elixir = function(hljs) {
+  const regex = hljs.regex;
+  const ELIXIR_IDENT_RE = "[a-zA-Z_][a-zA-Z0-9_.]*(!|\\?)?";
+  const ELIXIR_METHOD_RE = "[a-zA-Z_]\\w*[!?=]?|[-+~]@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?";
+  const KEYWORDS2 = [
+    "after",
+    "alias",
+    "and",
+    "case",
+    "catch",
+    "cond",
+    "defstruct",
+    "defguard",
+    "do",
+    "else",
+    "end",
+    "fn",
+    "for",
+    "if",
+    "import",
+    "in",
+    "not",
+    "or",
+    "quote",
+    "raise",
+    "receive",
+    "require",
+    "reraise",
+    "rescue",
+    "try",
+    "unless",
+    "unquote",
+    "unquote_splicing",
+    "use",
+    "when",
+    "with|0"
+  ];
+  const LITERALS2 = [
+    "false",
+    "nil",
+    "true"
+  ];
+  const KWS = {
+    $pattern: ELIXIR_IDENT_RE,
+    keyword: KEYWORDS2,
+    literal: LITERALS2
+  };
+  const SUBST = {
+    className: "subst",
+    begin: /#\{/,
+    end: /\}/,
+    keywords: KWS
+  };
+  const NUMBER = {
+    className: "number",
+    begin: "(\\b0o[0-7_]+)|(\\b0b[01_]+)|(\\b0x[0-9a-fA-F_]+)|(-?\\b[0-9][0-9_]*(\\.[0-9_]+([eE][-+]?[0-9]+)?)?)",
+    relevance: 0
+  };
+  const ESCAPES_RE = /\\[\s\S]/;
+  const BACKSLASH_ESCAPE = {
+    match: ESCAPES_RE,
+    scope: "char.escape",
+    relevance: 0
+  };
+  const SIGIL_DELIMITERS = '[/|([{<"\']';
+  const SIGIL_DELIMITER_MODES = [
+    {
+      begin: /"/,
+      end: /"/
+    },
+    {
+      begin: /'/,
+      end: /'/
+    },
+    {
+      begin: /\//,
+      end: /\//
+    },
+    {
+      begin: /\|/,
+      end: /\|/
+    },
+    {
+      begin: /\(/,
+      end: /\)/
+    },
+    {
+      begin: /\[/,
+      end: /\]/
+    },
+    {
+      begin: /\{/,
+      end: /\}/
+    },
+    {
+      begin: /</,
+      end: />/
+    }
+  ];
+  const escapeSigilEnd = (end) => {
+    return {
+      scope: "char.escape",
+      begin: regex.concat(/\\/, end),
+      relevance: 0
+    };
+  };
+  const LOWERCASE_SIGIL = {
+    className: "string",
+    begin: "~[a-z](?=" + SIGIL_DELIMITERS + ")",
+    contains: SIGIL_DELIMITER_MODES.map((x) => hljs.inherit(x, { contains: [
+      escapeSigilEnd(x.end),
+      BACKSLASH_ESCAPE,
+      SUBST
+    ] }))
+  };
+  const UPCASE_SIGIL = {
+    className: "string",
+    begin: "~[A-Z](?=" + SIGIL_DELIMITERS + ")",
+    contains: SIGIL_DELIMITER_MODES.map((x) => hljs.inherit(x, { contains: [escapeSigilEnd(x.end)] }))
+  };
+  const REGEX_SIGIL = {
+    className: "regex",
+    variants: [
+      {
+        begin: "~r(?=" + SIGIL_DELIMITERS + ")",
+        contains: SIGIL_DELIMITER_MODES.map((x) => hljs.inherit(x, {
+          end: regex.concat(x.end, /[uismxfU]{0,7}/),
+          contains: [
+            escapeSigilEnd(x.end),
+            BACKSLASH_ESCAPE,
+            SUBST
+          ]
+        }))
+      },
+      {
+        begin: "~R(?=" + SIGIL_DELIMITERS + ")",
+        contains: SIGIL_DELIMITER_MODES.map((x) => hljs.inherit(x, {
+          end: regex.concat(x.end, /[uismxfU]{0,7}/),
+          contains: [escapeSigilEnd(x.end)]
+        }))
+      }
+    ]
+  };
+  const STRING = {
+    className: "string",
+    contains: [
+      hljs.BACKSLASH_ESCAPE,
+      SUBST
+    ],
+    variants: [
+      {
+        begin: /"""/,
+        end: /"""/
+      },
+      {
+        begin: /'''/,
+        end: /'''/
+      },
+      {
+        begin: /~S"""/,
+        end: /"""/,
+        contains: []
+      },
+      {
+        begin: /~S"/,
+        end: /"/,
+        contains: []
+      },
+      {
+        begin: /~S'''/,
+        end: /'''/,
+        contains: []
+      },
+      {
+        begin: /~S'/,
+        end: /'/,
+        contains: []
+      },
+      {
+        begin: /'/,
+        end: /'/
+      },
+      {
+        begin: /"/,
+        end: /"/
+      }
+    ]
+  };
+  const FUNCTION = {
+    className: "function",
+    beginKeywords: "def defp defmacro defmacrop",
+    end: /\B\b/,
+    contains: [
+      hljs.inherit(hljs.TITLE_MODE, {
+        begin: ELIXIR_IDENT_RE,
+        endsParent: true
+      })
+    ]
+  };
+  const CLASS = hljs.inherit(FUNCTION, {
+    className: "class",
+    beginKeywords: "defimpl defmodule defprotocol defrecord",
+    end: /\bdo\b|$|;/
+  });
+  const ELIXIR_DEFAULT_CONTAINS = [
+    STRING,
+    REGEX_SIGIL,
+    UPCASE_SIGIL,
+    LOWERCASE_SIGIL,
+    hljs.HASH_COMMENT_MODE,
+    CLASS,
+    FUNCTION,
+    { begin: "::" },
+    {
+      className: "symbol",
+      begin: ":(?![\\s:])",
+      contains: [
+        STRING,
+        { begin: ELIXIR_METHOD_RE }
+      ],
+      relevance: 0
+    },
+    {
+      className: "symbol",
+      begin: ELIXIR_IDENT_RE + ":(?!:)",
+      relevance: 0
+    },
+    {
+      className: "title.class",
+      begin: /(\b[A-Z][a-zA-Z0-9_]+)/,
+      relevance: 0
+    },
+    NUMBER,
+    {
+      className: "variable",
+      begin: "(\\$\\W)|((\\$|@@?)(\\w+))"
+    }
+  ];
+  SUBST.contains = ELIXIR_DEFAULT_CONTAINS;
+  return {
+    name: "Elixir",
+    aliases: [
+      "ex",
+      "exs"
+    ],
+    keywords: KWS,
+    contains: ELIXIR_DEFAULT_CONTAINS
+  };
+};
+
+// assets/app.js
+var startApp = () => {
+  let csrfSelector = 'meta[name="csrf-token"]';
+  let csrfSendAs = "X-CSRF-Token";
+  let isDev = true;
+  window.otty = new Otty(isDev, AfterDive, csrfSelector, csrfSendAs);
+  core_default.registerLanguage("javascript", javascript);
+  core_default.registerLanguage("html", xml);
+  core_default.registerLanguage("elixir", elixir);
+  core_default.registerLanguage("json", elixir);
+  otty.highlighter = core_default;
+  otty.unitHandler = new UnitHandler(generic_default, [generic_default, debug_default, syntax_default, more_otters_default, expand_default]);
+  otty.handleNavigation({ navigationReplaces: ["#replace-area", "body"] });
+};
+var version = 1;
+if (window.otterlySite && window.otterlySite.version != version) {
+  window.location.reload();
+} else if (!window.otterlySite) {
+  window.otterlySite = { version };
+  startApp();
+}

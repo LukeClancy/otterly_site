@@ -83,7 +83,7 @@ config :otterly, OtterlyWeb.Endpoint,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.2.7",
-  app: [
+  otterly: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.scss

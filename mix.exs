@@ -47,7 +47,7 @@ defmodule Otterly.MixProject do
       {:phoenix_live_view, "~> 0.20.2"},
       {:floki, ">= 0.30.0"}, #, only: :test
       {:phoenix_live_dashboard, "~> 0.8.3"},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.2.3", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
@@ -75,14 +75,13 @@ defmodule Otterly.MixProject do
       setup: ["deps.get", "assets.setup", "assets.deploy", "ua_inspector.download"],
       "assets.setup": ["tailwind.install --if-missing"],
       "assets.build": [
-        "tailwind app",
-        "bun ./bundling.js"
+        "tailwind otterly",
+        "bun otterly"
       ],
       "assets.deploy": [
-        "tailwind app --minify",
+        "tailwind otterly --minify",
         "bun otterly --minify",
         "phx.digest",
-        # "bun ./bundling.js --relink"
       ]
     ]
   end

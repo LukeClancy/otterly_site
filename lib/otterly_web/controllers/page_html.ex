@@ -118,12 +118,12 @@ defmodule OtterlyWeb.PageHTML do
         for m <- @assigns.docs_info.menu do
           {name, attrs, child} = m
           claz = case name do
-            "h1" -> "ms-0"
-            "h2" -> "ms-2"
-            "h3" -> "ms-4"
-            "h4" -> "ms-6"
-            "h5" -> "ms-8"
-            "h6" -> "ms-10"
+            "h1" -> "ml-0"
+            "h2" -> "ml-2"
+            "h3" -> "ml-4"
+            "h4" -> "ml-6"
+            "h5" -> "ml-8"
+            "h6" -> "ml-10"
           end
           [{"id", headerId} | _] = attrs
           li(class: claz) do
@@ -159,7 +159,7 @@ defmodule OtterlyWeb.PageHTML do
                   p do: "Its otterly🦦 the best"
                 end
                 div(class: "flex") do
-                  p class: "italic flex-shrink ms-auto me-9", do: "go to docs"
+                  p class: "italic flex-shrink ml-auto me-9", do: "go to docs"
                 end
               end
             end
@@ -191,7 +191,7 @@ defmodule OtterlyWeb.PageHTML do
         br
         br
         div(class: "col-span-4 flex", data_unit: "MoreOtters") do
-          div(class: "btn ms-auto flex-shrink w-40", data_on: "click->makeOtter") do
+          div(class: "btn ml-auto flex-shrink w-40", data_on: "click->makeOtter") do
             "Make an Otter!"
           end
         end
@@ -213,7 +213,7 @@ let otters = unit.otterCount')
           br
           br
 
-          button(href: "/docs", class: "btn ms-auto justify-end w-40 float-right") do
+          button(href: "/docs", class: "btn ml-auto justify-end w-40 float-right") do
             "go to docs"
           end
         end
