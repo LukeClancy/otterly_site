@@ -28,6 +28,7 @@ defmodule OtterlyWeb.Layouts do
         end
         body(class: "bg-white antialiased") do
           @inner_content
+
         end
       end
     end
@@ -41,22 +42,22 @@ defmodule OtterlyWeb.Layouts do
             img(src: ~p"/assets/files/logo.png", width: "64", class: "otter-wiggle")
           end
           a(href: "/", class: "sm:flex grow self-center sm:gap-4 text-brand hover:text-orange-400") do
-              p(class: "rounded-full ps-4 font-medium text-xl sm:text-3xl") do
+              p(class: "rounded-full  pl-4 font-medium text-xl sm:text-3xl") do
                 "otterly js"
               end
-              p(class: "ps-4 md:ps-8 lg:ps-12 self-center text-medium md:text-large") do
+              p(class: "pl-4 md:pl-8 lg:pl-12 self-center text-medium md:text-large") do
                 "small · fast · fierce"
               end
           end
           span(class: "flex items-center font-semibold leading-6 text-zinc-900") do
-            a(href: "https://github.com/LukeClancy/otterly", class: "hover:text-zinc-700 ms-4") do
+            a(href: "https://github.com/LukeClancy/otterly", class: "hover:text-zinc-700 ml-4") do
               img(src: ~p"/assets/files/github-logo.png", width: '30')
             end
-            a(href: "https://www.linkedin.com/in/luke-t-clancy", class: "hover:text-zinc-700 ms-4") do
+            a(href: "https://www.linkedin.com/in/luke-t-clancy", class: "hover:text-zinc-700 ml-4") do
               img(src: ~p"/assets/files/linkedin.png", width: '30')
             end
             a(href: "https://www.phoenixframework.org/") do
-              img(src: ~p"/assets/files/phoenix-logo.png", width: "40", class: "ms-4")
+              img(src: ~p"/assets/files/phoenix-logo.png", width: "40", class: "ml-4")
             end
 
             a(href: "https://www.phoenixframework.org/") do

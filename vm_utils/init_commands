@@ -125,6 +125,7 @@ else
 	cd ~/$PROJECT_DIR
 	echo "cloned"
 fi
+git submodule update --init --remote
 
 echo "grabbing hex we are now in $(pwd)"
 mix local.hex --force

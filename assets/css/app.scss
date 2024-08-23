@@ -1,16 +1,12 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-
 @import "highlight.js/scss/github.scss";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.test{
-	background-color: black;
-}
 @keyframes otsspin {
 	0% { transform: rotate(-10deg) }
 	80% { transform: rotate(-10deg) }

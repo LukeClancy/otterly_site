@@ -9,7 +9,8 @@ cd $HOME/$PROJECT_DIR
 #https://www.freecodecamp.org/news/git-pull-force-how-to-overwrite-local-changes-with-git/
 echo "FETCHING PRODUCTION"
 git fetch
-git reset --hard @{u}
+git reset --hard @{u} --recurse-submodules
+git submodule  update --init --remote
 
 echo "INSTALLING ELIXIR DEPENDANCIES"
 mix deps.get
