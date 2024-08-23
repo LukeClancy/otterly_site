@@ -49,7 +49,7 @@ defmodule OtterlyWeb.Layouts do
                 "small · fast · fierce"
               end
           end
-          span(class: "flex iteml-center font-semibold leading-6 text-zinc-900") do
+          span(class: "flex items-center font-semibold leading-6 text-zinc-900") do
             a(href: "https://github.com/LukeClancy/otterly", class: "hover:text-zinc-700 ml-4") do
               img(src: ~p"/assets/files/github-logo.png", width: '30')
             end
