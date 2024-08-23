@@ -9,9 +9,7 @@ import Config
 require Logger
 
 parse_env_vars = fn (filename) ->
-  Logger.warning(filename)
   {:ok, txt} = File.read(filename)
-  Logger.warning("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
   System.put_env(
     String.splitter(txt, "\n", trim: true) |>
     #remove comments and whitespace
@@ -48,11 +46,9 @@ env_files = %{
 }
 case config_env() do
   :prod ->
-    Logger.warning("SETTING UP PRODUCTION")
     parse_env_vars.(Map.fetch!(env_files, :prod))
     parse_env_vars.(Map.fetch!(env_files, :shared_prod))
     _ ->
-    Logger.warning("SETTING UP DEVELOPMENT")
     parse_env_vars.(Map.fetch!(env_files, :dev))
     parse_env_vars.(Map.fetch!(env_files, :shared))
 end
