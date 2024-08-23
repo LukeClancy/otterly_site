@@ -61,8 +61,8 @@ defmodule OtterlyWeb.Layouts do
             end
 
             a(href: "https://www.phoenixframework.org/") do
-              p class: "hidden sm:block font-light place-self-end py-4 ms-1",  do: "v#{to_string(Application.spec(:phoenix, :vsn))}"
-              p class: "block sm:hidden font-light place-self-end py-4 ms-1",  do: "v#{to_string(Application.spec(:phoenix, :vsn)) |> String.split(".") |> Enum.take(2) |> Enum.join(".")}"
+              p class: "hidden sm:block font-light place-self-end py-4 ml-1",  do: "v#{to_string(Application.spec(:phoenix, :vsn))}"
+              p class: "block sm:hidden font-light place-self-end py-4 ml-1",  do: "v#{to_string(Application.spec(:phoenix, :vsn)) |> String.split(".") |> Enum.take(2) |> Enum.join(".")}"
             end
           end
         end
