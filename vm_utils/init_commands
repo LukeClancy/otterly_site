@@ -32,11 +32,11 @@ fi
 sudo apt update
 sudo apt upgrade
 
-if [ -z $(whereis bun) ]; then
-	echo "INSTALLING BUN"
-	sudo apt install curl -y
-	curl -fsSL https://bun.sh/install | bash
-fi
+# if [ -z $(whereis bun) ]; then
+# 	echo "INSTALLING BUN"
+# 	sudo apt install curl -y
+# 	curl -fsSL https://bun.sh/install | bash
+# fi
 
 echo "INSTALLING ESSENTIALS"
 sudo apt install rustc gcc cmake build-essential pkg-config git libffi-dev unzip libssl-dev erlang-dev erlang-crypto -y 
@@ -133,11 +133,11 @@ echo "installing elixir dependancies via mix"
 mix deps.get
 mix deps.compile
 
-echo "installing bun packages"
-sudo /home/luke/.bun/bin/bun install --verbose --production
-# RAILS_ENV=production NODE_ENV=production ./bin/yarn install --check-files
+# echo "installing bun packages"
+# sudo /home/luke/.bun/bin/bun install --verbose --production
+# # RAILS_ENV=production NODE_ENV=production ./bin/yarn install --check-files
 
-echo "BUN PRECOMPILE - TODO"
+echo "DEPLOYING ASSETS"
 mix assets.deploy
 
 echo "migrating"
