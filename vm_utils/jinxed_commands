@@ -29,18 +29,20 @@ sudo snap set certbot trust-plugin-with-root=ok
 
 echo 'CERTBOTTING...'
 
-echo "CHECK THESE ARE FINE"
-echo "$NAMECHEAP_UNAME | $NAMECHEAP_API_KEY | $THIS_IP | $CERTBOT_DOMAIN"
+sudo certbot run --nginx -d otterlyjs.org,www.otterlyjs.org
+
+# echo "CHECK THESE ARE FINE"
+# echo "$NAMECHEAP_UNAME | $NAMECHEAP_API_KEY | $THIS_IP | q$CERTBOT_DOMAIN"
 
 #this has not been tested w/ automation
 # wildcards are only supported with DNS verification. Why draw the line there? Cause fuck it.
-export PATH=$PATH:$HOME/vm_utils/namecheap
-sudo certbot certonly \
-     --preferred-challenges=dns \
-     --manual \
-     --manual-auth-hook=namecheap_certbot \
-     --agree-tos \
-     -d otterlyjs.org,*.otterlyjs.org
+# sudo cp "$HOME/vm_utils/namecheap/namecheap_certbot" /usr/bin
+# sudo certbot certonly \
+#      --preferred-challenges=dns \
+#      --manual \
+#      --manual-auth-hook=namecheap_certbot \
+#      --agree-tos \
+#      -d otterlyjs.org,www.otterlyjs.org
 
 #get https -> http
-sudo certbot run --nginx
+# sudo certbot run --nginx

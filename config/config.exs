@@ -61,7 +61,6 @@ config :bun,
   version: "1.1.12",
   otterly: [
     args: ~w(_build/bun bundling.js),
-    # cd: Path.expand("..", __DIR__),
     env: %{"ENVIROMENT_IS" => Atom.to_string(config_env())}
   ]
 

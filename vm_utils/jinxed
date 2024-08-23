@@ -14,5 +14,5 @@ echo 'pushin updated files...'
 scp -r ../vm_utils "$1:~"
 scp -r ../private/* "$1:~"
 echo 'running commands...'
-ssh "root@$1" "~/vm_utils/jinxed_commands"
+ssh $1 "~/vm_utils/jinxed_commands"
 echo 'done!'

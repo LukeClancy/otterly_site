@@ -1,4 +1,4 @@
-init_on_vm [ip] [github username] [github secret] - initializes midflip / refreshes
+init_on_vm [ip] [github username] [github secret] - initializes otterly site / refreshes
 	midflip on the vm from the production branch of midflip. If it just needs to be refreshed
 	then only the ip is required
 
@@ -18,8 +18,9 @@ warning_refresh_server [ip] - like a push_main_to_server refresh, but does not u
 	systemctl restarts.
 
 jinxed [ip] - Sets up NGINX reverse proxy, and then runs CertBot on it which gives the site ssh/https capabilities.
-	Note that the script requires user interaction (which if you mess up can be bad so dont). NGINX
-	settings can be changed in the pre_ssl_nginx_mf_config file.
+	Note that the script requires user interaction. NGINX settings can be changed in the
+	otterly_nginx file. I believe I set up crontab to keep the cert renewed. That is not part of
+	automated setup.
 
 Note that for credentials in this section, that they can be stored in ../private for easy access.
 That folder is not committed.

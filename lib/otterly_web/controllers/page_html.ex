@@ -1,6 +1,11 @@
 defmodule OtterlyWeb.PageHTML do
   use OtterlyWeb, :html
 
+  @spec get_text(
+          bitstring()
+          | nonempty_maybe_improper_list()
+          | {any(), any(), nonempty_maybe_improper_list()}
+        ) :: bitstring()
   def get_text(x) when is_bitstring(x) do
     x
   end
