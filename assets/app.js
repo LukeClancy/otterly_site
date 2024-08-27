@@ -9,6 +9,7 @@ import high from 'highlight.js/lib/core'
 import hjs from 'highlight.js/lib/languages/javascript'
 import hxml from 'highlight.js/lib/languages/xml'
 import helixir from 'highlight.js/lib/languages/elixir'
+import bash from 'highlight.js/lib/languages/bash.js'
 
 let startApp = () => {
 	//add new server tasks in OttyCan
@@ -24,6 +25,7 @@ let startApp = () => {
 	high.registerLanguage('html', hxml)
 	high.registerLanguage('elixir', helixir)
 	high.registerLanguage('json', helixir)
+	high.registerLanguage('bash',  bash)
 
 
 	//set up units, events, and a mutation observer to keep them synced with the
