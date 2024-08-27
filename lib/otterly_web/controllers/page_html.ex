@@ -177,9 +177,6 @@ defmodule OtterlyWeb.PageHTML do
     this.otterCount += 1
   }
 }")
-          div(data_language: :javascript, data_unit: "Syntax") do
-            "let x = 0"
-          end
         end
         div(class: "col-span-4 sm:col-span-2 rounded") do
           whitespace_responsive_code('html', '<div data-unit="MoreOtters">
