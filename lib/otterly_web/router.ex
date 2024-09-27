@@ -16,10 +16,11 @@ defmodule OtterlyWeb.Router do
 
   scope "/", OtterlyWeb do
     pipe_through :browser
-    get "/docs/:v",  PageController, :docs
-    get "/docs",  PageController, :docs
-    get "/",      PageController, :home
-    get "/test",  PageController, :test
+    get "/docs/:v",  DocsController, :docs
+    get "/docs",  DocsController, :docs
+    get "/",      HomeController, :home
+    get "/test",  TestController, :test
+    post "/test", TestController, :postin
   end
 
   # Enable LiveDashboard in development

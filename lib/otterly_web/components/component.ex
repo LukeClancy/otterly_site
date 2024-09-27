@@ -1,6 +1,7 @@
 defmodule OtterlyWeb.Component do
   # use OtterlyWeb.Components
   import Temple
+  use Temple.Component
 
   def page_base(assigns) do
     temple do
@@ -11,4 +12,5 @@ defmodule OtterlyWeb.Component do
       end
     end
   end
+
 end

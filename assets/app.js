@@ -4,6 +4,7 @@ import {Otty, AfterDive, UnitHandler, Generic, Debug} from 'otterly'
 import Syntax from "./js/units/syntax"
 import MoreOtters from "./js/units/more_otters"
 import Expand from './js/units/expand'
+import Test from './js/units/test'
 
 import high from 'highlight.js/lib/core'
 import hjs from 'highlight.js/lib/languages/javascript'
@@ -17,9 +18,11 @@ let startApp = () => {
 	let csrfSendAs = 'X-CSRF-Token'
 	let isDev = true
 
+	console.log("RUN")
+
 	//set up otty as a global variable named otty, along with various settings.
 	//AfterDive is set as the response handling object for the otty.dive method.
-	window.otty = new Otty(isDev, AfterDive, csrfSelector, csrfSendAs)
+	window.otty = Otty.init(isDev, AfterDive, csrfSelector, csrfSendAs)
 
 	high.registerLanguage('javascript', hjs)
 	high.registerLanguage('html', hxml)
@@ -27,12 +30,11 @@ let startApp = () => {
 	high.registerLanguage('json', helixir)
 	high.registerLanguage('bash',  bash)
 
-
 	//set up units, events, and a mutation observer to keep them synced with the
 	//html. This also sets up shortcuts in the
 	otty.highlighter = high
 
-	otty.unitHandler = new UnitHandler(Generic, [Generic, Debug, Syntax, MoreOtters, Expand])
+	otty.unitHandler = UnitHandler.init(Generic, [Generic, Debug, Syntax, MoreOtters, Expand, Test])
 
 	otty.handleNavigation({navigationReplaces: ['#replace-area' , 'body']})
 }
