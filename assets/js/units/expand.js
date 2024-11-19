@@ -12,22 +12,25 @@ export default {
 		this.menu = this.el.qs("#menu_contents")
 		this.content = this.el.qs('#content_area')
 		this.button = this.el.qs('#expand_button')
-
-		this.default_self_c = this.button.getAttribute('class')
-		this.default_menu_c = this.menu.getAttribute('class')
-		this.default_content_c = this.content.getAttribute('class')
 		
-		if(window.innerWidth > parseInt(this.tailwindWidths.sm)) {
-			this.x = 1
-		} else {
-			this.x = 0
+		if(! this.el.ds.x){
+			this.el.ds.default_self_c = this.button.getAttribute('class')
+			this.el.ds.default_menu_c = this.menu.getAttribute('class')
+			this.el.ds.default_content_c = this.content.getAttribute('class')
+			if(window.innerWidth > parseInt(this.tailwindWidths.sm)) {
+				this.el.ds.x = 1
+			} else {
+				this.el.ds.x = 0
+			}
+			this.toggle()
 		}
-		this.toggle()
 	},
 	yeetNextTwoInside(e){
-		console.log('valled', e.ct.nextElementSibling)
-		e.ct.insertAdjacentElement('beforeend', e.ct.nextElementSibling)
-		e.ct.insertAdjacentElement('beforeend', e.ct.nextElementSibling)
+		if(! e.ct.ds.yeeted){
+			e.ct.insertAdjacentElement('beforeend', e.ct.nextElementSibling)
+			e.ct.insertAdjacentElement('beforeend', e.ct.nextElementSibling)
+		}
+		e.ct.ds.yeeted = 'y'
 	},
 	content_disp(show){
 		tog = (o) => {
@@ -50,17 +53,17 @@ export default {
 		}
 	},
 	toggle(e){
-		if(this.x % 2  == 0) { //menu closed
-			this.button.setAttribute('class',  `${this.default_self_c} rotate-0` )
-			this.menu.setAttribute('class', `${this.default_menu_c} hidden`)
-			this.content.setAttribute('class', `${this.default_content_c} col-span-4`)
+		if(parseInt(this.el.ds.x % 2)  == 0) { //menu closed
+			this.button.setAttribute('class',  `${this.el.ds.default_self_c} rotate-0` )
+			this.menu.setAttribute('class', `${this.el.ds.default_menu_c} hidden`)
+			this.content.setAttribute('class', `${this.el.ds.default_content_c} col-span-4`)
 			this.content_disp(true)
 		} else {//menu open
-			this.button.setAttribute('class',  `${this.default_self_c} rotate-180` )
-			this.menu.setAttribute('class', `${this.default_menu_c} col-span-3 sm:col-span-1`)
-			this.content.setAttribute('class', `${this.default_content_c} col-span-1 sm:col-span-3`)
+			this.button.setAttribute('class',  `${this.el.ds.default_self_c} rotate-180` )
+			this.menu.setAttribute('class', `${this.el.ds.default_menu_c} col-span-3 sm:col-span-1`)
+			this.content.setAttribute('class', `${this.el.ds.default_content_c} col-span-1 sm:col-span-3`)
 			this.content_disp(false)
 		}
-		this.x += 1
+		this.el.ds.x = parseInt(this.el.ds.x) + 1
 	}
 }
