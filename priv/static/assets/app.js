@@ -1435,11 +1435,7 @@ var require_core = __commonJS((exports, module) => {
   highlight.default = highlight;
 });
 
-<<<<<<< HEAD
-// node_modules/morphdom/dist/morphdom-esm.js
-=======
 // assets/otterly/node_modules/morphdom/dist/morphdom-esm.js
->>>>>>> main
 var morphAttrs = function(fromNode, toNode) {
   var toNodeAttrs = toNode.attributes;
   var attr;
@@ -1673,17 +1669,12 @@ var morphdomFactory = function(morphAttrs2) {
         delete fromNodesLookup[toElKey];
       }
       if (!childrenOnly2) {
-<<<<<<< HEAD
-        if (onBeforeElUpdated(fromEl, toEl) === false) {
-          return;
-=======
         var beforeUpdateResult = onBeforeElUpdated(fromEl, toEl);
         if (beforeUpdateResult === false) {
           return;
         } else if (beforeUpdateResult instanceof HTMLElement) {
           fromEl = beforeUpdateResult;
           indexTree(fromEl);
->>>>>>> main
         }
         morphAttrs2(fromEl, toEl);
         onElUpdated(fromEl);
@@ -1931,25 +1922,11 @@ var morphdom = morphdomFactory(morphAttrs);
 var morphdom_esm_default = morphdom;
 
 // assets/otterly/otty.js
-<<<<<<< HEAD
-class Otty {
-  constructor(isDev, afterDive, csrfSelector, csrfHeader) {
-    this.isDev = isDev;
-    this.previousDives = [];
-    this.ActivePollId = null;
-    this.afterDive = afterDive;
-    this.poll_path = "/api/poll";
-    this.csrfSelector = csrfSelector;
-    this.csrfHeader = csrfHeader;
-  }
-  obj_to_fd = function(formInfo, formData) {
-=======
 var otty_default = {
   init(isDev, afterDive, csrfSelector, csrfHeader) {
     return { isDev, afterDive, csrfSelector, csrfHeader, ...this };
   },
   obj_to_fd(formInfo, formData) {
->>>>>>> main
     if (formInfo instanceof FormData) {
       return formInfo;
     } else {
@@ -1979,11 +1956,7 @@ var otty_default = {
       }
       return formData;
     }
-<<<<<<< HEAD
-  };
-=======
   },
->>>>>>> main
   _sendsXHROnLoad(resolve2, reject, xhr, responseType) {
     if (xhr.status >= 200 && xhr.status <= 302 && xhr.status != 300) {
       let rsp = xhr.response;
@@ -1997,21 +1970,13 @@ var otty_default = {
     } else {
       reject({ status: xhr.status, statusText: xhr.statusText });
     }
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   _sendsXHROnError(resolve2, reject, xhr) {
     reject({
       status: xhr.status,
       statusText: xhr.statusText
     });
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   sendsXHR({
     url,
     formInfo,
@@ -2054,29 +2019,10 @@ var otty_default = {
         xhr.send(form_data);
       }
     }.bind(this));
-<<<<<<< HEAD
-  }
-=======
-  },
->>>>>>> main
-  isLocalUrl(url, subdomainAccuracy = -2) {
-    let d = window.location.hostname;
-    let urld = new URL(url, window.location).hostname;
-    if (d.split(".").slice(subdomainAccuracy).join(".") == urld.split(".").slice(subdomainAccuracy).join(".")) {
-      return true;
-    }
-    return false;
-<<<<<<< HEAD
-  }
-  xss_pass(url) {
-    return this.isLocalUrl(url, -2);
-  }
-=======
   },
   xss_pass(url) {
     return this.isLocalUrl(url, -2);
   },
->>>>>>> main
   dive(opts = {}) {
     let url = opts.url;
     let baseElement = opts.baseElement;
@@ -2099,11 +2045,7 @@ var otty_default = {
         actions = [actions];
       }
       y = 0;
-<<<<<<< HEAD
-      ottys_capabilities = new this.afterDive(baseElement, submitter, resolve2, reject, this.isDev);
-=======
       ottys_capabilities = this.afterDive.init(baseElement, submitter, resolve2, reject, this.isDev);
->>>>>>> main
       for (action of actions) {
         if (!action) {
           continue;
@@ -2148,11 +2090,7 @@ var otty_default = {
         reject(e);
       });
     }.bind(this));
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   async stopGoto(href) {
     let loc = window.location;
     href = new URL(href, loc);
@@ -2164,14 +2102,13 @@ var otty_default = {
       return true;
     }
     return false;
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   async linkClickedF(e) {
     let href = e.target.closest("[href]");
     if (!href) {
+      return;
+    }
+    if (href.dataset.nativeHref != null) {
       return;
     }
     href = href.getAttribute("href");
@@ -2182,11 +2119,7 @@ var otty_default = {
     e.stopPropagation();
     await this.goto(href);
     return;
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   async scrollToLocationHashElement(loc) {
     if (loc.hash) {
       let e = document.getElementById(decodeURIComponent(loc.hash.slice(1)));
@@ -2197,65 +2130,7 @@ var otty_default = {
       }
     }
     return false;
-<<<<<<< HEAD
-  }
-  poll = (dat) => {
-    if (this.ActivePollId != dat.id) {
-      return;
-    }
-    let maybe_resub = ((x) => {
-      if (x == "should_resub") {
-        this.subscribeToPoll(dat.queues, dat.poll_info, dat.wait_time);
-      } else if (!(x == "no_updates")) {
-        dat.store = x;
-      }
-    }).bind(this);
-    let continue_polling = (() => {
-      let poll = (() => {
-        this.poll(dat);
-      }).bind(this);
-      setTimeout(poll, dat.wait_time);
-    }).bind(this);
-    this.dives(this.poll_path, {
-      formInfo: {
-        "otty-store": dat.store
-      }
-    }).then(maybe_resub).finally(continue_polling);
-  };
-  subscribeToPoll = (queues, poll_info, wait_time) => {
-    let id = Math.random();
-    this.ActivePollId = id;
-    let dat = {
-      queues,
-      poll_info,
-      wait_time,
-      id
-    };
-    let poll = ((out) => {
-      if (out == "no_queues") {
-        if (this.isDev) {
-          console.log("no_queues", out);
-        }
-      } else {
-        dat.store = out;
-        this.poll(dat);
-      }
-    }).bind(this);
-    let err_log = ((x) => {
-      if (this.isDev) {
-        console.error("sub fail", x);
-      }
-    }).bind(this);
-    this.dives("/api/pollsub", {
-      formInfo: {
-        queues: dat.queues,
-        ...dat.poll_info
-      }
-    }).then(poll, err_log);
-  };
-=======
   },
->>>>>>> main
   async goto(href, opts = {}) {
     if (await this.stopGoto(href)) {
       return -1;
@@ -2279,31 +2154,6 @@ var otty_default = {
       nhref.hash = href.hash;
       href = nhref;
     }
-<<<<<<< HEAD
-    await this.pageReplace(page, 0, href, (BefBodyClone, befY, replaceSelector) => {
-      this.replacePageState(loc, BefBodyClone, replaceSelector, befY);
-      if (!opts.reload) {
-        this.pushPageState(href, undefined, replaceSelector);
-      }
-    });
-    return href;
-  }
-  createStorageDoc(orienter, head) {
-    orienter = orienter.cloneNode(true);
-    let storeDoc = new DOMParser().parseFromString("<!DOCTYPE HTML> <html></html>", "text/html");
-    if (orienter.nodeName == "BODY") {
-      storeDoc.body = orienter;
-    } else {
-      storeDoc.body.appendChild(orienter);
-    }
-    morphdom_esm_default(storeDoc.head, head);
-    return storeDoc;
-  }
-  navigationHeadMorph(tempdocHead) {
-    morphdom_esm_default(document.head, tempdocHead);
-  }
-  async pageReplace(tempdoc, scroll, url, beforeReplace) {
-=======
     await this.pageReplace(page, 0, href, (BefBodyClone, befY) => {
       this.replacePageState(loc, BefBodyClone, befY);
       if (!opts.reload) {
@@ -2312,79 +2162,76 @@ var otty_default = {
     }, loc);
     return href;
   },
-  createStorageDoc(orienter2, head) {
-    orienter2 = orienter2.cloneNode(true);
+  createStorageDoc(orienter, head) {
+    if (!Array.isArray(orienter)) {
+      orienter = [orienter];
+    }
+    orienter = orienter.map((x) => x.cloneNode(true));
     let storeDoc = new DOMParser().parseFromString("<!DOCTYPE HTML> <html></html>", "text/html");
-    if (orienter2.nodeName == "BODY") {
-      storeDoc.body = orienter2;
+    if (orienter.length == 1 && orienter[0].nodeName == "BODY") {
+      storeDoc.body = orienter;
     } else {
-      if (!Array.isArray(orienter2)) {
-        orienter2 = [orienter2];
-      }
-      for (let o of orienter2) {
+      for (let o of orienter) {
         storeDoc.body.appendChild(o);
       }
     }
-    morphdom_esm_default(storeDoc.head, head);
+    morphdom_esm_default(storeDoc.head, head.cloneNode(true));
     return storeDoc;
   },
   navigationHeadMorph(tempdocHead) {
     morphdom_esm_default(document.head, tempdocHead);
   },
-  navigationBodyChange(orienter2, tmpOrienter2) {
-    if (Array.isArray(orienter2) && Array.isArray(tmpOrienter2)) {
-      let x = 0;
-      while (x < orienter2.length) {
-        orienter2[x].replaceWith(tmpOrienter2[x]);
-        x += 1;
+  navigationBodyChange(orienter, tmpOrienter) {
+    let x = 0;
+    while (x < orienter.length) {
+      if (orienter[x].nodeName == "BODY") {
+        orienter[x].innerHTML = tmpOrienter[x].innerHTML;
+      } else {
+        orienter[x].replaceWith(tmpOrienter[x]);
       }
+      x += 1;
     }
-    orienter2.replaceWith(tmpOrienter2);
   },
   getOrienters(tempdoc, url, lastUrl) {
-    let tmpOrienter2, orienter2, replaceSelector;
+    let newOrienters, orienters, replaceSelector, fail, a, b;
     for (replaceSelector of this.navigationReplaces) {
-      if ((orienter2 = document.querySelector(replaceSelector)) && (tmpOrienter2 = tempdoc.querySelector(replaceSelector))) {
-        return [orienter2, tmpOrienter2];
+      if (!Array.isArray(replaceSelector)) {
+        replaceSelector = [replaceSelector];
+      }
+      fail = false;
+      orienters = [];
+      newOrienters = [];
+      for (let s of replaceSelector) {
+        a = document.querySelector(s);
+        if (!a) {
+          fail = true;
+          break;
+        }
+        b = tempdoc.querySelector(s);
+        if (!b) {
+          fail = true;
+          break;
+        }
+        orienters.push(a);
+        newOrienters.push(b);
+      }
+      if (!fail) {
+        return [orienters, newOrienters];
       }
     }
   },
   async pageReplace(tempdoc, scroll, url, beforeReplace, lastUrl) {
->>>>>>> main
     let befY = window.scrollY;
     if (typeof tempdoc == "string") {
       tempdoc = new DOMParser().parseFromString(tempdoc, "text/html");
     }
-<<<<<<< HEAD
-    let tmpOrienter, orienter, replaceSelector;
-    for (replaceSelector of this.navigationReplaces) {
-      tmpOrienter = tempdoc.querySelector(replaceSelector);
-      orienter = document.querySelector(replaceSelector);
-      if (tmpOrienter && orienter) {
-        break;
-      }
-    }
-    for (let unitEl of this.qsInclusive(orienter, "[data-unit]")) {
-      unitEl._unit?.unitRemoved();
-    }
-    let storeDoc = this.createStorageDoc(orienter, document.head);
-    if (beforeReplace) {
-      beforeReplace(storeDoc, befY, replaceSelector);
-    }
-    orienter.replaceWith(tmpOrienter);
-=======
-    [orienter, tmpOrienter] = this.getOrienters(tempdoc, url, lastUrl);
-    if (orienter.nodeName == "BODY") {
-      for (let unitEl of this.qsInclusive(orienter, "[data-unit]")) {
-        unitEl._unit?.unitRemoved();
-      }
-    }
-    let storeDoc = this.createStorageDoc(orienter, document.head);
+    let orienters, newOrienters;
+    [orienters, newOrienters] = this.getOrienters(tempdoc, url, lastUrl);
+    let storeDoc = this.createStorageDoc(orienters, document.head);
     if (beforeReplace) {
       beforeReplace(storeDoc, befY);
     }
-    this.navigationBodyChange(orienter, tmpOrienter);
->>>>>>> main
+    this.navigationBodyChange(orienters, newOrienters);
     this.navigationHeadMorph(tempdoc.querySelector("head"));
     let shouldScrollToEl = url && !scroll;
     let scrolled = false;
@@ -2397,11 +2244,7 @@ var otty_default = {
       }
       window.scroll(0, scroll);
     }
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   async waitForImages() {
     let arr = Array.from(document.body.querySelectorAll("img")).map((im) => {
       new Promise((resolve2) => {
@@ -2415,42 +2258,12 @@ var otty_default = {
       await a;
     }
     return true;
-<<<<<<< HEAD
-  }
-  _pageState(scroll, doc2, url, replaceSelector, match) {
-    this.historyReferences[this.historyReferenceLocation] = {
-      replaceSelector,
-      doc: doc2,
-      scroll,
-      url,
-      match
-    };
-  }
-  replacePageState(url, doc2, replaceSelector, scroll) {
-    let matcher = Math.random();
-    window.history.replaceState({
-      historyReferenceLocation: this.historyReferenceLocation,
-      match: matcher
-    }, "", url);
-    this._pageState(scroll, doc2, url, replaceSelector, matcher);
-  }
-  pushPageState(url, doc2, replaceSelector) {
-    let matcher = Math.random();
-    this.historyReferenceLocation += 1;
-    this.historyReferences = this.historyReferences.slice(0, this.historyReferenceLocation + 1);
-    window.history.pushState({
-      historyReferenceLocation: this.historyReferenceLocation,
-      match: matcher
-    }, "", url);
-    this._pageState(0, doc2, url, replaceSelector, matcher);
-  }
-=======
   },
   stopError(f) {
     try {
       f();
     } catch (e) {
-      console.error(e);
+      otty.log(e);
     }
   },
   _pageState(scroll, doc2, url) {
@@ -2473,38 +2286,12 @@ var otty_default = {
     }, "", url);
     this._pageState(0, doc2, url);
   },
->>>>>>> main
   qsInclusive(n, pat) {
     let units = Array.from(n.querySelectorAll(pat));
     if (n.matches(pat)) {
       units.push(n);
     }
     return units;
-<<<<<<< HEAD
-  }
-  handleNavigation(opts = {}) {
-    opts = { navigationReplaces: ["body"], ...opts };
-    this.navigationReplaces = opts.navigationReplaces;
-    this.historyReferenceLocation = 0;
-    this.historyReferences = [];
-    history.scrollRestoration = "manual";
-    document.addEventListener("click", this.linkClickedF.bind(this));
-    window.addEventListener("popstate", async function(e) {
-      if (e.state && e.state.historyReferenceLocation != null) {
-        let lastInf = this.historyReferences[this.historyReferenceLocation];
-        let lastScroll = window.scrollY;
-        this.historyReferenceLocation = e.state.historyReferenceLocation;
-        let hr = this.historyReferences[this.historyReferenceLocation];
-        if (hr && hr.match == e.state.match) {
-          await this.pageReplace(hr.doc, hr.scroll, hr.url, (befBodyClone, befY, replaceSelector) => {
-            lastInf.scroll = befY;
-            lastInf.doc = befBodyClone;
-            lastInf.replaceSelector = replaceSelector;
-          });
-        } else {
-          this.historyReferenceLocation = 0;
-          this.historyReferences = [];
-=======
   },
   handleNavigation(opts = {}) {
     opts = { navigationReplaces: ["body"], ...opts };
@@ -2524,26 +2311,11 @@ var otty_default = {
           }, lastInf.url);
         } else {
           this.historyReferenceId = Math.random();
->>>>>>> main
           this.goto(window.location, { reload: true });
         }
       }
     }.bind(this));
     this.scrollToLocationHashElement(window.location);
-<<<<<<< HEAD
-  }
-}
-
-// assets/otterly/after_dive.js
-class AfterDive {
-  constructor(baseElement, submitter, resolve2, reject, isDev) {
-    this.baseElement = baseElement;
-    this.submitter = submitter;
-    this.resolve = resolve2;
-    this.reject = reject;
-    this.isDev = isDev;
-  }
-=======
   },
   previousDives: [],
   poll(dat) {
@@ -2599,6 +2371,21 @@ class AfterDive {
         ...dat.pollInfo
       }
     }).then(poll, err_log);
+  },
+  logData: [],
+  log: (data) => {
+    let t = "noTrace";
+    try {
+      t = new Error().stack;
+    } catch {
+    }
+    console.error(data);
+    otty.logData.push(JSON.stringify({
+      time: new Date().getTime(),
+      loc: window.location.href,
+      stack: t,
+      data
+    }));
   }
 };
 
@@ -2607,7 +2394,6 @@ var after_dive_default = {
   init(baseElement, submitter, resolve2, reject, isDev) {
     return { baseElement, submitter, resolve: resolve2, reject, isDev, ...this };
   },
->>>>>>> main
   getThing(obj, optional = false, doc2 = document) {
     let el;
     if (obj.id) {
@@ -2624,11 +2410,7 @@ var after_dive_default = {
       console.log('expected a node identifier (either a "selector" field or an "id" field)');
     }
     return el;
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   getSelector(str, doc2 = document) {
     if (str == "submitter") {
       return this.submitter;
@@ -2637,19 +2419,6 @@ var after_dive_default = {
     } else {
       return doc2.querySelector(str);
     }
-<<<<<<< HEAD
-  }
-  log(obj) {
-    console.log(obj);
-  }
-  reload() {
-    Turbo.cache.clear();
-    otty.goto(window.location.href, { reload: true });
-  }
-  redirect(obj) {
-    otty.goto(obj);
-  }
-=======
   },
   log(obj) {
     console.log(obj);
@@ -2661,7 +2430,6 @@ var after_dive_default = {
   redirect(obj) {
     otty.goto(obj);
   },
->>>>>>> main
   insert(obj) {
     let sel = this.getThing(obj);
     if (!sel) {
@@ -2670,32 +2438,25 @@ var after_dive_default = {
     let pos = obj["position"];
     let html = obj["html"];
     sel.insertAdjacentHTML(pos, html);
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
-  morph(x) {
-    let opts = x;
-    let perm = x["permanent"];
-    let ign = x["ignore"];
+  _morphOpts(opts) {
+    let perm = opts["permanent"];
+    let ign = opts["ignore"];
     if (opts == null) {
-      opts = {};
+      return {};
     }
     if (ign != null || perm != null) {
       let m_parse_p = (selector, from, to) => {
         if (from.matches(selector) && to.matches(selector)) {
           return false;
-        } else {
-          return true;
         }
+        return true;
       };
       let m_parse_i = (selector, from, to) => {
         if (from.matches(selector) || to.matches(selector)) {
           return false;
-        } else {
-          return true;
         }
+        return true;
       };
       let m_parse = (selectors, inner_parse, from, to) => {
         if (!Array.isArray(selectors)) {
@@ -2718,39 +2479,28 @@ var after_dive_default = {
         return true;
       };
     }
-    let s = this.getThing(x);
+    return opts;
+  },
+  morph(opts) {
+    let s = this.getThing(opts);
     if (!s) {
       return;
     }
-    morphdom_esm_default(s, x["html"], opts);
-<<<<<<< HEAD
-  }
-=======
+    morphdom_esm_default(s, opts["html"], this._morphOpts(opts));
   },
->>>>>>> main
   remove(obj) {
     let s = this.getThing(obj);
     if (!s) {
       return;
     }
     s.parentNode.removeChild(s);
-<<<<<<< HEAD
-  }
+  },
   replace(obj) {
     let sel, parser, tempdoc, orienter, childrenOnly;
     parser = new DOMParser;
     tempdoc = parser.parseFromString(obj["html"], "text/html");
     orienter = this.getThing(obj, false, tempdoc);
     if (!orienter) {
-=======
-  },
-  replace(obj) {
-    let sel, parser, tempdoc, orienter2, childrenOnly;
-    parser = new DOMParser;
-    tempdoc = parser.parseFromString(obj["html"], "text/html");
-    orienter2 = this.getThing(obj, false, tempdoc);
-    if (!orienter2) {
->>>>>>> main
       return;
     }
     childrenOnly = obj["childrenOnly"];
@@ -2758,7 +2508,6 @@ var after_dive_default = {
     if (!sel) {
       return;
     }
-<<<<<<< HEAD
     if (orienter == null) {
       if (childrenOnly) {
         sel.innerHTML = obj["html"];
@@ -2773,35 +2522,14 @@ var after_dive_default = {
         sel.replaceWith(orienter);
       }
     }
-  }
-=======
-    if (orienter2 == null) {
-      if (childrenOnly) {
-        sel.innerHTML = obj["html"];
-      } else {
-        orienter2 = tempdoc.querySelector("body").children[0];
-        sel.replaceWith(orienter2);
-      }
-    } else {
-      if (childrenOnly) {
-        sel.innerHTML = orienter2.innerHTML;
-      } else {
-        sel.replaceWith(orienter2);
-      }
-    }
   },
->>>>>>> main
   innerHtml(obj) {
     let s = this.getThing(obj);
     if (!s) {
       return;
     }
     s.innerHTML = obj["html"];
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   eval2(data) {
     let selector = getThing(data, true);
     let x = Function("data", "selector", "baseElement", "submitter", `"use strict"; ${data["code"]};`)(data, selector, this.baseElement, this.submitter);
@@ -2809,11 +2537,7 @@ var after_dive_default = {
       resolve(returning);
       return "break";
     }
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   setData(data) {
     let keys, x, key, obj, attrs, attr_keys, y, attr_key;
     keys = Object.keys(data);
@@ -2828,11 +2552,7 @@ var after_dive_default = {
       }
     }
   }
-<<<<<<< HEAD
-}
-=======
 };
->>>>>>> main
 
 // assets/otterly/units/generic.js
 var generic = {
@@ -2853,19 +2573,11 @@ var generic = {
       return;
     }
     let f3;
-<<<<<<< HEAD
-    if (input.length > 0) {
-      let f2 = (input2, event) => f.bind(this)(event, ...input2);
-      f3 = f2.bind(this, input);
-    } else {
-      f3 = f.bind(this);
-=======
     let dis = this;
     if (input.length > 0) {
       f3 = (event) => f.bind(dis)(event, ...input);
     } else {
       f3 = (event) => f.bind(dis)(event);
->>>>>>> main
     }
     let f_str = JSON.stringify(evInfo);
     if (action == "_remove") {
@@ -2994,6 +2706,38 @@ var generic = {
         await new Promise(justWait, justWait);
       }
     },
+    delay: async function(e, h) {
+      this.delayInfo = this.diveInfo(e, h);
+      if (this.timeoutWait) {
+        return;
+      }
+      let doit = (() => {
+        this.lastStagger = new Date().getTime();
+        this.timeoutWait = undefined;
+        return otty.dive(this.delayInfo);
+      }).bind(this);
+      if (!this.lastStagger) {
+        this.lastStagger = 0;
+      }
+      let waitedFor = new Date().getTime() - this.lastStagger;
+      let stag = h.stagger || 500;
+      if (waitedFor < stag) {
+        this.timeoutWait = setTimeout((() => {
+          doit();
+        }).bind(this), stag - waitedFor);
+      } else {
+        doit();
+      }
+    },
+    staggered: async function(e, h) {
+      let tn = new Date().getTime();
+      let stag = h.stagger || 500;
+      if (this.lastStagger && tn - this.lastStagger < stag) {
+        return;
+      }
+      this.lastStagger = tn;
+      return this.diveBehaviors.default.bind(this)(e, h);
+    },
     default: function(e, h) {
       return otty.dive(this.diveInfo(e, h));
     }
@@ -3001,23 +2745,25 @@ var generic = {
   diveInfo(e, h = {}) {
     let defaults = {
       opts: { e, formInfo: {} },
-      data: { ...this.relevantData(e) },
-      formData: new FormData,
       withform: false
     };
+    let data = this.relevantData(e);
     h = { ...defaults, ...h };
     h.opts = { ...defaults.opts, ...h.opts };
     let inp, els, k;
-    for (k of Object.keys(h.data)) {
+    for (k of Object.keys(data)) {
       if (this.diveOptParams.includes(k)) {
-        h.opts[k] = h.data[k];
+        h.opts[k] = data[k];
       } else if (this.diveErrParams.includes(k)) {
         console.error("bad key for diveDataset: " + k);
       } else {
-        h.opts.formInfo[k] = h.data[k];
+        h.opts.formInfo[k] = data[k];
       }
     }
-    if (h.withform) {
+    if (this.element.nodeName == "FORM") {
+      h.withform = true;
+      h.formData = new FormData(this.element);
+    } else if (h.withform) {
       els = Array.from(this.el.qsa("input"));
       if (this.el.nodeName == "INPUT") {
         els.push(this.el);
@@ -3031,6 +2777,9 @@ var generic = {
     if (!h.opts.url) {
       h.opts.url = h.opts.formInfo.path;
     }
+    if (!h.opts.method) {
+      h.opts.method = h.opts.formInfo.method;
+    }
     if (h.withform) {
       if (!h.opts.url) {
         h.opts.url = e.ct.getAttribute("formaction");
@@ -3038,16 +2787,14 @@ var generic = {
       if (!h.opts.url) {
         h.opts.url = e.ct.closest("form")?.getAttribute("action");
       }
-    }
-    if (!h.opts.method) {
-      h.opts.method = h.opts.formInfo.method;
-    }
-    if (h.withform) {
       if (!h.opts.method) {
         h.opts.method = e.ct.getAttribute("formmethod");
       }
       if (!h.opts.method) {
         h.opts.method = e.ct.closest("form")?.getAttribute("method");
+      }
+      if (e.ct.name && e.ct.value) {
+        h.formData.append(e.ct.name, e.ct.value);
       }
     }
     if (!h.opts.method) {
@@ -3057,7 +2804,9 @@ var generic = {
     return h.opts;
   },
   dive(e, h) {
-    e.preventDefault();
+    if (!h["allowDefault"]) {
+      e.preventDefault();
+    }
     let act;
     if (h.behavior == undefined) {
       h.behavior = "default";
@@ -3082,17 +2831,6 @@ Object.defineProperties(generic, {
 var generic_default = generic;
 
 // assets/otterly/unit_handler.js
-<<<<<<< HEAD
-class UnitHandler {
-  constructor(generic2, unit_list) {
-    this.generic = generic2;
-    this.units = unit_list;
-    this.shortcuts();
-    this.handleFirstUnits();
-    this.createObserver();
-    return this;
-  }
-=======
 var unit_handler_default = {
   init(generic2, unit_list) {
     let x = { generic: generic2, units: unit_list, ...this };
@@ -3101,7 +2839,6 @@ var unit_handler_default = {
     x.createObserver();
     return x;
   },
->>>>>>> main
   shortcuts() {
     Object.defineProperties(Event.prototype, {
       ct: {
@@ -3118,22 +2855,20 @@ var unit_handler_default = {
         set: function(v) {
           return this.dataset = v;
         }
+      },
+      cl: {
+        get: function() {
+          return this.classList;
+        }
       }
     });
-<<<<<<< HEAD
-=======
     HTMLElement.prototype.setA = HTMLElement.prototype.setAttribute;
     HTMLElement.prototype.getA = HTMLElement.prototype.getAttribute;
->>>>>>> main
     HTMLElement.prototype.qs = HTMLElement.prototype.querySelector;
     HTMLElement.prototype.qsa = HTMLElement.prototype.querySelectorAll;
     document.qs = document.querySelector;
     document.qsa = document.querySelectorAll;
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   addUnit(ob, nms) {
     if (nms == undefined) {
       nms = ob.dataset.unit.split(" ");
@@ -3193,11 +2928,7 @@ var unit_handler_default = {
       }.bind(u, onRemoved, u.unitRemoved);
     }
     return ob;
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   parseEventString(x) {
     if (!x || x.length == 0) {
       return [];
@@ -3268,11 +2999,7 @@ var unit_handler_default = {
       return JSON.stringify(current2);
     });
     return all;
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   handleFirstUnits() {
     let node, x, unit;
     x = {};
@@ -3296,26 +3023,16 @@ var unit_handler_default = {
       }
     }
     for (node of load_units) {
-<<<<<<< HEAD
-      node._unit.unitConnected();
-    }
-  }
-=======
       otty.stopError(() => node._unit.unitConnected());
     }
   },
->>>>>>> main
   qsInclusive(n, pat) {
     let units = Array.from(n.querySelectorAll(pat));
     if (n.matches(pat)) {
       units.push(n);
     }
     return units;
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   getEventUnit(x, xNode, brokenParent) {
     let getUnit = (from, x2) => {
       if (x2.unit) {
@@ -3335,11 +3052,7 @@ var unit_handler_default = {
       return null;
     }
     return unit._unit;
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   changeEvents(node, new_x, old_x, brokenParent) {
     let unit, x, nx, ox;
     new_x = this.parseEventString(new_x);
@@ -3360,11 +3073,7 @@ var unit_handler_default = {
       }
       unit.addUnitEvent(x, node);
     }
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> main
   createObserver() {
     this.observer = new MutationObserver((ma) => {
       let n, ns, chls, mut, attrs;
@@ -3444,11 +3153,7 @@ var unit_handler_default = {
         this.changeEvents(target, target.dataset.on, oldValue);
       }
       for (n of ns) {
-<<<<<<< HEAD
-        n._unit.unitConnected();
-=======
         otty.stopError(() => n._unit.unitConnected());
->>>>>>> main
       }
     });
     this.observer.observe(document.documentElement, {
@@ -3460,11 +3165,7 @@ var unit_handler_default = {
     });
     return this.observer;
   }
-<<<<<<< HEAD
-}
-=======
 };
->>>>>>> main
 
 // assets/otterly/units/debug.js
 var debug_default = {
@@ -3493,12 +3194,9 @@ var syntax_default = {
   unitName: "Syntax",
   onConnected: function() {
     let lang = this.el.ds.language;
-<<<<<<< HEAD
-=======
     if (lang == "inline") {
       return;
     }
->>>>>>> main
     let txt = this.el.innerText;
     let out = otty.highlighter.highlight(txt, { language: lang });
     this.el.innerHTML = out.value;
@@ -3529,22 +3227,6 @@ var expand_default = {
     this.menu = this.el.qs("#menu_contents");
     this.content = this.el.qs("#content_area");
     this.button = this.el.qs("#expand_button");
-<<<<<<< HEAD
-    this.default_self_c = this.button.getAttribute("class");
-    this.default_menu_c = this.menu.getAttribute("class");
-    this.default_content_c = this.content.getAttribute("class");
-    if (window.innerWidth > parseInt(this.tailwindWidths.sm)) {
-      this.x = 1;
-    } else {
-      this.x = 0;
-    }
-    this.toggle();
-  },
-  yeetNextTwoInside(e) {
-    console.log("valled", e.ct.nextElementSibling);
-    e.ct.insertAdjacentElement("beforeend", e.ct.nextElementSibling);
-    e.ct.insertAdjacentElement("beforeend", e.ct.nextElementSibling);
-=======
     if (!this.el.ds.x) {
       this.el.ds.default_self_c = this.button.getAttribute("class");
       this.el.ds.default_menu_c = this.menu.getAttribute("class");
@@ -3563,7 +3245,6 @@ var expand_default = {
       e.ct.insertAdjacentElement("beforeend", e.ct.nextElementSibling);
     }
     e.ct.ds.yeeted = "y";
->>>>>>> main
   },
   content_disp(show) {
     tog = (o) => {
@@ -3586,20 +3267,6 @@ var expand_default = {
     }
   },
   toggle(e) {
-<<<<<<< HEAD
-    if (this.x % 2 == 0) {
-      this.button.setAttribute("class", `${this.default_self_c} rotate-0`);
-      this.menu.setAttribute("class", `${this.default_menu_c} hidden`);
-      this.content.setAttribute("class", `${this.default_content_c} col-span-4`);
-      this.content_disp(true);
-    } else {
-      this.button.setAttribute("class", `${this.default_self_c} rotate-180`);
-      this.menu.setAttribute("class", `${this.default_menu_c} col-span-3 sm:col-span-1`);
-      this.content.setAttribute("class", `${this.default_content_c} col-span-1 sm:col-span-3`);
-      this.content_disp(false);
-    }
-    this.x += 1;
-=======
     if (parseInt(this.el.ds.x % 2) == 0) {
       this.button.setAttribute("class", `${this.el.ds.default_self_c} rotate-0`);
       this.menu.setAttribute("class", `${this.el.ds.default_menu_c} hidden`);
@@ -3620,7 +3287,6 @@ var test_default = {
   unitName: "Test",
   log(e, txt) {
     console.log(txt);
->>>>>>> main
   }
 };
 
@@ -5059,23 +4725,15 @@ var startApp = () => {
   let csrfSelector = 'meta[name="csrf-token"]';
   let csrfSendAs = "X-CSRF-Token";
   let isDev = true;
-<<<<<<< HEAD
-  window.otty = new Otty(isDev, AfterDive, csrfSelector, csrfSendAs);
-=======
   console.log("RUN");
   window.otty = otty_default.init(isDev, after_dive_default, csrfSelector, csrfSendAs);
->>>>>>> main
   core_default.registerLanguage("javascript", javascript);
   core_default.registerLanguage("html", xml);
   core_default.registerLanguage("elixir", elixir);
   core_default.registerLanguage("json", elixir);
   core_default.registerLanguage("bash", bash_js_default);
   otty.highlighter = core_default;
-<<<<<<< HEAD
-  otty.unitHandler = new UnitHandler(generic_default, [generic_default, debug_default, syntax_default, more_otters_default, expand_default]);
-=======
   otty.unitHandler = unit_handler_default.init(generic_default, [generic_default, debug_default, syntax_default, more_otters_default, expand_default, test_default]);
->>>>>>> main
   otty.handleNavigation({ navigationReplaces: ["#replace-area", "body"] });
 };
 var version = 1;

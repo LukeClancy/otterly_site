@@ -6,7 +6,9 @@ figlet --gay "Main->"
 figlet --gay "Production->"
 figlet --gay "Server"
 
-git add ../../*
+cd ..;
+mix assets.build
+git add *
 echo 1
 git pull
 echo 2
@@ -21,6 +23,7 @@ echo 6
 git checkout main
 echo 7
 
+cd vm_utils
 ./init_on_vm $1
 echo 8
 echo "FINISHED push_main_to_server SCRIPT"
