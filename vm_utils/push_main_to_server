@@ -8,6 +8,7 @@ figlet --gay "Server"
 
 cd ..;
 mix assets.build
+mix assets.deploy
 git add *
 echo 1
 git pull
