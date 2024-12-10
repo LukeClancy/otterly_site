@@ -48,7 +48,7 @@ case config_env() do
   :prod ->
     parse_env_vars.(Map.fetch!(env_files, :prod))
     parse_env_vars.(Map.fetch!(env_files, :shared_prod))
-    _ ->
+  _ ->
     parse_env_vars.(Map.fetch!(env_files, :dev))
     parse_env_vars.(Map.fetch!(env_files, :shared))
 end
