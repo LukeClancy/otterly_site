@@ -1,0 +1,16 @@
+input_type: "yaml"
+output_type: "yaml"
+creation_rules:
+  # development and test share keys
+  - path_regex: vm/creds/(development|test)\.enc\.yaml$
+    age: age17yc2ct0x2sahtt09z9f9jceemdylwk5uhq5z3ttz7er7ktpgld3qcxrepm
+  # (shared should have both development and production public keys)
+  - path_regex: vm/creds/shared\.enc\.yaml$
+    age: age17yc2ct0x2sahtt09z9f9jceemdylwk5uhq5z3ttz7er7ktpgld3qcxrepm,age1zdzjy28jtt2gzz2fkf9yqq7jgh4elzc6gygusaya44jemqsypdeqcsfsvk
+  - path_regex: vm/creds/production\.enc\.yaml$
+    age: age1zdzjy28jtt2gzz2fkf9yqq7jgh4elzc6gygusaya44jemqsypdeqcsfsvk
+
+# keep track of whos is whos.
+#
+# luke: age17yc2ct0x2sahtt09z9f9jceemdylwk5uhq5z3ttz7er7ktpgld3qcxrepm, age1zdzjy28jtt2gzz2fkf9yqq7jgh4elzc6gygusaya44jemqsypdeqcsfsvk
+# yours: production, development

@@ -1,0 +1,23 @@
+secrets:
+  age_key:
+    file: ${HOME}/.config/sops/age/otterly/${PROJECT_ENV}.key
+
+services:
+  otterly:
+    image: otterly
+    build:
+      context: ..
+      dockerfile: ./vm/SiteDockerfile
+      target: ${PROJECT_ENV:?set to development, test, or production}
+    container_name: otterly
+    restart: unless-stopped
+    environment:
+      SOPS_AGE_KEY_FILE: /run/secrets/age_key
+    secrets:
+      - age_key
+    ports:
+      - "4000:4000"
+  caddy:
+    image: caddy
+    ports:
+      - "4001:4001"

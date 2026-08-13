@@ -1,0 +1,4 @@
+services:
+  otterly:
+    volumes:
+      - ..:/app

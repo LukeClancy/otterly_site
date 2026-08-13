@@ -1,0 +1,18 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+case "${1:-}" in
+	development|test|production)
+		export PROJECT_ENV=$1
+		shift
+		;;
+	*)
+		export PROJECT_ENV=development
+		;;
+esac
+
+files=(-f compose.yaml)
+[ "$PROJECT_ENV" != "production" ] && files+=(-f compose.dev.yaml)
+
+docker compose "${files[@]}" run --rm otterly "${@:-bash}"

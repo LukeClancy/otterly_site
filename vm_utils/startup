@@ -1,8 +1,0 @@
-#!/bin/bash
-
-source ~/.bashrc
-source ~/.profile
-source ~/shared.sh
-source ~/production.sh
-cd ~/$PROJECT_DIR
-MIX_ENV=prod mix phx.server
