@@ -36,6 +36,7 @@ npm-debug.log
 /assets/node_modules/
 
 # ignore compiled assets
+priv/static/
 /priv/static
 
 /assets/otterly/.git*

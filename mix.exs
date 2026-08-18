@@ -71,11 +71,13 @@ defmodule Otterly.MixProject do
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing", &npm_install/1],
       "assets.build": [
         "tailwind otterly",
-        "esbuild otterly"
+        "esbuild otterly",
+        &link_static_files/1
       ],
       "assets.deploy": [
         "tailwind otterly --minify",
         "esbuild otterly --minify",
+        &link_static_files/1,
         "phx.digest"
       ]
     ]
@@ -86,5 +88,28 @@ defmodule Otterly.MixProject do
   # `npm install` in assets/ to populate assets/node_modules.
   defp npm_install(_args) do
     {_, 0} = System.cmd("npm", ["install"], cd: "assets", into: IO.stream())
+  end
+
+  # assets/files/* (logos, favicon, ...) are plain static files, not run
+  # through esbuild - they just need to land under priv/static so Plug.Static
+  # (and `~p"/assets/files/..."`) can serve them. priv/static is a build
+  # artifact and isn't committed, so this has to run on every asset build.
+  # Symlinked (not copied) so edits under assets/files/ show up without
+  # rerunning the build. Each file is linked individually, rather than
+  # symlinking the whole `files` directory, so phx.digest's hashed output
+  # lands in priv/static and never gets written back into assets/files.
+  defp link_static_files(_args) do
+    File.mkdir_p!("priv/static/assets/files")
+
+    for name <- File.ls!("assets/files") do
+      symlink!("assets/files/#{name}", "priv/static/assets/files/#{name}")
+    end
+
+    symlink!("assets/files/favicon.ico", "priv/static/favicon.ico")
+  end
+
+  defp symlink!(target, link) do
+    if File.exists?(link), do: File.rm!(link)
+    File.ln_s!(target, link)
   end
 end

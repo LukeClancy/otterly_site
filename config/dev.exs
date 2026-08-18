@@ -11,20 +11,14 @@ import Config
 config :logger, :console, format: "[$level] $message\n"
 
 # Watch static and templates for browser reloading.
-config :otterly, AppWeb.Endpoint,
+config :otterly, OtterlyWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/(?!uploads/).*",
-      ~r"priv/static/.*",
-      ~r"priv/static/.*/.*",
-      ~r"priv/static/.*/.*/.*",
-      ~r"priv/static/.*/.*/.*/.*",
-      # < idfk it works why am i up, you go past this you deserve it
-      ~r"priv/static/.*/.*/.*/.*/.*",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/app_web/controllers/.*_html.(ex|exs)$",
-      ~r"lib/app_web/components/.*.(ex|exs)$",
-      ~r"lib/app_web/components/layouts/.*$"
+      ~r"lib/otterly_web/controllers/.*_html.(ex|exs)$",
+      ~r"lib/otterly_web/components/.*.(ex|exs)$",
+      ~r"lib/otterly_web/components/layouts/.*$"
     ]
   ]
 
