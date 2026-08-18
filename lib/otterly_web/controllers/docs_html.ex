@@ -18,7 +18,7 @@ defmodule OtterlyWeb.DocsHTML do
   end
 
   def get_docs_info(assigns) do
-    vers = Path.wildcard('assets/otterly/docs/*')
+    vers = Path.wildcard(~c"assets/otterly/docs/*")
     version = assigns.conn.path_params["v"]
 
     # For each docs version get:
@@ -30,84 +30,100 @@ defmodule OtterlyWeb.DocsHTML do
     # }
     #
     # version string, get version string as integer list, get path to the md file, and if selected.
-    #Then sort by version, and default to highest version.
-    vers = Enum.map(vers, fn path->
-      vstr = path |> split("/") |> at(-1)
-      vstr = vstr |> split(".md") |> at(0)
+    # Then sort by version, and default to highest version.
+    vers =
+      Enum.map(vers, fn path ->
+        vstr = path |> split("/") |> at(-1)
+        vstr = vstr |> split(".md") |> at(0)
 
-      #get numbers split by dots ass an array of ints.
-      vstr_ints = vstr |> split(".") |> Enum.map(fn i_str ->
-          try do
-            to_integer(i_str)
-          rescue
-            ArgumentError -> nil
+        # get numbers split by dots ass an array of ints.
+        vstr_ints =
+          vstr
+          |> split(".")
+          |> Enum.map(fn i_str ->
+            try do
+              to_integer(i_str)
+            rescue
+              ArgumentError -> nil
+            end
+          end)
+          |> Enum.filter(fn x -> x != nil end)
+
+        vstr_ints =
+          if vstr_ints do
+            vstr_ints
+          else
+            # when ordered w/ no version numbers, shunt to end
+            [-1]
           end
-        end)
-        |> Enum.filter(fn x -> x != nil end)
 
-      vstr_ints = case(vstr_ints) do
-        true -> vstr_ints
-        false -> [-1] # when ordered w/ no version numbers, shunt to end
+        %{
+          v: vstr,
+          vstr_ints: vstr_ints,
+          path: path,
+          selected: vstr == version
+        }
+      end)
+
+    # sort the versions by integer list
+    vers = sort_by(vers, & &1.vstr_ints, :desc)
+
+    # get the selected one, if no selected one, set the first one as selected
+    {version, vers} =
+      case find(vers, nil, & &1.selected) do
+        nil ->
+          first_v = vers |> at(0) |> put(:selected, true)
+          upd_vers = List.replace_at(vers, 0, first_v)
+          {first_v, upd_vers}
+
+        v_selected ->
+          {v_selected, vers}
       end
 
-      %{
-        v: vstr,
-        vstr_ints: vstr_ints,
-        path: path,
-        selected: vstr == version
-      }
-    end)
-
-    #sort the versions by integer list
-    vers = sort_by(vers, &(&1.vstr_ints), :desc)
-
-    #get the selected one, if no selected one, set the first one as selected
-    {version, vers} = case find(vers, nil, &(&1.selected)) do
-      nil ->
-        first_v = vers|>at(0)|>put(:selected, true)
-        upd_vers = vers |> List.replace_at(0, first_v)
-        {first_v, upd_vers}
-      v_selected -> {v_selected, vers}
-    end
-
-    #need the html, need the menu information. Menu information will be css selected out of the html.
-    #first get the html, make sure we can switch versions (at least kind-of) and then we will figure out
-    #backend selecting the headers and such. As we are currently doing this for a smaller doc, we can just get
-    #it all on one page. For more pages, we can select on whether its a folder or a file, but that will be someone
-    #elses deal, probably a future luke thing.
+    # need the html, need the menu information. Menu information will be css selected out of the html.
+    # first get the html, make sure we can switch versions (at least kind-of) and then we will figure out
+    # backend selecting the headers and such. As we are currently doing this for a smaller doc, we can just get
+    # it all on one page. For more pages, we can select on whether its a folder or a file, but that will be someone
+    # elses deal, probably a future luke thing.
     {:ok, contents} = File.read(version.path)
     html = MDEx.to_html!(contents, parse: [smart: true])
 
     {:ok, flok} = Floki.parse_fragment(html)
 
-    #id-erize headers.
-    flok = Floki.traverse_and_update(flok, fn h ->
-      {name, attr, children} = h
-      case name in ~W'h1 h2 h3 h4 h5 h6 h7' do
-        true ->
+    # id-erize headers.
+    flok =
+      Floki.traverse_and_update(flok, fn h ->
+        {name, attr, children} = h
+
+        if name in ~W'h1 h2 h3 h4 h5 h6 h7' do
           txt = get_text(children)
-          new_id = txt |> downcase(:default) |> trim |> String.replace(" ", "_")
+          new_id = txt |> downcase(:default) |> trim() |> String.replace(" ", "_")
           {name, [{"id", new_id} | attr], children}
-        _ -> h
-      end
-    end)
+        else
+          h
+        end
+      end)
 
-    flok = Floki.traverse_and_update(flok, fn h ->
-      case h do
-        {"ul", attr, child} -> {"ul", [{"class", "list-discer"} | attr], child}
-        x -> x
-      end
-    end)
+    flok =
+      Floki.traverse_and_update(flok, fn h ->
+        case h do
+          {"ul", attr, child} -> {"ul", [{"class", "list-discer"} | attr], child}
+          x -> x
+        end
+      end)
 
-    flok = Floki.traverse_and_update(flok, fn h ->
-      case h do
-        {"code", [{"class", x} | attrs], child} ->
-            {"code", [{"class", x}, {"data-language", x}, {'data-unit', 'Syntax'} | attrs], child}
-        _ -> h
-      end
-    end)
+    flok =
+      Floki.traverse_and_update(flok, fn h ->
+        case h do
+          {"code", [{"class", x} | attrs], child} ->
+            {"code", [{"class", x}, {"data-language", x}, {~c"data-unit", ~c"Syntax"} | attrs], child}
 
-    headers = flok |> Floki.find("h1, h2, h3, h4, h5, h6, h7, h8")
+          _ ->
+            h
+        end
+      end)
+
+    headers = Floki.find(flok, "h1, h2, h3, h4, h5, h6, h7, h8")
 
     raw = Floki.raw_html(flok)
 
@@ -119,15 +135,19 @@ defmodule OtterlyWeb.DocsHTML do
       ul do
         for m <- @assigns.docs_info.menu do
           {name, attrs, child} = m
-          claz = case name do
-            "h1" -> "ml-0"
-            "h2" -> "ml-2"
-            "h3" -> "ml-4"
-            "h4" -> "ml-6"
-            "h5" -> "ml-8"
-            "h6" -> "ml-10"
-          end
+
+          claz =
+            case name do
+              "h1" -> "ml-0"
+              "h2" -> "ml-2"
+              "h3" -> "ml-4"
+              "h4" -> "ml-6"
+              "h5" -> "ml-8"
+              "h6" -> "ml-10"
+            end
+
           [{"id", headerId} | _] = attrs
+
           li(class: claz) do
             a(href: "##{headerId}") do
               get_text(child)
@@ -137,6 +157,7 @@ defmodule OtterlyWeb.DocsHTML do
       end
     end
   end
+
   def docs(assigns) do
     assigns = Map.put(assigns, :docs_info, get_docs_info(assigns))
 
@@ -145,24 +166,35 @@ defmodule OtterlyWeb.DocsHTML do
         div(class: "col-span-4") do
           flash_group(assigns)
         end
-        div(id: "menu_contents", class: "bg-slate-300 rounded sticky top-5 max_h90vh")do #, data_unit: "Menu"
+
+        # , data_unit: "Menu"
+        div(id: "menu_contents", class: "bg-slate-300 rounded sticky top-5 max_h90vh") do
           div(class: "p-2") do
             span(class: "flex flex-wrap") do
               for v <- @docs_info.versions do
-                  c_def = "pr-2"
-                  classy = if(v.selected, do: c_def <> " underline", else: c_def)
+                c_def = "pr-2"
+                classy = if(v.selected, do: c_def <> " underline", else: c_def)
+
                 a(href: ~p"/docs/#{v.v}", class: classy) do
-                  h3 do: v.v
+                  h3(do: v.v)
                 end
               end
             end
-            c &menu/1, assigns: assigns
+
+            c(&menu/1, assigns: assigns)
           end
         end
-        div(class: "rounded p-2 md ", id: "content_area")do
+
+        div(class: "rounded p-2 md ", id: "content_area") do
           div(class: "inline-flex", data_on: "_parse->yeetNextTwoInside")
-          span(id: "expand_button", class: "mt-2 sm:mt-8 inline-block hero-play-solid sticky bg-slate-300 h-10 w-10 margin", data_on: 'click->toggle')
-           raw @docs_info.html
+
+          span(
+            id: "expand_button",
+            class: "mt-2 sm:mt-8 inline-block hero-play-solid sticky bg-slate-300 h-10 w-10 margin",
+            data_on: 'click->toggle'
+          )
+
+          raw(@docs_info.html)
         end
       end
     end

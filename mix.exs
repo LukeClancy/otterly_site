@@ -10,7 +10,7 @@ defmodule Otterly.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      compilers: [:temple] ++ Mix.compilers(),
+      compilers: [:temple] ++ Mix.compilers()
     ]
   end
 
@@ -42,16 +42,12 @@ defmodule Otterly.MixProject do
       {:phoenix_html, "~> 4.3"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_live_view, "~> 1.0"},
-      {:floki, "~> 0.0"}, #, only: :test
+      # , only: :test
+      {:floki, "~> 0.0"},
       {:phoenix_live_dashboard, "~> 0.9"},
       {:tailwind, "~> 0.0", runtime: Mix.env() == :dev},
       {:heroicons,
-       github: "tailwindlabs/heroicons",
-       tag: "v2.1.1",
-       sparse: "optimized",
-       app: false,
-       compile: false,
-       depth: 1},
+       github: "tailwindlabs/heroicons", tag: "v2.1.1", sparse: "optimized", app: false, compile: false, depth: 1},
       {:telemetry_metrics, "~> 0.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 1.0"},

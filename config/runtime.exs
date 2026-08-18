@@ -29,7 +29,7 @@ if config_env() == :prod do
 
   host = System.get_env("PHX_HOST") || "otterly.js"
   port = String.to_integer(System.get_env("PORT") || "443")
-  config :otterly, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
   config :otterly, AppWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
@@ -41,6 +41,8 @@ if config_env() == :prod do
       port: port
     ],
     secret_key_base: System.get_env("SECRET_KEY_BASE")
+
+  config :otterly, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
   # ## SSL Support
   #

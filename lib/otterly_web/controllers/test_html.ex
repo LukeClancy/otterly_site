@@ -1,5 +1,6 @@
 defmodule OtterlyWeb.TestHTML do
   use OtterlyWeb, :html
+
   def test(assigns) do
     ~H"""
       <div {%{data_unit: "AAA"}}></div>

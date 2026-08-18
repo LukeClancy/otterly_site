@@ -1,4 +1,5 @@
 defmodule OtterlyWeb.Components do
+  @moduledoc false
   use Temple.Component
 
   defmacro __using__(_) do

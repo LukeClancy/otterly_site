@@ -37,22 +37,23 @@ defmodule Otterly do
     IO.puts(res)
     IO.puts(res.device)
     IO.puts(res.device.type)
+
     if(res and res.device and res.device.type) do
       res.device.type
     else
-      'desktop'
+      ~c"desktop"
     end
   end
 
   def device_size(ua) do
     case device_type(ua) do
-      'mobile' -> 'small'
-      'tablet' -> 'medium'
-      _ -> 'large'
+      ~c"mobile" -> ~c"small"
+      ~c"tablet" -> ~c"medium"
+      _ -> ~c"large"
     end
   end
 
   def small?(ua) do
-    device_size(ua) == 'small'
+    device_size(ua) == ~c"small"
   end
 end
