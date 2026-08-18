@@ -34,20 +34,17 @@ defmodule Otterly.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:earmark, "~> 1.4.46"},
-      {:ua_inspector, "~> 3.0"},
-      {:ecto, "~> 3.11.2"},
+      {:ecto, "~> 3.0"},
       {:temple_phoenix, "~> 0.1"},
-      {:temple, "~> 0.12"},
-      {:surrealix, "~> 0.1.8"},
-      {:bun, "~> 1.1", runtime: Mix.env() == :dev},
-      {:phoenix, "~> 1.7.11"},
-      {:phoenix_html, "~> 3.2"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.20.2"},
-      {:floki, ">= 0.30.0"}, #, only: :test
-      {:phoenix_live_dashboard, "~> 0.8.3"},
-      {:tailwind, "~> 0.2.3", runtime: Mix.env() == :dev},
+      {:temple, "~> 0.14"},
+      {:bun, "~> 1.0", runtime: Mix.env() == :dev},
+      {:phoenix, "~> 1.8"},
+      {:phoenix_html, "~> 4.3"},
+      {:phoenix_live_reload, "~> 1.0", only: :dev},
+      {:phoenix_live_view, "~> 1.0"},
+      {:floki, "~> 0.0"}, #, only: :test
+      {:phoenix_live_dashboard, "~> 0.9"},
+      {:tailwind, "~> 0.0", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
@@ -55,12 +52,14 @@ defmodule Otterly.MixProject do
        app: false,
        compile: false,
        depth: 1},
-      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_metrics, "~> 0.0"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.20"},
-      {:jason, "~> 1.2"},
-      {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.2"}
+      {:gettext, "~> 1.0"},
+      {:jason, "~> 1.0"},
+      {:dns_cluster, "~> 0.2"},
+      {:bandit, "~> 1.0"},
+      {:mdex, "~> 0.13"},
+      {:styler, "~> 1.12"}
     ]
   end
 
@@ -81,7 +80,7 @@ defmodule Otterly.MixProject do
       "assets.deploy": [
         "tailwind otterly --minify",
         "bun otterly --minify",
-        "phx.digest",
+        "phx.digest"
       ]
     ]
   end

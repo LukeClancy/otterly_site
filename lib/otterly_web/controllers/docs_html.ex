@@ -20,44 +20,46 @@ defmodule OtterlyWeb.DocsHTML do
   def get_docs_info(assigns) do
     vers = Path.wildcard('assets/otterly/docs/*')
     version = assigns.conn.path_params["v"]
-    IO.inspect assigns
-    IO.inspect(version)
 
-    #get version string, get version string as integer list, get path to the md file, and if selected.
+    # For each docs version get:
+    # %{
+    #   v: [version string vstr],
+    #   vis: [version string as integer list vstr_ints ( [-1] for not a version e.g. change-log.md )],
+    #   path: [path to version v],
+    #   selected: vstr == version
+    # }
+    #
+    # version string, get version string as integer list, get path to the md file, and if selected.
     #Then sort by version, and default to highest version.
-    vers = Enum.map(vers, fn v ->
-      vstr = v |> split("/") |> at(-1)
+    vers = Enum.map(vers, fn path->
+      vstr = path |> split("/") |> at(-1)
+      vstr = vstr |> split(".md") |> at(0)
 
       #get numbers split by dots ass an array of ints.
-      vis = vstr |> split(".") |> Enum.map(fn i_str ->
+      vstr_ints = vstr |> split(".") |> Enum.map(fn i_str ->
           try do
             to_integer(i_str)
           rescue
             ArgumentError -> nil
           end
-        end) |> Enum.filter(fn x -> x != nil end)
+        end)
+        |> Enum.filter(fn x -> x != nil end)
 
-      #make sure any that are not versions just get shunted to the end.
-      #also - we can select on if the version integers = [-1] for if its
-      #not a version.
-
-      vis = case (any?(vis)) do
-        true -> vis
-        false -> [-1]
+      vstr_ints = case(vstr_ints) do
+        true -> vstr_ints
+        false -> [-1] # when ordered w/ no version numbers, shunt to end
       end
-
-      vstr = vstr |> split(".md") |> at(0)
 
       %{
         v: vstr,
-        vis: vis,
-        path: v,
+        vstr_ints: vstr_ints,
+        path: path,
         selected: vstr == version
       }
     end)
 
     #sort the versions by integer list
-    vers = sort_by(vers, &(&1.vis), :desc)
+    vers = sort_by(vers, &(&1.vstr_ints), :desc)
 
     #get the selected one, if no selected one, set the first one as selected
     {version, vers} = case find(vers, nil, &(&1.selected)) do
@@ -74,7 +76,7 @@ defmodule OtterlyWeb.DocsHTML do
     #it all on one page. For more pages, we can select on whether its a folder or a file, but that will be someone
     #elses deal, probably a future luke thing.
     {:ok, contents} = File.read(version.path)
-    html = Earmark.as_html!(contents, %Earmark.Options{smartypants: true})
+    html = MDEx.to_html!(contents, parse: [smart: true])
 
     {:ok, flok} = Floki.parse_fragment(html)
 

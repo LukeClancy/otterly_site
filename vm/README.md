@@ -2,19 +2,27 @@
 
 This docker compose.yaml starts up:
   1. the elixir website
-  2. a caddy server for figuring out ssh and https 
+  2. a caddy server for figuring out ssh and https
+
+Warning: quite a bit of this was generated with claude. Not vibe-coded but pretty close
 
 ## Day-to-day Work
 
 One of the goals here is to not have to install anything locally on your computer other than docker / docker desktop, and the credential software. As such all development and tests go through docker. Development and test bind-mount the project's file system into the container; production runs a prebuilt image pulled from a registry, no source on the VM at all.
 
-under vm/bin you will see some premade scripts
+### Accessing VM
+Under vm/bin you will see some premade scripts
 
-dev: starts the dev otterly server (`docker compose -f compose.yaml -f compose.dev.yaml up`, bind-mounted source)
-exec [cmd]: runs cmd inside the already-running otterly container (`docker compose exec`). Errors if nothing is running. No cmd drops to a shell.
-run [env] [cmd]: runs cmd in a fresh one-off container for env (development/test/production, default development), no server started, container removed after. No cmd drops to a shell.
+dev: starts the dev otterly server (`docker compose -f compose.yaml -f compose.dev.yaml up`, with the project directory shared through a bount mount.)
+exec [cmd]: runs cmd inside an already-running otterly container (`docker compose exec`). Errors if nothing is running. No cmd drops to a shell.
+run [?env] [cmd]: runs cmd in the currently running container IF it is of the same environment. Otherwise starts a fresh one-off container for that environment (development/test/production/premix, default development). No cmd drops to a shell. This one will likely be used more than exec.
 test [opts]: runs `mix test` in a fresh container, forwarding opts
 prod [--start]: builds the production image and pushes it to the registry. With --start, also runs it (`docker compose up`)
+
+### Shims
+
+Pointing your $PATH at vm/bin/shims you will be able to call these commands whenever you are within the project directory (without having to do ./vm/bin/...).
+A mix and iex shim were also added which runs the cammand using vm/bin/run. `mix test` should just use `test` or `mix test test` (the first one sets the environment in run). The tradeoff with docker is there is no automatic environment switching in mix, its all explicit. 
 
 ## Updating Docker Image
 
@@ -44,6 +52,7 @@ Credentials are encrypted with [sops](https://getsops.io/docs/usage/key-manageme
 age-keygen -o ~/.config/sops/age/otterly/development.key
 age-keygen -o ~/.config/sops/age/otterly/production.key
 ln -s ~/.config/sops/age/otterly/development.key ~/.config/sops/age/otterly/test.key
+ln -s ~/.config/sops/age/otterly/development.key ~/.config/sops/age/otterly/premix.key
 ```
 
 Once you have completed the above, go to .sops.yaml and add the public keys into the appropriate locations,

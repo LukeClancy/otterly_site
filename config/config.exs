@@ -6,52 +6,6 @@
 
 # General application configuration
 import Config
-require Logger
-
-parse_env_vars = fn (filename) ->
-  {:ok, txt} = File.read(filename)
-  System.put_env(
-    String.splitter(txt, "\n", trim: true) |>
-    #remove comments and whitespace
-    Enum.map(&String.trim/1) |>
-    Enum.filter(fn z -> !(String.at(z,0) == "#") && String.contains?(z , "=") end) |>
-    #get the key and the value
-    Enum.map(fn z ->
-      #do nothing on failing bad format
-      try do
-        [k,v] = String.split(z, "=", parts: 2)
-        #trimmmmm
-        k = String.trim k
-        v = String.trim v
-        #remove any quotes
-        v = case (String.at(v, 0) == "'" and String.at(v,-1) == "'") or (String.at(v, 0) == "\"" and String.at(v,-1) == "\"") do
-          true -> String.slice(v, 1..-2)
-          false -> v
-        end
-        {k,v}
-      rescue RuntimeError -> false
-        Logger.warning("ENV file line failed: #{z}")
-      end
-    end) |>
-    Enum.filter(fn z -> z != false end)
-  )
-end
-
-env_files = %{
-  test:   "private/development.sh",
-  dev:   "private/development.sh",
-  shared: "private/shared.sh",
-  prod:  "/home/luke/production.sh",
-  shared_prod:  "/home/luke/shared.sh",
-}
-case config_env() do
-  :prod ->
-    parse_env_vars.(Map.fetch!(env_files, :prod))
-    parse_env_vars.(Map.fetch!(env_files, :shared_prod))
-    _ ->
-    parse_env_vars.(Map.fetch!(env_files, :dev))
-    parse_env_vars.(Map.fetch!(env_files, :shared))
-end
 
 #config :bun,
 #  ./bundling.js: [
@@ -126,8 +80,8 @@ config :surrealix, :conn,
   hostname: "0.0.0.0",
   port: 8000
 
-remote_database = "https://raw.githubusercontent.com/matomo-org/device-detector/6.3.0/regexes"
-remote_shortcode = "https://raw.githubusercontent.com/matomo-org/device-detector/6.3.0"
+# remote_database = "https://raw.githubusercontent.com/matomo-org/device-detector/6.3.0/regexes"
+# remote_shortcode = "https://raw.githubusercontent.com/matomo-org/device-detector/6.3.0"
 
 config :phoenix, :template_engines, exs: Temple.Engine
 

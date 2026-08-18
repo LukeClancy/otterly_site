@@ -2,9 +2,9 @@ defmodule OtterlyWeb.HomeHTML do
   use OtterlyWeb, :html
 
   def whitespace_responsive_code(codetype, code) do
-    {:ok, b, _} = Earmark.as_html("```#{codetype}
+    {:ok, b} = MDEx.to_html("```#{codetype}
 #{code}
-```", %Earmark.Options{smartypants: true})
+```", parse: [smart: true])
     temple do
       raw( replace(b, "<code", "<code data-language=\"#{codetype}\" data-unit=\"Syntax\"") )
     end
