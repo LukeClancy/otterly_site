@@ -7,17 +7,11 @@
 # General application configuration
 import Config
 
-# config :bun,
-#  ./bundling.js: [
-#    args: ~w(js/app.js --outdir=../priv/static/assets),
-#    cd: Path.expand("../assets", __DIR__),
-#    env: %{"ENV_VAR" => "value"}
-#  ]
-
-config :bun,
-  version: "1.1.12",
+config :esbuild,
+  version: "0.28.2",
   otterly: [
-    args: ~w(_build/bun bundling.js),
+    args: ~w(app.js --bundle --target=es2022 --outdir=../priv/static/assets),
+    cd: Path.expand("../assets", __DIR__),
     env: %{"ENVIROMENT_IS" => Atom.to_string(config_env())}
   ]
 

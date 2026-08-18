@@ -37,10 +37,10 @@ config :otterly, OtterlyWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "Vpo/Io3lYHAvPK1uvfuBeuTwnF0B0isQRMU1bvDfhtwMzj/0w2mOiPMqAm3DgvfL",
   watchers: [
-    # see config.exs and the /deps folder, also deps/bun/lib/bun.ex
+    # see config.exs and the /deps folder, also deps/esbuild/lib/esbuild.ex
     # config_name: {dep module, dep module method, [config profile, additional code for our config profile]}
     tailwind: {Tailwind, :install_and_run, [:otterly, ~w(--watch)]},
-    bun: {Bun, :install_and_run, [:otterly, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:otterly, ~w(--watch)]}
   ]
 
 config :otterly, Repo,

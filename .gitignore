@@ -35,6 +35,9 @@ app-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# ignore compiled assets
+/priv/static
+
 /assets/otterly/.git*
 /assets/otterly/node_modules
 

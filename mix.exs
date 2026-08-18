@@ -10,7 +10,8 @@ defmodule Otterly.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      compilers: [:temple] ++ Mix.compilers()
+      compilers: [:temple] ++ Mix.compilers(),
+      listeners: [Phoenix.CodeReloader]
     ]
   end
 
@@ -36,7 +37,7 @@ defmodule Otterly.MixProject do
       {:ecto, "~> 3.0"},
       {:temple_phoenix, "~> 0.1"},
       {:temple, "~> 0.14"},
-      {:bun, "~> 2.0", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
       {:phoenix, "~> 1.8"},
       {:phoenix_html, "~> 4.3"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
@@ -67,16 +68,23 @@ defmodule Otterly.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "assets.setup", "assets.deploy"],
-      "assets.setup": ["tailwind.install --if-missing"],
+      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing", &npm_install/1],
       "assets.build": [
         "tailwind otterly",
-        "bun otterly"
+        "esbuild otterly"
       ],
       "assets.deploy": [
         "tailwind otterly --minify",
-        "bun otterly --minify",
+        "esbuild otterly --minify",
         "phx.digest"
       ]
     ]
+  end
+
+  # esbuild only bundles what's already on disk - highlight.js, morphdom, and
+  # @ungap/custom-elements are real npm packages, so they still need a plain
+  # `npm install` in assets/ to populate assets/node_modules.
+  defp npm_install(_args) do
+    {_, 0} = System.cmd("npm", ["install"], cd: "assets", into: IO.stream())
   end
 end
