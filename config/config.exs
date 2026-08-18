@@ -53,15 +53,15 @@ config :otterly, generators: [timestamp_type: :utc_datetime]
 config :phoenix, :json_library, Jason
 config :phoenix, :template_engines, exs: Temple.Engine
 
-# default 5000
-config :surrealix, :conn,
-  hostname: "0.0.0.0",
-  port: 8000
+# # default 5000
+# config :surrealix, :conn,
+#   hostname: "0.0.0.0",
+#   port: 8000
 
-## in config.exs / runtime.exs file
-config :surrealix, backoff_max: 2000
-config :surrealix, backoff_step: 50
-config :surrealix, timeout: :infinity
+# ## in config.exs / runtime.exs file
+# config :surrealix, backoff_max: 2000
+# config :surrealix, backoff_step: 50
+# config :surrealix, timeout: :infinity
 
 # live_view: [signing_salt: "qLluRZM4"]
 
@@ -88,24 +88,6 @@ config :temple,
     select: :select_tag,
     textarea: :textarea_tag
   ]
-
-# config :ua_inspector,
-#   database_path: Application.app_dir(:otterly, ["priv", "uadbs"]),
-#   http_opts: [],
-#   remote_path: [
-#     bot: remote_database,
-#     browser_engine: remote_database <> "/client",
-#     client: remote_database <> "/client",
-#     client_hints: remote_database <> "/client/hints",
-#     device: remote_database <> "/device",
-#     os: remote_database,
-#     short_code_map: remote_shortcode,
-#     vendor_fragment: remote_database
-#   ],
-#   remote_release: "6.3.0",
-#   startup_silent: false,
-#   startup_sync: true,
-#   yaml_file_reader: {:yamerl_constr, :file, [[:str_node_as_binary]]}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

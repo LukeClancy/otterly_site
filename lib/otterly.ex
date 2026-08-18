@@ -7,7 +7,6 @@ defmodule Otterly do
   @impl true
   def start(_type, _args) do
     children = [
-      UAInspector.Supervisor,
       OtterlyWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:otterly, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Otterly.PubSub},
@@ -30,30 +29,5 @@ defmodule Otterly do
   def config_change(changed, _new, removed) do
     OtterlyWeb.Endpoint.config_change(changed, removed)
     :ok
-  end
-
-  def device_type(ua) do
-    res = UAInspector.parse(ua)
-    IO.puts(res)
-    IO.puts(res.device)
-    IO.puts(res.device.type)
-
-    if(res and res.device and res.device.type) do
-      res.device.type
-    else
-      ~c"desktop"
-    end
-  end
-
-  def device_size(ua) do
-    case device_type(ua) do
-      ~c"mobile" -> ~c"small"
-      ~c"tablet" -> ~c"medium"
-      _ -> ~c"large"
-    end
-  end
-
-  def small?(ua) do
-    device_size(ua) == ~c"small"
   end
 end

@@ -20,7 +20,6 @@ defmodule Otterly.MixProject do
   def application do
     [
       mod: {Otterly, []},
-      included_applications: [:ua_inspector],
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -37,7 +36,7 @@ defmodule Otterly.MixProject do
       {:ecto, "~> 3.0"},
       {:temple_phoenix, "~> 0.1"},
       {:temple, "~> 0.14"},
-      {:bun, "~> 1.0", runtime: Mix.env() == :dev},
+      {:bun, "~> 2.0", runtime: Mix.env() == :dev},
       {:phoenix, "~> 1.8"},
       {:phoenix_html, "~> 4.3"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
@@ -55,7 +54,7 @@ defmodule Otterly.MixProject do
       {:dns_cluster, "~> 0.2"},
       {:bandit, "~> 1.0"},
       {:mdex, "~> 0.13"},
-      {:styler, "~> 1.12"}
+      {:styler, "~> 1.12", runtime: Mix.env() == :dev}
     ]
   end
 
@@ -67,7 +66,7 @@ defmodule Otterly.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "assets.setup", "assets.deploy", "ua_inspector.download"],
+      setup: ["deps.get", "assets.setup", "assets.deploy"],
       "assets.setup": ["tailwind.install --if-missing"],
       "assets.build": [
         "tailwind otterly",

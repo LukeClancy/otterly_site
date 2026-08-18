@@ -10,7 +10,7 @@ defmodule OtterlyWeb.Layouts do
         head do
           meta(charset: "utf-8")
           meta(name: "viewport", content: "width=device-width, initial-scale=1")
-          meta(itemprop: :image, src: ~p"/assets/files/logo2.png", alt: 'otterlyjs')
+          meta(itemprop: :image, src: ~p"/assets/files/logo2.png", alt: "otterlyjs")
           meta(name: "csrf-token", content: get_csrf_token())
 
           title do
@@ -58,11 +58,11 @@ defmodule OtterlyWeb.Layouts do
 
           span(class: "flex items-center font-semibold leading-6 text-zinc-900") do
             a(href: "https://github.com/LukeClancy/otterly", class: "hover:text-zinc-700 ml-4") do
-              img(src: ~p"/assets/files/github-logo.png", width: '30')
+              img(src: ~p"/assets/files/github-logo.png", width: "30")
             end
 
             a(href: "https://www.linkedin.com/in/luke-t-clancy", class: "hover:text-zinc-700 ml-4") do
-              img(src: ~p"/assets/files/linkedin.png", width: '30')
+              img(src: ~p"/assets/files/linkedin.png", width: "30")
             end
 
             a(href: "https://www.phoenixframework.org/") do

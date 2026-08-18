@@ -191,7 +191,7 @@ defmodule OtterlyWeb.DocsHTML do
           span(
             id: "expand_button",
             class: "mt-2 sm:mt-8 inline-block hero-play-solid sticky bg-slate-300 h-10 w-10 margin",
-            data_on: 'click->toggle'
+            data_on: "click->toggle"
           )
 
           raw(@docs_info.html)

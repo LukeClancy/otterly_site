@@ -49,7 +49,7 @@ defmodule OtterlyWeb do
         formats: [:html, :json],
         layouts: [html: OtterlyWeb.Layouts]
 
-      import OtterlyWeb.Gettext
+      use Gettext, backend: OtterlyWeb.Gettext
       import Plug.Conn
 
       unquote(verified_routes())
@@ -108,7 +108,7 @@ defmodule OtterlyWeb do
     quote do
       # Core UI components and translation
       import OtterlyWeb.CoreComponents
-      import OtterlyWeb.Gettext
+      use Gettext, backend: OtterlyWeb.Gettext
       # HTML escaping functionality
       import Phoenix.HTML
 

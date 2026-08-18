@@ -16,7 +16,7 @@ defmodule OtterlyWeb.CoreComponents do
   """
   use Phoenix.Component
 
-  import OtterlyWeb.Gettext
+  use Gettext, backend: OtterlyWeb.Gettext
 
   alias Phoenix.HTML.FormField
   alias Phoenix.LiveView.JS

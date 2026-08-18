@@ -20,5 +20,5 @@ defmodule OtterlyWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :otterly
+  use Gettext.Backend, otp_app: :otterly
 end
