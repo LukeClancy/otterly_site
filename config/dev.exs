@@ -34,7 +34,12 @@ config :otterly, OtterlyWeb.Endpoint,
     # see config.exs and the /deps folder, also deps/esbuild/lib/esbuild.ex
     # config_name: {dep module, dep module method, [config profile, additional code for our config profile]}
     tailwind: {Tailwind, :install_and_run, [:otterly, ~w(--watch)]},
-    esbuild: {Esbuild, :install_and_run, [:otterly, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:otterly, ~w(--watch)]},
+    # links assets/files/* into priv/static so `mix phx.server` alone (with
+    # no separate `mix assets.deploy`) still serves images/favicon. Runs
+    # once at boot and returns - Phoenix's watcher supervisor is `:transient`
+    # so a watcher that finishes normally is left alone, not restarted.
+    link_static: {Otterly.MixProject, :link_static_files, [nil]}
   ]
 
 config :otterly, Repo,

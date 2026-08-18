@@ -67,7 +67,10 @@ defmodule Otterly.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "assets.setup", "assets.deploy"],
+      setup: ["deps.get",
+        "assets.setup",
+        "assets.deploy"
+      ],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing", &npm_install/1],
       "assets.build": [
         "tailwind otterly",
@@ -98,7 +101,12 @@ defmodule Otterly.MixProject do
   # rerunning the build. Each file is linked individually, rather than
   # symlinking the whole `files` directory, so phx.digest's hashed output
   # lands in priv/static and never gets written back into assets/files.
-  defp link_static_files(_args) do
+  # Public (and takes an ignored arg) so it can also be dropped straight into
+  # `mix phx.server`'s watchers list - see config/dev.exs. The watchers there
+  # only run `tailwind --watch` / `esbuild --watch` directly; they never go
+  # through this "assets.build"/"assets.deploy" alias, so without a watcher
+  # entry `phx.server` alone would never link the static files.
+  def link_static_files(_args) do
     File.mkdir_p!("priv/static/assets/files")
 
     for name <- File.ls!("assets/files") do
@@ -108,8 +116,12 @@ defmodule Otterly.MixProject do
     symlink!("assets/files/favicon.ico", "priv/static/favicon.ico")
   end
 
+  # `target` is resolved to an absolute path before linking: a symlink's
+  # relative target is resolved against the symlink's own directory (not the
+  # cwd it's created from), so a bare relative path here would point at the
+  # wrong spot depending on how deep `link` is nested.
   defp symlink!(target, link) do
-    if File.exists?(link), do: File.rm!(link)
-    File.ln_s!(target, link)
+    if match?({:ok, _}, File.read_link(link)) or File.exists?(link), do: File.rm!(link)
+    File.ln_s!(Path.expand(target), link)
   end
 end
