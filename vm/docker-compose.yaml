@@ -1,0 +1,17 @@
+services:
+  otterly_site:
+    # named explicitly so `docker compose build` gives a deterministic tag to
+    # re-tag/push from, regardless of the compose project name - see
+    # utils/build_production_image.sh
+    image: cachyserver:5000/otterly:${PROJECT_ENV:?set to premix, development or production}
+    build:
+      context: ..
+      dockerfile: vm/Dockerfile
+      target: ${PROJECT_ENV:?set to premix, development or production}
+    ports:
+      - "4000:4000"
+    volumes :
+      - ..:/app
+    environment:
+      # see utils/setup.sh and devcontainer.json
+      SOPS_AGE_KEY: ${SOPS_AGE_KEY}

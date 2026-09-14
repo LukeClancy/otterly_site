@@ -23,9 +23,9 @@ config :otterly, OtterlyWeb.Endpoint,
   ]
 
 config :otterly, OtterlyWeb.Endpoint,
-  # Binding to loopback ipv4 address prevents access from other machines.
-  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  # Bind to all interfaces so the port mapping in vm/docker-compose.yaml
+  # can actually reach the app from the host.
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -42,13 +42,13 @@ config :otterly, OtterlyWeb.Endpoint,
     link_static: {Otterly.MixProject, :link_static_files, [nil]}
   ]
 
-config :otterly, Repo,
-  database: "default",
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  # OR use a URL to connect instead
-  url: "postgres://postgres:postgres@localhost/ecto_simple"
+# config :otterly, Repo,
+#   database: "default",
+#   username: "postgres",
+#   password: "postgres",
+#   hostname: "localhost",
+#   # OR use a URL to connect instead
+#   url: "postgres://postgres:postgres@localhost/ecto_simple"
 
 # Enable dev routes for dashboard and mailbox
 config :otterly, dev_routes: true

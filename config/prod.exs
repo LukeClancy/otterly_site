@@ -12,23 +12,59 @@ config :logger, level: :info
 # of environment variables, is done on config/runtime.exs.
 # Binding to loopback ipv4 address prevents access from other machines.
 # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-#
-config :otterly, AppWeb.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
 
 config :otterly, OtterlyWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: false,
   debug_errors: false,
-  secret_key_base: System.get_env("SECRET_KEY_BASE")
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
+  cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :otterly, Repo,
-  database: "default",
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  # OR use a URL to connect instead
-  url: "postgres://postgres:postgres@localhost/ecto_simple"
+# config :otterly, Repo,
+#   database: "default",
+#   username: "postgres",
+#   password: "postgres",
+#   hostname: "localhost",
+#   # OR use a URL to connect instead
+#   url: "postgres://postgres:postgres@localhost/ecto_simple"
 
-# Enable dev routes for dashboard and mailbox
+# Disable dev routes
 config :otterly, dev_routes: false
+
+# Initialize plugs at runtime for faster test compilation
+config :phoenix, :plug_init_mode, :runtime
+
+  # config :otterly, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
+  # ## SSL Support
+  #
+  # To get SSL working, you will need to add the `https` key
+  # to your endpoint configuration:
+  #
+  #     config :otterly, AppWeb.Endpoint,
+  #       https: [
+  #         ...,
+  #         port: 443,
+  #         cipher_suite: :strong,
+  #         keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
+  #         certfile: System.get_env("SOME_APP_SSL_CERT_PATH")
+  #       ]
+  #
+  # The `cipher_suite` is set to `:strong` to support only the
+  # latest and more secure SSL ciphers. This means old browsers
+  # and clients may not be supported. You can set it to
+  # `:compatible` for wider support.
+  #
+  # `:keyfile` and `:certfile` expect an absolute path to the key
+  # and cert in disk or a relative path inside priv, for example
+  # "priv/ssl/server.key". For all supported SSL configuration
+  # options, see https://hexdocs.pm/plug/Plug.SSL.html#configure/1
+  #
+  # We also recommend setting `force_ssl` in your config/prod.exs,
+  # ensuring no data is ever sent via http, always redirecting to https:
+  #
+  #     config :otterly, AppWeb.Endpoint,
+  #       force_ssl: [hsts: true]
+  #
+  # Check `Plug.SSL` for all available options in `force_ssl`.

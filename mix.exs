@@ -37,15 +37,14 @@ defmodule Otterly.MixProject do
       {:ecto, "~> 3.0"},
       {:temple_phoenix, "~> 0.1"},
       {:temple, "~> 0.14"},
-      {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.10"}, # , only: :dev
       {:phoenix, "~> 1.8"},
       {:phoenix_html, "~> 4.3"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
+      {:phoenix_live_reload, "~> 1.0"}, # , only: :dev
       {:phoenix_live_view, "~> 1.0"},
-      # , only: :test
       {:floki, "~> 0.0"},
       {:phoenix_live_dashboard, "~> 0.9"},
-      {:tailwind, "~> 0.0", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.0"}, # , only: :dev
       {:heroicons,
        github: "tailwindlabs/heroicons", tag: "v2.1.1", sparse: "optimized", app: false, compile: false, depth: 1},
       {:telemetry_metrics, "~> 0.0"},
@@ -55,7 +54,7 @@ defmodule Otterly.MixProject do
       {:dns_cluster, "~> 0.2"},
       {:bandit, "~> 1.0"},
       {:mdex, "~> 0.13"},
-      {:styler, "~> 1.12", runtime: Mix.env() == :dev}
+      {:styler, "~> 1.12"} # , only: :dev
     ]
   end
 

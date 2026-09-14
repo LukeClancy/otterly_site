@@ -91,7 +91,7 @@ defmodule OtterlyWeb.Layouts do
         end
 
         player_url = "https://w.soundcloud.com/player?"
-        song_url = "https://soundcloud.com/lofi_girl/sets/best-of-lofi-2023" <> URI.encode_query(%{})
+        song_url = "https://soundcloud.com/lofi_girl" <> URI.encode_query(%{})
 
         uri =
           player_url <>
@@ -106,8 +106,13 @@ defmodule OtterlyWeb.Layouts do
         h = "150"
         div(class: "a-box")
 
-        footer do
-          div(display: "flex") do
+        footer(data_unit: "Footer") do
+          div(class: "float-right") do
+            div(class: "bg-gray-100 w-full px-3 py-2 flex") do
+              p(class: "text-xs text-gray-400", do: "Single Page App - will continue playing on page changes")
+              button(class: "text-xs text-gray-400 hover:text-gray-600 ml-auto",
+                data_on: "click->removeFooter", do: "x")
+            end
             iframe(class: "player", height: h, scrolling: "no", frameborder: "no", allow: "autoplay", src: uri)
           end
         end

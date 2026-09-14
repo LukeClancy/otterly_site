@@ -10,7 +10,7 @@ import Config
 config :esbuild,
   version: "0.28.2",
   otterly: [
-    args: ~w(app.js --bundle --target=es2022 --outdir=../priv/static/assets),
+    args: ~w(app.js --sourcemap --bundle --target=es2022 --outdir=../priv/static/assets),
     cd: Path.expand("../assets", __DIR__),
     env: %{"ENVIROMENT_IS" => Atom.to_string(config_env())}
   ]

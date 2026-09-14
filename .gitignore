@@ -45,3 +45,5 @@ priv/static/
 node_modules
 
 private
+
+vm/.env

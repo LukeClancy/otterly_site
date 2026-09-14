@@ -1,5 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-cd "$(dirname "$0")/.."
-
-PROJECT_ENV=test docker compose -f compose.yaml -f compose.dev.yaml run --rm otterly mix test "$@"

@@ -1,22 +1,28 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
-	"name": "OtterlySite Dev",
-	"build": {
-		// Sets the run context to one level up instead of the .devcontainer folder.
-		"context": "..",
-		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-		"dockerfile": "../Dockerfile"
-	},
+	"name": "otterly_site",
+	"dockerComposeFile": ["../vm/docker-compose.yaml"],
+	"service": "otterly_site",
+	"shutdownAction": "stopCompose",
+	"workspaceFolder": "/app",
+	"forwardPorts": [ 4000 ],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [
-		4000,
-		4000
+	
+	// Runs on host before container start. Writes SOPS_AGE_KEY to vm/.env,
+	// which docker-compose auto-loads for ${SOPS_AGE_KEY} interpolation.
+	"initializeCommand": "./vm/utils/startup.sh",
+
+	// Give claude some memory
+	"mounts": [
+		"source=${localEnv:HOME}/.claude,target=/root/.claude,type=bind"
 	],
+	"containerEnv": {
+		"CLAUDE_CONFIG_DIR": "/root/.claude"
+	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -27,10 +33,4 @@
 			]
 		}
 	}
-
-	// Uncomment the next line to run commands after the container is created.
-	// "postCreateCommand": "cat /etc/os-release",
-
-	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "devcontainer"
 }
