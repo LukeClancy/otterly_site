@@ -12,7 +12,7 @@ One of the goals here is to not have to install anything locally on your compute
 
 ### Accessing VM
 
-1. install docker & docker desktop, start the systemctl service. 
+1. install docker & docker desktop, start the systemctl service.
 2. add the "Remote Development" extension to vs-code
 3. ctrl+shift+p -> open in remote container
 
@@ -23,6 +23,7 @@ see under vm/utils/push_production.sh
 - need tailscale access to cachyserver
 - server needs a publicly accessible port, see cloudflare tunnels
 - server needs a tailscale accessible (not public) docker registry.
+  - Add `"insecure-registries": ["cachyserver:5000"]` into docker's daemon.json. For me this was in ~/.docker but might also be in /etc/docker. At some point we may want to update out of "insecure", but the port should only be over tailscale so I am not too worried.
   - list images on the registry: http://cachyserver:5000/v2/_catalog or use utils/list_images.sh which claude spat out
   - Garbage collect: do after pushing - `docker exec -it -u root lukes_registry bin/registry garbage-collect --delete-untagged /etc/docker/registry/config.yml` This should delete previous images as only 1 combo of tags allowed at a time (I think, something like that) [link](https://stackoverflow.com/questions/45046752/docker-registry-garbage-collection)
 

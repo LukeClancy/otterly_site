@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# serve: container entrypoint. Decrypt creds at start, drop them into the
+# shell rc files so `docker exec` shells get them too, then run the server.
+
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+
+# `export KEY="value"` lines; a failed decrypt aborts here (set -e).
+out="$(vm/utils/export_env "${1:-development}")"
+
+printf '%s\n' "$out" | tee -a /root/.bashrc >> /root/.profile
+eval "$out"
+
+exec mix phx.server

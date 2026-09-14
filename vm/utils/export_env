@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# decrypts sops-encrypted creds and prints their keys (including nested
+# ones) as `export KEY=value` lines, for `eval "$(export_env <env>)"`.
+
+set -euo pipefail
+
+# Anchor at the repo root; creds paths below are relative to it.
+cd "$(dirname "$0")/../.."
+
+# Decrypt one creds file and emit its keys as `export` lines. A failed
+# decrypt aborts (set -e) instead of silently emitting nothing, which
+# previously let the app boot with no SECRET_KEY_BASE.
+print_yaml_env_vars() {
+	local decrypted
+	local file
+	decrypted="$(sops decrypt "$1")" || {
+		echo "export_env: failed to decrypt $1 (is SOPS_AGE_KEY (len ${#SOPS_AGE_KEY}) set correctly?)" >&2
+		exit 1
+	}
+	vm/utils/parse_yaml <(printf '%s\n' "$decrypted") | sed 's/^/export /'
+}
+
+# Decrypts shared.enc.yaml then <project_env>.enc.yaml, emitting both
+# (env-specific values override shared ones).
+decrypt_env() {
+	local project_env="$1"
+	echo "PROJECT_ENV $project_env | SOPS_AGE_KEY (echo \$SOPS_AGE_KEY | sha256sum) => $(echo "$SOPS_AGE_KEY" | sha256sum)" >&2
+
+	print_yaml_env_vars "vm/creds/$project_env.enc.yaml"
+	print_yaml_env_vars "vm/creds/shared.enc.yaml"
+}
+
+decrypt_env "$@"

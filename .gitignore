@@ -39,6 +39,9 @@ npm-debug.log
 priv/static/
 /priv/static
 
+# vm .env
+vm/.env
+
 /assets/otterly/.git*
 /assets/otterly/node_modules
 

@@ -1,0 +1,5 @@
+services:
+  site:
+    volumes:
+      - ..:/app
+    command: sleep infinity

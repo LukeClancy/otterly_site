@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+key="$(utils/get_private_key "production")"
+
+if ! SOPS_AGE_KEY=$key sops decrypt ./creds/production.enc.yaml >/dev/null; then
+    echo "Could not decrypt production with production cred (length ${#key})" >&2
+    exit 1
+fi
+
+if ! SOPS_AGE_KEY=$key sops decrypt ./creds/shared.enc.yaml >/dev/null; then
+    echo "Could not decrypt shared with production cred (length ${#key})" >&2
+    exit 1
+fi
+
+key="$(utils/get_private_key "development")"
+
+if ! SOPS_AGE_KEY=$key sops decrypt ./creds/development.enc.yaml >/dev/null; then
+    echo "Could not decrypt development with development cred (length ${#key})" >&2
+    exit 1
+fi
+
+if ! SOPS_AGE_KEY=$key sops decrypt ./creds/shared.enc.yaml >/dev/null; then
+    echo "Could not decrypt shared with development cred (length ${#key})" >&2
+    exit 1
+fi
+
+echo "Creds OK"
+exit 0

@@ -7,7 +7,7 @@ config :logger, level: :warning
 # you can enable the server option below.
 config :otterly, OtterlyWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "zdSOqE+aCP5ZBOrNmoHwj5M01IuM57T0kPuoTstOpgBBioMkN5xr1M2Ums2uk65z",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   server: false
 
 # Initialize plugs at runtime for faster test compilation

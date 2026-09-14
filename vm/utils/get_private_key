@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+# get_private_key: used to find which private key is actually needed for the thing to run. Made
+#  to get around some inflexiblity in labeling keys properly
+
+# Scripts here reference paths relative to the repo root (vm/creds/...), so
+# anchor there no matter where we were invoked from (vm/utils/ vs repo root).
+cd "$(dirname "$0")/../.." || exit 1
+
+keys_file="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
+
+get_private_key() {
+	local project_env=$1
+	local env_file="vm/creds/$project_env.enc.yaml"
+	local key
+
+	if [[ ! -f "$env_file" ]]; then
+		echo "get_private_key: no creds file at $env_file" >&2
+		return 1
+	fi
+
+	if [[ ! -f "$keys_file" ]]; then
+		echo "get_private_key: no age keys file at $keys_file" >&2
+		return 1
+	fi
+
+	while read -r key; do
+		case "$key" in AGE-SECRET-KEY-*)
+			id=$(echo "$key" | age-keygen -y)
+			if cat $env_file | grep -q "$id"; then
+				echo "$key"
+				return 0
+			fi
+		;; esac
+	done < "$keys_file"
+
+	echo "get_private_key: no key in $keys_file can decrypt $env_file" >&2
+	return 1
+}
+
+get_private_key "$@"

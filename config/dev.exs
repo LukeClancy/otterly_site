@@ -29,7 +29,7 @@ config :otterly, OtterlyWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "Vpo/Io3lYHAvPK1uvfuBeuTwnF0B0isQRMU1bvDfhtwMzj/0w2mOiPMqAm3DgvfL",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   watchers: [
     # see config.exs and the /deps folder, also deps/esbuild/lib/esbuild.ex
     # config_name: {dep module, dep module method, [config profile, additional code for our config profile]}

@@ -1,15 +1,7 @@
 #!/bin/bash
 #
-# decrypts sops-encrypted creds and exports their keys
-# (including nested ones) as environment variables.
-#
 # parse_yaml: modified for lists and unknown whitespace from https://stackoverflow.com/a/21189044
 # (Stefan Farestam et al., CC BY-SA 3.0)
-#
-# decrypt_env: decrypts shared.enc.yaml then <project_env>.enc.yaml, exporting as env variables
-#
-# get_private_key: used to find which private key is actually needed for the thing to run. Made
-#  to get around some inflexiblity in labeling keys properly
 
 function parse_yaml {
    local prefix=$2
@@ -41,32 +33,4 @@ function parse_yaml {
    END {flush()}'
 }
 
-print_yaml_env_vars() {
-	local line
-	while IFS= read -r line; do
-		printf "$line\n"
-	done < <(parse_yaml <(sops decrypt "$1"))
-}
-
-# Decrypts shared.enc.yaml then <project_env>.enc.yaml, exporting both
-# (env-specific values override shared ones).
-decrypt_env() {
-	local project_env="development"
-	print_yaml_env_vars "vm/creds/shared.enc.yaml"
-	print_yaml_env_vars "vm/creds/$project_env.enc.yaml"
-}
-
-get_private_key() {
-	local project_env=$1
-	local env_file="vm/creds/$project_env.enc.yaml"
-	local key
-	while read -r key; do
-		case "$key" in AGE-SECRET-KEY-*)
-			if SOPS_AGE_KEY="$key" sops decrypt "$env_file" >/dev/null 2>&1; then
-				echo "$key"
-				return 0
-			fi
-		;; esac
-   done < ~/.config/sops/age/keys.txt
-   return 1
-}
+parse_yaml "$@"

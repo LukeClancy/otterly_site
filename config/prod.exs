@@ -18,8 +18,7 @@ config :otterly, OtterlyWeb.Endpoint,
   check_origin: false,
   code_reloader: false,
   debug_errors: false,
-  secret_key_base: System.get_env("SECRET_KEY_BASE"),
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 # config :otterly, Repo,
 #   database: "default",

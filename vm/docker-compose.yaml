@@ -1,17 +1,24 @@
+name: otterly
+
 services:
-  otterly_site:
-    # named explicitly so `docker compose build` gives a deterministic tag to
-    # re-tag/push from, regardless of the compose project name - see
-    # utils/build_production_image.sh
+  site:
     image: cachyserver:5000/otterly:${PROJECT_ENV:?set to premix, development or production}
     build:
       context: ..
       dockerfile: vm/Dockerfile
       target: ${PROJECT_ENV:?set to premix, development or production}
+    env_file: ".env"
     ports:
       - "4000:4000"
-    volumes :
-      - ..:/app
-    environment:
-      # see utils/setup.sh and devcontainer.json
-      SOPS_AGE_KEY: ${SOPS_AGE_KEY}
+    logging:
+      driver: "json-file"
+      options:
+        # 3 ten megabyte files with the oldest one deleted when you hit 4
+        #
+        # article: https://www.dash0.com/guides/docker-compose-logs
+        # tail: docker compose logs <services> --tail 10 --follow
+        # time-particular: docker compose logs --since "2025-11-24T08:00:00" --until "2025-11-24T08:15:00" <services>
+        # time: docker compose logs --since 10m <services>
+        max-size: "10m"
+        max-file: "3"
+    restart: always

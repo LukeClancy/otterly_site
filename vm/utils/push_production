@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+./utils/test_sops_creds || {
+    exit 1
+}
+
+SKIP_BUILD=false
+SKIP_DIRTY=false
+for arg in "$@"; do
+    if [ "$arg" = "--skip-build" ]; then
+        SKIP_BUILD=true
+    fi
+    if [ "$arg" = "--skip-dirty" ]; then
+        SKIP_DIRTY=true
+    fi
+done
+
+# die if its dirty
+if [ "$SKIP_DIRTY" = false ] && [ -n "$(git status --porcelain)" ]; then
+	echo "push_production.sh: working tree is dirty - the image wouldn't match a real commit" >&2
+	exit 1
+fi
+
+# TODO: make sure its been tested before, theres a way to mark a commit tested using git.
+
+# create the .env file
+
+PROJECT_ENV=production ./utils/set_env
+
+# build the image
+if [ "$SKIP_BUILD" = true ]; then
+    echo "-- skipped build --"
+else
+    docker compose build
+    echo "-- built image --"
+
+    docker compose push
+    echo "-- pushed image to registry container --"
+fi
+
+DIR=/root/otterly_site
+LOC="root@cachyserver:$DIR"
+HOST="root@cachyserver"
+# make sure remote dir exists
+tailscale ssh root@cachyserver mkdir -p "$DIR"
+echo "-- ensured $DIR exists on server --"
+
+# move config to server
+scp docker-compose.yaml $LOC/docker-compose.yaml
+scp .env $LOC/.env
+echo "-- moved compose related files --"
+
+# pull from running registry image to the server
+tailscale ssh $HOST "cd $DIR; docker compose pull"
+echo "-- compose pulled image to server --"
+
+# run on server using the config
+tailscale ssh $HOST "cd $DIR; docker compose up -d"
+echo "-- restarted with new image --"
