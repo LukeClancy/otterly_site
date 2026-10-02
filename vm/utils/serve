@@ -1,15 +1,21 @@
 #!/bin/bash
 #
-# serve: container entrypoint. Decrypt creds at start, drop them into the
-# shell rc files so `docker exec` shells get them too, then run the server.
+# serve: container entrypoint. No creds are decrypted here - config/config.exs
+# does that itself for whatever MIX_ENV it is started with. Only the access
+# state goes into the shell rc files, so a `docker exec` shell can pick its
+# own env (eg. mix test -> test).
 
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
-# `export KEY="value"` lines; a failed decrypt aborts here (set -e).
-out="$(vm/utils/export_env "${1:-development}")"
+project_env="${1:-development}"
 
-printf '%s\n' "$out" | tee -a /root/.bashrc >> /root/.profile
-eval "$out"
+printf 'export SOPS_AGE_KEY=%q\nexport PROJECT_ENV=%q\n' "$SOPS_AGE_KEY" "$project_env" | tee -a /root/.bashrc >> /root/.profile
+
+case "$project_env" in
+	development) export MIX_ENV=dev ;;
+	production) export MIX_ENV=prod ;;
+	*) export MIX_ENV="$project_env" ;;
+esac
 
 exec mix phx.server

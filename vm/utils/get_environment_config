@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# get_environment_config <env>: decrypts shared.enc.yaml then <env>.enc.yaml and
+# prints every key (nested ones joined with _) as `KEY="value"` lines.
+# Needs SOPS_AGE_KEY. Used for vm/.env and by anything loading creds itself.
+
+set -euo pipefail
+
+# Anchor at the repo root; creds paths below are relative to it.
+cd "$(dirname "$0")/../.."
+
+# A failed decrypt aborts (set -e) instead of silently emitting nothing,
+# which previously let the app boot with no SECRET_KEY_BASE.
+print_yaml_env_vars() {
+	local decrypted
+	decrypted="$(sops decrypt "$1")" || {
+		echo "get_environment_config: failed to decrypt $1 (is SOPS_AGE_KEY (len ${#SOPS_AGE_KEY}) set correctly?)" >&2
+		exit 1
+	}
+	vm/utils/parse_yaml <(printf '%s\n' "$decrypted")
+}
+
+# env-specific values come last so they override shared ones.
+print_yaml_env_vars "vm/creds/shared.enc.yaml"
+print_yaml_env_vars "vm/creds/$1.enc.yaml"

@@ -12,7 +12,9 @@ One of the goals here is to not have to install anything locally on your compute
 
 ### Accessing VM
 
-1. install docker & docker desktop, start the systemctl service.
+1. install docker engine with the compose and buildx plugins, then start it. eg. on arch: `sudo pacman -S docker docker-compose docker-buildx && sudo systemctl enable --now docker`, on debian/ubuntu follow https://docs.docker.com/engine/install/. Check with `docker compose version`.
+   - add yourself to the docker group so vs-code can reach it: `sudo usermod -aG docker $USER`, then log out and in.
+   - don't use docker desktop on linux. It runs its own daemon inside a VM, separate from the engine above, so you end up with two sets of images/containers and config (eg. insecure-registries below) in two places. On windows/mac it is the only option.
 2. add the "Remote Development" extension to vs-code
 3. ctrl+shift+p -> open in remote container
 

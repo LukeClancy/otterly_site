@@ -39,8 +39,9 @@ npm-debug.log
 priv/static/
 /priv/static
 
-# vm .env
+# vm .env / .access_info (see vm/utils/set_access_state)
 vm/.env
+vm/.access_info
 
 /assets/otterly/.git*
 /assets/otterly/node_modules

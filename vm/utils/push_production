@@ -26,9 +26,9 @@ fi
 
 # TODO: make sure its been tested before, theres a way to mark a commit tested using git.
 
-# create the .env file
+# create the .access_info and .env files
 
-PROJECT_ENV=production ./utils/set_env
+PROJECT_ENV=production ./utils/set_access_state
 
 # build the image
 if [ "$SKIP_BUILD" = true ]; then
@@ -51,6 +51,7 @@ echo "-- ensured $DIR exists on server --"
 # move config to server
 scp docker-compose.yaml $LOC/docker-compose.yaml
 scp .env $LOC/.env
+scp .access_info $LOC/.access_info
 echo "-- moved compose related files --"
 
 # pull from running registry image to the server

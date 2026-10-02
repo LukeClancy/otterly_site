@@ -13,7 +13,7 @@ EXPOSE 4000
 
 # Checkpoint for a shell before mix.exs/mix.lock are even copied in -
 # `run premix` for touching deps (eg. mix deps.update --all) by hand.
-# RUN vm/utils/export_env development
+# RUN vm/utils/get_environment_config development
 
 FROM base AS premix
 FROM base AS development

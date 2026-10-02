@@ -1,0 +1,14 @@
+# vm/.access_info holds SOPS_AGE_KEY and vm/.env the decrypted creds (the
+# production ones during push_production) - never let `COPY . .` bake them
+# into an image.
+vm/.env
+vm/.access_info
+
+**/.git
+deps
+_build
+node_modules
+assets/node_modules
+.elixir_ls
+tmp
+private

@@ -14,9 +14,9 @@
 		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
 	},
 	
-	// Runs on host before container start. Writes SOPS_AGE_KEY to vm/.env,
-	// which docker-compose auto-loads for ${SOPS_AGE_KEY} interpolation.
-	"initializeCommand": "./vm/utils/set_env",
+	// Runs on host before container start. Writes vm/.access_info (age key, given
+	// to the container) and vm/.env (decrypted creds, for compose interpolation).
+	"initializeCommand": "./vm/utils/set_access_state",
 
 	// Give claude some memory
 	"mounts": [

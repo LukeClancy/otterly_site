@@ -7,7 +7,7 @@ services:
       context: ..
       dockerfile: vm/Dockerfile
       target: ${PROJECT_ENV:?set to premix, development or production}
-    env_file: ".env"
+    env_file: ".access_info"
     ports:
       - "4000:4000"
     logging:
