@@ -7,7 +7,7 @@
 #   vm/.access_info  SOPS_AGE_KEY + PROJECT_ENV. Given to containers that
 #                    decrypt creds themselves, so they can also switch to any
 #                    env that key opens (eg. test inside development).
-#   vm/.env          the decrypted creds as plain KEY="value". Auto-loaded by
+#   vm/.env          the decrypted creds as plain KEY="value" (+ PROJECT_ENV). Auto-loaded by
 #                    compose for ${...}, for things that can't use sops (postgres).
 
 set -euo pipefail

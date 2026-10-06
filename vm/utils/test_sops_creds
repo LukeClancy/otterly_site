@@ -1,31 +1,23 @@
 #!/bin/bash
+#
+# test_sops_creds: checks each key on this machine opens the creds it should.
 
 set -euo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 
-key="$(utils/get_private_key "production")"
+check() {
+	local key
+	key="$(vm/utils/get_private_key "$1")"
+	SOPS_AGE_KEY="$key" sops decrypt "vm/creds/$2.enc.yaml" >/dev/null || {
+		echo "Could not decrypt $2 with $1 cred (length ${#key})" >&2
+		exit 1
+	}
+}
 
-if ! SOPS_AGE_KEY=$key sops decrypt ./creds/production.enc.yaml >/dev/null; then
-    echo "Could not decrypt production with production cred (length ${#key})" >&2
-    exit 1
-fi
-
-if ! SOPS_AGE_KEY=$key sops decrypt ./creds/shared.enc.yaml >/dev/null; then
-    echo "Could not decrypt shared with production cred (length ${#key})" >&2
-    exit 1
-fi
-
-key="$(utils/get_private_key "development")"
-
-if ! SOPS_AGE_KEY=$key sops decrypt ./creds/development.enc.yaml >/dev/null; then
-    echo "Could not decrypt development with development cred (length ${#key})" >&2
-    exit 1
-fi
-
-if ! SOPS_AGE_KEY=$key sops decrypt ./creds/shared.enc.yaml >/dev/null; then
-    echo "Could not decrypt shared with development cred (length ${#key})" >&2
-    exit 1
-fi
+check production production
+check production shared
+check development development
+check development test
+check development shared
 
 echo "Creds OK"
-exit 0

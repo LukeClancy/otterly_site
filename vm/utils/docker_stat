@@ -1,21 +1,17 @@
 #!/bin/bash
 #
-# list_images.sh
-# Run ON cachyserver. Lists images known to the local docker daemon and
-# images/tags stored in the local registry (cachyserver:5000).
+# docker_stat: lists images/tags in the registry on $SERVER and the
+# containers running there.
 
 set -euo pipefail
+cd "$(dirname "$0")/../.."
+source vm/deploy.conf
 
-echo "=== docker daemon images ==="
+echo "=== registry images ==="
 
-repos="$(curl -fsSL http://cachyserver:5000/v2/_catalog | jq -r '.repositories[]?')"
-if [ -z "$repos" ]; then
-	echo "(no repositories)"
-	exit 0
-fi
-
+repos="$(curl -fsSL "http://$SERVER:5000/v2/_catalog" | jq -r '.repositories[]?')"
 for repo in $repos; do
-	tags="$(curl -fsSL "http://cachyserver:5000/v2/${repo}/tags/list" | jq -r '.tags[]? // empty')"
+	tags="$(curl -fsSL "http://$SERVER:5000/v2/${repo}/tags/list" | jq -r '.tags[]? // empty')"
 	if [ -z "$tags" ]; then
 		echo "${repo} (no tags)"
 		continue
@@ -25,6 +21,6 @@ for repo in $repos; do
 	done
 done
 
-echo "=== docker daemon containers ==="
+echo "=== server containers ==="
 
-tailscale ssh root@cachyserver docker container list
+tailscale ssh "root@$SERVER" docker container list

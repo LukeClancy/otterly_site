@@ -1,63 +1,71 @@
 #!/bin/bash
+#
+# push_production [--skip-build] [--skip-dirty]: build the production image,
+# push it to the registry on $SERVER and restart the project there.
+# Run on the host, not in a devcontainer. See README.md.
 
 set -euo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
+source vm/deploy.conf
 
-./utils/test_sops_creds || {
-    exit 1
-}
+vm/utils/test_sops_creds
 
 SKIP_BUILD=false
 SKIP_DIRTY=false
 for arg in "$@"; do
-    if [ "$arg" = "--skip-build" ]; then
-        SKIP_BUILD=true
-    fi
-    if [ "$arg" = "--skip-dirty" ]; then
-        SKIP_DIRTY=true
-    fi
+	if [ "$arg" = "--skip-build" ]; then
+		SKIP_BUILD=true
+	fi
+	if [ "$arg" = "--skip-dirty" ]; then
+		SKIP_DIRTY=true
+	fi
 done
 
 # die if its dirty
 if [ "$SKIP_DIRTY" = false ] && [ -n "$(git status --porcelain)" ]; then
-	echo "push_production.sh: working tree is dirty - the image wouldn't match a real commit" >&2
+	echo "push_production: working tree is dirty - the image wouldn't match a real commit" >&2
 	exit 1
 fi
 
 # TODO: make sure its been tested before, theres a way to mark a commit tested using git.
 
 # create the .access_info and .env files
+PROJECT_ENV=production vm/utils/set_access_state
 
-PROJECT_ENV=production ./utils/set_access_state
+cd vm
 
 # build the image
 if [ "$SKIP_BUILD" = true ]; then
-    echo "-- skipped build --"
+	echo "-- skipped build --"
 else
-    docker compose build
-    echo "-- built image --"
+	docker compose build
+	echo "-- built image --"
 
-    docker compose push
-    echo "-- pushed image to registry container --"
+	docker compose push
+	echo "-- pushed image to registry container --"
 fi
 
-DIR=/root/otterly_site
-LOC="root@cachyserver:$DIR"
-HOST="root@cachyserver"
+DIR="/root/$PROJECT"
+HOST="root@$SERVER"
+
 # make sure remote dir exists
-tailscale ssh root@cachyserver mkdir -p "$DIR"
+tailscale ssh "$HOST" mkdir -p "$DIR"
 echo "-- ensured $DIR exists on server --"
 
 # move config to server
-scp docker-compose.yaml $LOC/docker-compose.yaml
-scp .env $LOC/.env
-scp .access_info $LOC/.access_info
+scp docker-compose.yaml .env .access_info "$HOST:$DIR/"
 echo "-- moved compose related files --"
 
 # pull from running registry image to the server
-tailscale ssh $HOST "cd $DIR; docker compose pull"
+tailscale ssh "$HOST" "cd $DIR; docker compose pull"
 echo "-- compose pulled image to server --"
 
+# eg. migrations, before the new code starts taking requests
+if [ -n "${PRE_UP:-}" ]; then
+	tailscale ssh "$HOST" "cd $DIR; $PRE_UP"
+	echo "-- ran PRE_UP --"
+fi
+
 # run on server using the config
-tailscale ssh $HOST "cd $DIR; docker compose up -d"
+tailscale ssh "$HOST" "cd $DIR; docker compose up -d"
 echo "-- restarted with new image --"
