@@ -1,24 +1,31 @@
 name: otterly
 
+x-logging: &logging
+  driver: "json-file"
+  options:
+    # 3 ten megabyte files with the oldest one deleted when you hit 4
+    #
+    # article: https://www.dash0.com/guides/docker-compose-logs
+    # tail: docker compose logs <services> --tail 10 --follow
+    # time-particular: docker compose logs --since "2025-11-24T08:00:00" --until "2025-11-24T08:15:00" <services>
+    # time: docker compose logs --since 10m <services>
+    max-size: "10m"
+    max-file: "3"
+
 services:
-  site:
+  caddy:
     image: cachyserver:5000/otterly:${PROJECT_ENV:?set to premix, development or production}
     build:
       context: ..
       dockerfile: vm/Dockerfile
       target: ${PROJECT_ENV:?set to premix, development or production}
     env_file: ".access_info"
-    ports:
-      - "4000:4000"
-    logging:
-      driver: "json-file"
-      options:
-        # 3 ten megabyte files with the oldest one deleted when you hit 4
-        #
-        # article: https://www.dash0.com/guides/docker-compose-logs
-        # tail: docker compose logs <services> --tail 10 --follow
-        # time-particular: docker compose logs --since "2025-11-24T08:00:00" --until "2025-11-24T08:15:00" <services>
-        # time: docker compose logs --since 10m <services>
-        max-size: "10m"
-        max-file: "3"
+    networks:
+      - default
+      - caddy-otterly
+    logging: *logging
     restart: always
+
+networks:
+  caddy-otterly:
+    external: true
