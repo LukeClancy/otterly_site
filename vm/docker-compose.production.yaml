@@ -1,0 +1,9 @@
+services:
+  otterly:
+    container_name: otterly
+    hostname: otterly
+
+networks:
+  default:
+    name: caddy
+    external: true

@@ -30,7 +30,7 @@ fi
 # TODO: make sure its been tested before, theres a way to mark a commit tested using git.
 
 # create the .access_info and .env files
-PROJECT_ENV=production vm/utils/set_access_state
+PROJECT_ENV=production vm/utils/compose_config
 
 cd vm
 
@@ -53,11 +53,11 @@ tailscale ssh "$HOST" mkdir -p "$DIR"
 echo "-- ensured $DIR exists on server --"
 
 # move config to server
-scp docker-compose.yaml .env .access_info "$HOST:$DIR/"
+scp *.yaml .env .access_info "$HOST:$DIR/"
 echo "-- moved compose related files --"
 
 # pull from running registry image to the server
-tailscale ssh "$HOST" "cd $DIR; docker compose pull"
+tailscale ssh "$HOST" "cd $DIR; $COMP pull"
 echo "-- compose pulled image to server --"
 
 # eg. migrations, before the new code starts taking requests

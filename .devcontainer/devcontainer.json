@@ -1,9 +1,10 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
-	"name": "site",
+	"name": "otterly",
+	// the below *may* be overridden by compose_config
 	"dockerComposeFile": ["../vm/docker-compose.yaml", "../vm/docker-compose.development.yaml"],
-	"service": "site",
+	"service": "otterly",
 	"shutdownAction": "stopCompose",
 	"workspaceFolder": "/app",
 	"forwardPorts": [ 4000 ],
@@ -16,7 +17,7 @@
 	
 	// Runs on host before container start. Writes vm/.access_info (age key, given
 	// to the container) and vm/.env (decrypted creds, for compose interpolation).
-	"initializeCommand": "./vm/utils/set_access_state",
+	"initializeCommand": "./vm/utils/compose_config",
 
 	// Give claude some memory
 	"mounts": [

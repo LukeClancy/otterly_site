@@ -9,9 +9,9 @@ source vm/deploy.conf
 
 echo "=== registry images ==="
 
-repos="$(curl -fsSL "http://$SERVER:5000/v2/_catalog" | jq -r '.repositories[]?')"
+repos="$(curl -fsSL "$REGISTRY/v2/_catalog" | jq -r '.repositories[]?')"
 for repo in $repos; do
-	tags="$(curl -fsSL "http://$SERVER:5000/v2/${repo}/tags/list" | jq -r '.tags[]? // empty')"
+	tags="$(curl -fsSL "$REGISTRY/v2/${repo}/tags/list" | jq -r '.tags[]? // empty')"
 	if [ -z "$tags" ]; then
 		echo "${repo} (no tags)"
 		continue

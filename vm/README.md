@@ -15,17 +15,13 @@ vm/
   creds/{shared,development,test,production}.enc.yaml
 ```
 
-caddy will be maintained externally for now, maybe config can be shared at some point. But there should be a single instance.
-
-Warning: some of this was generated with claude. Not vibe-coded but pretty close
-
 ## Scripts
 
 All anchor at the project root, so they work from anywhere.
 
 | script | runs on | does |
 |---|---|---|
-| `set_access_state` | host | writes `vm/.access_info` (SOPS_AGE_KEY + PROJECT_ENV, given to containers) and `vm/.env` (decrypted creds, for containers without these scripts) |
+| `compose_config` | host | writes `vm/.access_info` (SOPS_AGE_KEY + PROJECT_ENV, given to containers) and `vm/.env` (decrypted creds, for containers without these scripts) |
 | `serve <env>` | container | entrypoint: puts the access state in .bashrc/.profile, then `serve_app` from deploy.conf |
 | `get_environment_config <env>` | either | decrypted shared + `<env>` creds as `KEY="value"` lines. The app calls this itself (rails `config/environment.rb`, phoenix `config/config.exs`) so any shell can pick its env, eg. tests |
 | `push_production` | host | build, push to the registry, copy compose files, `PRE_UP`, `up -d` |
@@ -35,26 +31,30 @@ All anchor at the project root, so they work from anywhere.
 
 ## Day-to-day Work
 
-One of the goals here is to not have to install anything locally on your computer other than docker and the credential software (sops + age). As such all development and tests go through docker.
+Goals:
+1. To not have to install anything locally on your computer other than docker and the credential software (sops + age). As such all development and tests go through docker.
+2. Platform for future growth: sops has capabilities to integrate with external authentication sites.
+3. Plugin to caddy: Have caddy on a server handling network traffic. See docker-compose.production.yaml and [this guide](https://github.com/DoTheEvo/selfhosted-apps-docker/tree/master/caddy_v2)
+4. Github: actions and AI involvment in the development process
 
 ### Accessing VM
 
-1. install docker engine with the compose and buildx plugins, then start it. eg. on arch: `sudo pacman -S docker docker-compose docker-buildx && sudo systemctl enable --now docker`, on debian/ubuntu follow https://docs.docker.com/engine/install/. Check with `docker compose version`.
+Note there was a section on buildx here but I don't think we use that
+
+1. install docker engine with the compose, then start it. eg. on arch: `sudo pacman -S docker docker-compose && sudo systemctl enable --now docker`. Check with `docker compose version`.
    - add yourself to the docker group so vs-code can reach it: `sudo usermod -aG docker $USER`, then log out and in.
-   - don't use docker desktop on linux. It runs its own daemon inside a VM, separate from the engine above, so you end up with two sets of images/containers and config (eg. insecure-registries below) in two places. On windows/mac it is the only option.
+   - don't use docker desktop. It runs its own daemon inside a VM, and there are weird performance and compat issues. On windows maybe idk.
 2. add the "Remote Development" extension to vs-code
 3. ctrl+shift+p -> open in remote container
 
 ### Pushing to production
 
-`vm/utils/push_production`
-- needs to be run outside a dev container
-- need tailscale access to `$SERVER`
-- server needs a publicly accessible port, see cloudflare tunnels
-- server needs a tailscale accessible (not public) docker registry.
-  - Add `"insecure-registries": ["cachyserver:5000"]` into docker's daemon.json. For me this was in ~/.docker but might also be in /etc/docker. At some point we may want to update out of "insecure", but the port should only be over tailscale so I am not too worried.
-  - list images on the registry: http://cachyserver:5000/v2/_catalog or `docker_stat`
-  - Garbage collect: do after pushing - `docker exec -it -u root lukes_registry bin/registry garbage-collect --delete-untagged /etc/docker/registry/config.yml` This should delete previous images as only 1 combo of tags allowed at a time (I think, something like that) [link](https://stackoverflow.com/questions/45046752/docker-registry-garbage-collection)
+`./utils/push_production`
+- run outside dev container
+- need access to `$SERVER`
+- need to login to the registry `docker login $REGISTRY` (ask someone for access)
+- list images on the registry: `./utils/docker_stat`
+- Garbage collect: `docker exec -it -u root $REGISTRY bin/registry garbage-collect --delete-untagged /etc/docker/registry/config.yml` This should delete previous images as only 1 combo of tags allowed at a time (I think, something like that) [link](https://stackoverflow.com/questions/45046752/docker-registry-garbage-collection)
 
 ## Credentials
 
@@ -85,3 +85,48 @@ Remove their public key from .sops.yaml and then regenerate the credentials (`so
 
 ### Encryption/Decryption of a new file
  - `sops encrypt/decrypt -i [FILE]`
+
+### Config
+
+**(Things below here are mainly for initial setup or issues)**
+
+See deploy.conf. Example:
+
+```
+# remote dir is /root/$PROJECT
+PROJECT=otterly_site
+SERVER=cachyserver
+REGISTRY="https://registry.otterlyjs.org"
+
+# optional, run on the server before `docker compose up -d`. Migrations etc
+PRE_UP=""
+
+# called by vm/utils/serve inside the container. $1 is the project env.
+# phoenix decrypts its own creds in config/config.exs.
+serve_app() {
+	case "$1" in
+		development) export MIX_ENV=dev ;;
+		production) export MIX_ENV=prod ;;
+		*) export MIX_ENV="$1" ;;
+	esac
+	exec mix phx.server
+}
+```
+
+### Troubleshooting
+
+tailscale not connecting over regular ssh - think its due to routing locally - add this to ~/.ssh/config:
+```
+Host <hostname from tailscale status>
+  HostName <ip from tailscale status>
+  ConnectTimeout 5
+```
+
+### TODO
+Just a "This isn't perfectly configured and figured out". Writing so I can break out of working on this thing and get to making actual money.
+	- otterly_site directory != otterly service mismatch. IDK probably not worth changing. Think thats one too many env variables
+	- .env file should just have compose configuration. Another file .project_env should contain the environment specific things. There should be service-specific env files (yeesh)
+  - think `tailscale ssh` is littered everywhere which we no longer need due to hostname file
+  - network name should be in deploy.conf instead of just being "caddy"
+  - should probably at least have pointers for how to do devcontainers
+  - ...and still haven't done github actions

@@ -1,5 +1,8 @@
 services:
-  site:
+  otterly:
+    ports:
+      - "127.0.0.1:4000:4000"
     volumes:
       - ..:/app
-    command: sleep infinity
+    # uncomment to debug startup issues
+    # command: sleep infinity

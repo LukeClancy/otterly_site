@@ -1,0 +1,5 @@
+services:
+  otterly:
+    volumes:
+      - ..:/app
+    command: sleep infinity

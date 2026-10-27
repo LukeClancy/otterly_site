@@ -39,7 +39,7 @@ npm-debug.log
 priv/static/
 /priv/static
 
-# vm .env / .access_info (see vm/utils/set_access_state)
+# vm .env / .access_info (see vm/utils/compose_config)
 vm/.env
 vm/.access_info
 

@@ -1,31 +1,36 @@
+x-vm-base: &x-vm-base
+  logging:
+    driver: "json-file"
+    options:
+      # 3 ten megabyte files with the oldest one deleted when you hit 4
+      #
+      # article: https://www.dash0.com/guides/docker-compose-logs
+      # tail: docker compose logs <services> --tail 10 --follow
+      # time-particular: docker compose logs --since "2025-11-24T08:00:00" --until "2025-11-24T08:15:00" <services>
+      # time: docker compose logs --since 10m <services>
+      max-size: "10m"
+      max-file: "3"
+  restart: always
+
+# For external services like databases
+x-vm-env: &x-vm-env
+  <<: *x-vm-base
+  env_file: ".env"
+  build:
+    target: ${PROJECT_ENV:?set to premix, development or production}
+    context: ..
+
+# For containers with mixed environments (aka run tests in dev container)
+x-vm-access-info: &x-vm-access-info
+  <<: *x-vm-base
+  env_file: ".access_info"
+  build:
+    target: ${PROJECT_ENV:?set to premix, development or production}
+    context: ..
+    dockerfile: vm/Dockerfile
+
 name: otterly
-
-x-logging: &logging
-  driver: "json-file"
-  options:
-    # 3 ten megabyte files with the oldest one deleted when you hit 4
-    #
-    # article: https://www.dash0.com/guides/docker-compose-logs
-    # tail: docker compose logs <services> --tail 10 --follow
-    # time-particular: docker compose logs --since "2025-11-24T08:00:00" --until "2025-11-24T08:15:00" <services>
-    # time: docker compose logs --since 10m <services>
-    max-size: "10m"
-    max-file: "3"
-
 services:
-  caddy:
-    image: cachyserver:5000/otterly:${PROJECT_ENV:?set to premix, development or production}
-    build:
-      context: ..
-      dockerfile: vm/Dockerfile
-      target: ${PROJECT_ENV:?set to premix, development or production}
-    env_file: ".access_info"
-    networks:
-      - default
-      - caddy-otterly
-    logging: *logging
-    restart: always
-
-networks:
-  caddy-otterly:
-    external: true
+  otterly:
+    <<: *x-vm-access-info
+    image: $REGISTRY/otterly:${PROJECT_ENV:?set to premix, development or production}
