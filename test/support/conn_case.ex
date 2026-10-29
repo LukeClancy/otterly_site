@@ -1,4 +1,4 @@
-defmodule AppWeb.ConnCase do
+defmodule OtterlyWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule AppWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use AppWeb.ConnCase, async: true`, although
+  by setting `use OtterlyWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -19,16 +19,16 @@ defmodule AppWeb.ConnCase do
 
   using do
     quote do
-      use AppWeb, :verified_routes
+      use OtterlyWeb, :verified_routes
 
-      import AppWeb.ConnCase
+      import OtterlyWeb.ConnCase
       import Phoenix.ConnTest
 
       # Import conveniences for testing with connections
       import Plug.Conn
 
       # The default endpoint for testing
-      @endpoint AppWeb.Endpoint
+      @endpoint OtterlyWeb.Endpoint
     end
   end
 
