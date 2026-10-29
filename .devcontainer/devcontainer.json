@@ -19,6 +19,10 @@
 	// to the container) and vm/.env (decrypted creds, for compose interpolation).
 	"initializeCommand": "./vm/utils/compose_config",
 
+	// Dont want to deal with this vauge error right now. Run curl -fsSL https://claude.ai/install.sh | bash in the console.
+	//
+	// "postCreateCommand": "wget -qO /etc/apk/keys/claude-code.rsa.pub https://downloads.claude.ai/keys/claude-code.rsa.pub && echo https://downloads.claude.ai/claude-code/apk/stable >> /etc/apk/repositories && apk add claude-code",
+
 	// Give claude some memory
 	"mounts": [
 		"source=${localEnv:HOME}/.claude,target=/root/.claude,type=bind"

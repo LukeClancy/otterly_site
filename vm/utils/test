@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+source deploy.conf
+PROJECT_ENV=development utils/compose_config
+# The dev compose file mounts the repo over /app, hiding the image's deps,
+# so a fresh checkout (eg. CI) has to fetch them first.
+docker compose run --rm $SERVICE sh -c "mix deps.get && $TEST"

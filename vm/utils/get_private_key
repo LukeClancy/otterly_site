@@ -7,12 +7,16 @@
 # anchor there no matter where we were invoked from (vm/utils/ vs repo root).
 cd "$(dirname "$0")/../.." || exit 1
 
-keys_file="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
-
 get_private_key() {
 	local project_env=$1
 	local env_file="vm/creds/$project_env.enc.yaml"
-	local key
+	local keys_file="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
+
+	# GitHub workflows pass the key directly as a secret env var.
+	if [[ -n "$SOPS_AGE_KEY" ]]; then
+		echo "$SOPS_AGE_KEY"
+		return 0
+	fi
 
 	if [[ ! -f "$env_file" ]]; then
 		echo "get_private_key: no creds file at $env_file" >&2
@@ -34,7 +38,7 @@ get_private_key() {
 		;; esac
 	done < "$keys_file"
 
-	echo "get_private_key: no key in $keys_file can decrypt $env_file" >&2
+	echo "get_private_key: no key can decrypt $env_file" >&2
 	return 1
 }
 
