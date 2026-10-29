@@ -71,7 +71,9 @@ age-keygen >> ~/.config/sops/age/keys.txt  # development
 age-keygen >> ~/.config/sops/age/keys.txt  # production
 ```
 
-Once you have completed the above, go to the project's .sops.yaml and add the public keys into the appropriate locations. Add yourself to the list as well so we can keep track of who owns what key.
+Once you have completed the above, go to the project's `.sops.yaml` and add the public keys into the appropriate locations. Add yourself to the list as well so we can keep track of who owns what key.
+
+Then do `sops updatekeys vm/creds/*`
 
 ### Revoking access to someone
 

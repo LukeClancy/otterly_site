@@ -34,12 +34,17 @@ jobs:
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@v1
+        env:
+          # Lets get_private_key / sops decrypt vm/creds so Claude can run the test suite.
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
-          prompt: '/code-review:code-review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
-          claude_args: '--allowedTools "mcp__github_inline_comment__create_inline_comment"'
+          prompt: |
+            /code-review:code-review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }}
+            If running the test suite would help verify a finding, you can run:
+            cd vm && PROJECT_ENV=development ./utils/compose_config && docker compose run --rm otterly mix test
+          claude_args: '--allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(cd vm:*),Bash(PROJECT_ENV=development ./utils/compose_config:*),Bash(docker compose run --rm otterly mix test:*)"'
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
-
