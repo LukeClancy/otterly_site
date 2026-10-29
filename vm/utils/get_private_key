@@ -38,7 +38,7 @@ get_private_key() {
 		;; esac
 	done < "$keys_file"
 
-	echo "get_private_key: no key in $keys_file can decrypt $env_file" >&2
+	echo "get_private_key: no key can decrypt $env_file" >&2
 	return 1
 }
 
