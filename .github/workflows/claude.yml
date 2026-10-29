@@ -30,9 +30,20 @@ jobs:
         with:
           fetch-depth: 1
 
+      # compose_config decrypts vm/creds with sops.
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl age
+          sudo curl -fsSL -o /usr/local/bin/sops https://github.com/getsops/sops/releases/download/v3.9.4/sops-v3.9.4.linux.amd64
+          sudo chmod +x /usr/local/bin/sops
+
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
+        env:
+          # So Claude can run the test suite, r development
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
@@ -46,5 +57,6 @@ jobs:
           # Optional: Add claude_args to customize behavior and configuration
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
-          # claude_args: '--allowed-tools Bash(gh pr *)'
+          # Run the site, the test suite, and anything inside the compose containers.
+          claude_args: '--allowedTools "Bash(./vm/utils/test:*),Bash(./vm/utils/compose_config:*),Bash(./vm/utils/test_sops_creds:*),Bash(./vm/utils/parse_yaml:*),Bash(docker compose:*),Bash(curl http://localhost:*),Bash(curl localhost:*),Bash(curl http://127.0.0.1:*)"'
 

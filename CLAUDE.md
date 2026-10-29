@@ -1,14 +1,14 @@
 # Notes for Claude
 
-## Testing
+## Common commands
+./vm/utils/test
+docker exec run --rm <service> <command>
+
+## Communication: Testing
 - Write tests for what you create to verify it. Don't blow up tests too much, but do make them.
-- Run the full suite before every commit: `docker compose run --rm -e SETTINGS test`
+- Run the full suite before pushing: `./vm/utils/test`
 - Commit and push when it passes. If you can't get tests to pass or work-item is too big, decrease scope and add "P1" to branch name (part one) before pushing.
 - Fix the code, dont disable the tests, unless the test itself is wrong. No awards for disabling working tests.
-
-## Rules
-- Don't edit anything in `.github/`.
-- Never print or commit secrets.
 
 ## Communication in general
 
