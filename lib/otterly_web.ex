@@ -21,7 +21,7 @@ defmodule OtterlyWeb do
 
   def router do
     quote do
-      use Phoenix.Router, helpers: false
+      use Phox.Router, helpers: false
 
       import Phoenix.Controller
       import Phoenix.LiveView.Router
