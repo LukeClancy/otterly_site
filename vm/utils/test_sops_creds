@@ -14,10 +14,10 @@ check() {
 	}
 }
 
-check production production
-check production shared
 check development development
 check development test
 check development shared
+check production production
+check production shared
 
 echo "-- creds ok --"
