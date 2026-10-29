@@ -44,3 +44,7 @@ But at the *very* least important information should be bolded and preferably al
 ## PR communication
 
 Include sections - Description, Testing, Issues. Should not be longer than required, already going to be reading code and reviewing. Do not comment too much in the code, code should be readable itself (valuable codec is descriptive, to the point, and maintainable)
+
+## When 100% done and finished
+
+Put in a snarky joke.
