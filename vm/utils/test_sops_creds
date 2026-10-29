@@ -20,4 +20,4 @@ check development development
 check development test
 check development shared
 
-echo "Creds OK"
+echo "-- creds ok --"

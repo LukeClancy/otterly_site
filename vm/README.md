@@ -51,7 +51,7 @@ Note there was a section on buildx here but I don't think we use that
 
 `./utils/push_production`
 - run outside dev container
-- need access to `$SERVER`
+- need access for $PROD_SSH_USR
 - need to login to the registry `docker login $REGISTRY` (ask someone for access)
 - list images on the registry: `./utils/docker_stat`
 - Garbage collect: `docker exec -it -u root $REGISTRY bin/registry garbage-collect --delete-untagged /etc/docker/registry/config.yml` This should delete previous images as only 1 combo of tags allowed at a time (I think, something like that) [link](https://stackoverflow.com/questions/45046752/docker-registry-garbage-collection)
@@ -95,8 +95,9 @@ See deploy.conf. Example:
 ```
 # remote dir is /root/$PROJECT
 PROJECT=otterly_site
-SERVER=cachyserver
-REGISTRY="https://registry.otterlyjs.org"
+PROD_SSH_USR=luke@cachyserver # for production deployment 
+NETWORK=caddy
+REGISTRY="registry.otterlyjs.org"
 
 # optional, run on the server before `docker compose up -d`. Migrations etc
 PRE_UP=""
@@ -113,20 +114,8 @@ serve_app() {
 }
 ```
 
-### Troubleshooting
-
-tailscale not connecting over regular ssh - think its due to routing locally - add this to ~/.ssh/config:
-```
-Host <hostname from tailscale status>
-  HostName <ip from tailscale status>
-  ConnectTimeout 5
-```
-
 ### TODO
 Just a "This isn't perfectly configured and figured out". Writing so I can break out of working on this thing and get to making actual money.
 	- otterly_site directory != otterly service mismatch. IDK probably not worth changing. Think thats one too many env variables
-	- .env file should just have compose configuration. Another file .project_env should contain the environment specific things. There should be service-specific env files (yeesh)
-  - think `tailscale ssh` is littered everywhere which we no longer need due to hostname file
-  - network name should be in deploy.conf instead of just being "caddy"
   - should probably at least have pointers for how to do devcontainers
-  - ...and still haven't done github actions
+  - still need github actions

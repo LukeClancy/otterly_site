@@ -9,9 +9,13 @@ source vm/deploy.conf
 
 echo "=== registry images ==="
 
-repos="$(curl -fsSL "$REGISTRY/v2/_catalog" | jq -r '.repositories[]?')"
+auth="$(jq -r --arg reg "$REGISTRY" '.auths[$reg].auth // empty' ~/.docker/config.json)"
+auth_header=()
+[ -n "$auth" ] && auth_header=(-H "Authorization: Basic $auth")
+
+repos="$(curl -fsSL "${auth_header[@]}" "$REGISTRY_URL/v2/_catalog" | jq -r '.repositories[]?')"
 for repo in $repos; do
-	tags="$(curl -fsSL "$REGISTRY/v2/${repo}/tags/list" | jq -r '.tags[]? // empty')"
+	tags="$(curl -fsSL "${auth_header[@]}" "$REGISTRY_URL/v2/${repo}/tags/list" | jq -r '.tags[]? // empty')"
 	if [ -z "$tags" ]; then
 		echo "${repo} (no tags)"
 		continue
@@ -23,4 +27,4 @@ done
 
 echo "=== server containers ==="
 
-tailscale ssh "root@$SERVER" docker container list
+ssh "$PROD_SSH_USR" docker container list

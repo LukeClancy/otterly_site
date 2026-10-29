@@ -31,6 +31,7 @@ fi
 
 # create the .access_info and .env files
 PROJECT_ENV=production vm/utils/compose_config
+echo "-- compose config complete --"
 
 cd vm
 
@@ -49,23 +50,24 @@ DIR="/root/$PROJECT"
 HOST="root@$SERVER"
 
 # make sure remote dir exists
-tailscale ssh "$HOST" mkdir -p "$DIR"
+ssh "$HOST" mkdir -p "$DIR"
 echo "-- ensured $DIR exists on server --"
 
 # move config to server
+echo 1
 scp *.yaml .env .access_info "$HOST:$DIR/"
 echo "-- moved compose related files --"
 
 # pull from running registry image to the server
-tailscale ssh "$HOST" "cd $DIR; $COMP pull"
+ssh "$HOST" "cd $DIR; docker compose pull"
 echo "-- compose pulled image to server --"
 
 # eg. migrations, before the new code starts taking requests
 if [ -n "${PRE_UP:-}" ]; then
-	tailscale ssh "$HOST" "cd $DIR; $PRE_UP"
+	ssh "$HOST" "cd $DIR; $PRE_UP"
 	echo "-- ran PRE_UP --"
 fi
 
 # run on server using the config
-tailscale ssh "$HOST" "cd $DIR; docker compose up -d"
+ssh "$HOST" "cd $DIR; docker compose up -d"
 echo "-- restarted with new image --"
