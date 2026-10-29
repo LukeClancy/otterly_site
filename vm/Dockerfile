@@ -19,10 +19,6 @@ EXPOSE 4000
 # `run premix` for touching deps (eg. mix deps.update --all) by hand.
 FROM base AS premix
 FROM base AS development
-COPY . .
-# install claude
-RUN curl -fsSL https://claude.ai/install.sh | bash
-RUN mix deps.get
 CMD ["vm/utils/serve", "development"]
 
 FROM base AS production
