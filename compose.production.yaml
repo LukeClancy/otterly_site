@@ -1,0 +1,18 @@
+services:
+  otterly:
+    build:
+      target: production
+    # Sencho builds from the repo; never try to pull this image from a registry.
+    pull_policy: build
+    container_name: otterly
+    hostname: otterly
+    # SOPS encrypted. Sencho decrypts them with its git source age identity.
+    # Later files override earlier ones.
+    env_file:
+      - env/shared.env
+      - env/production.env
+
+networks:
+  default:
+    name: caddy
+    external: true

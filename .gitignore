@@ -39,7 +39,9 @@ npm-debug.log
 priv/static/
 /priv/static
 
-# vm .env / .access_info (see vm/utils/compose_config)
+# holds SOPS_AGE_KEY for compose (see bin/devcontainer_init)
+/.env
+# TODO remove once vm/migrate_creds has run
 vm/.env
 vm/.access_info
 

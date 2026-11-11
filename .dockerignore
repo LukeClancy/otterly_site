@@ -1,8 +1,6 @@
-# vm/.access_info holds SOPS_AGE_KEY and vm/.env the decrypted creds (the
-# production ones during push_production) - never let `COPY . .` bake them
-# into an image.
-vm/.env
-vm/.access_info
+# .env holds SOPS_AGE_KEY - never let `COPY . .` bake it into an image.
+.env
+vm
 
 **/.git
 deps

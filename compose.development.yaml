@@ -1,0 +1,14 @@
+services:
+  otterly:
+    build:
+      target: development
+    ports:
+      - "127.0.0.1:4000:4000"
+    volumes:
+      - .:/app
+    # The app decrypts env/shared.env + env/<env>.env itself (config/config.exs),
+    # so a shell in this container can also run tests against env/test.env.
+    environment:
+      SOPS_AGE_KEY: ${SOPS_AGE_KEY:?run bin/devcontainer_init or export SOPS_AGE_KEY}
+    # uncomment to debug startup issues
+    # command: sleep infinity

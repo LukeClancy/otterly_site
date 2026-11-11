@@ -18,3 +18,45 @@ Tech:
 ### refresh the UA parsers
 (Think this may be depreciated)
 mix ua_inspector.download
+
+## Development
+
+Needs only docker, plus [sops](https://getsops.io) and [age](https://github.com/filosottile/age) on the host.
+
+- Devcontainer: "Reopen in Container". `bin/devcontainer_init` runs first on the host and writes `./.env` (gitignored) with the development age key.
+- Tests: `./bin/test` (host, CI or inside the devcontainer).
+- Shell without the devcontainer: `docker compose run --rm otterly sh` (uses `COMPOSE_FILE` from `./.env`).
+
+## Credentials
+
+SOPS-encrypted dotenv files in `env/`. `shared.env` is loaded first, then the environment's own file overrides it.
+
+| file | readable by |
+|---|---|
+| `env/shared.env` | development, production, CI, Sencho keys |
+| `env/development.env`, `env/test.env` | development, CI keys |
+| `env/production.env` | production, Sencho keys |
+
+- Development/test: the app decrypts them itself (`config/config.exs` calls `bin/decrypt_env`), so a dev shell can run tests against `env/test.env`.
+- Production: Sencho decrypts them with its git source age identity and passes them in through `env_file`.
+
+```bash
+sops edit env/development.env
+# new key: append to ~/.config/sops/age/keys.txt, add the public key to .sops.yaml, then
+sops updatekeys env/*.env
+```
+
+To revoke someone, remove their public key from `.sops.yaml`, run `sops updatekeys`, and rotate the secrets. They keep anything they already decrypted.
+
+## Deployment (Sencho)
+
+[Sencho](https://docs.sencho.io) builds the `production` target straight from this repo. There is no registry and no SSH.
+
+1. In Sencho, add a stack from a git source: this repo, ref `main`, compose files `compose.yaml` then `compose.production.yaml`.
+2. In the git source's Secrets tab, generate an age identity. Add its public key to the `shared` and `production` rules in `.sops.yaml`, then run `sops updatekeys env/shared.env env/production.env` and commit.
+3. Set encrypted source policy to "Require SOPS encryption" and apply behavior to Auto-deploy.
+4. Pick a deploy trigger:
+   - CI (deploys only after tests pass): create a Sencho webhook for the stack with the "Git source sync" action. In GitHub, set repository variable `SENCHO_WEBHOOK_URL` (`https://<sencho>/api/webhooks/<id>/trigger`) and secret `SENCHO_WEBHOOK_SECRET`. `.github/workflows/test.yml` calls it after tests pass on `main`.
+   - Or Settings → GitOps polling, which needs no inbound access to Sencho.
+
+The `caddy` docker network must exist on the node.

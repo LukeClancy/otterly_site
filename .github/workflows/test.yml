@@ -1,0 +1,43 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      # The container decrypts env/test.env itself; the runner only passes the key.
+      - name: Run tests
+        run: ./bin/test
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+
+  # Tells Sencho to sync the git source (and auto-deploy) once main is green.
+  # Skipped until the SENCHO_WEBHOOK_URL repository variable is set.
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && vars.SENCHO_WEBHOOK_URL != ''
+    runs-on: ubuntu-latest
+    concurrency: production
+    steps:
+      - name: Trigger Sencho webhook
+        env:
+          URL: ${{ vars.SENCHO_WEBHOOK_URL }}
+          SECRET: ${{ secrets.SENCHO_WEBHOOK_SECRET }}
+        run: |
+          body='{"action":"git-pull"}'
+          signature=$(printf '%s' "$body" | openssl dgst -sha256 -hmac "$SECRET" | cut -d' ' -f2)
+          curl -fsS -X POST "$URL" \
+            -H "Content-Type: application/json" \
+            -H "X-Webhook-Signature: sha256=$signature" \
+            -d "$body"

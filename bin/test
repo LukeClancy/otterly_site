@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# test: runs the suite. From the host / CI it goes through the development
+# container; inside the devcontainer (no docker) it runs mix directly.
+
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+if command -v docker >/dev/null; then
+	exec docker compose -f compose.yaml -f compose.development.yaml run --rm otterly \
+		sh -c "mix deps.get && MIX_ENV=test mix test $*"
+fi
+
+mix deps.get
+MIX_ENV=test exec mix test "$@"

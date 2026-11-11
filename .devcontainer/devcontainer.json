@@ -2,8 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
 	"name": "otterly",
-	// the below *may* be overridden by compose_config
-	"dockerComposeFile": ["../vm/docker-compose.yaml", "../vm/docker-compose.development.yaml"],
+	"dockerComposeFile": ["../compose.yaml", "../compose.development.yaml"],
 	"service": "otterly",
 	"shutdownAction": "stopCompose",
 	"workspaceFolder": "/app",
@@ -15,9 +14,8 @@
 		"ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
 	},
 	
-	// Runs on host before container start. Writes vm/.access_info (age key, given
-	// to the container) and vm/.env (decrypted creds, for compose interpolation).
-	"initializeCommand": "./vm/utils/compose_config",
+	// Runs on host before container start. Writes ./.env with the development age key.
+	"initializeCommand": "./bin/devcontainer_init",
 
 	// Dont want to deal with this vauge error right now. Run curl -fsSL https://claude.ai/install.sh | bash in the console.
 	//

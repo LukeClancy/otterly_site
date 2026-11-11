@@ -1,0 +1,17 @@
+# Base service. Always combine with an override:
+#   development: compose.yaml + compose.development.yaml (devcontainer, bin/test)
+#   production:  compose.yaml + compose.production.yaml  (Sencho git source)
+name: otterly
+
+services:
+  otterly:
+    build:
+      context: .
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        # 3 ten megabyte files, oldest deleted when a 4th is needed.
+        # https://www.dash0.com/guides/docker-compose-logs
+        max-size: "10m"
+        max-file: "3"

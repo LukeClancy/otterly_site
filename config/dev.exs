@@ -23,7 +23,7 @@ config :otterly, OtterlyWeb.Endpoint,
   ]
 
 config :otterly, OtterlyWeb.Endpoint,
-  # Bind to all interfaces so the port mapping in vm/docker-compose.yaml
+  # Bind to all interfaces so the port mapping in compose.development.yaml
   # can actually reach the app from the host.
   http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,

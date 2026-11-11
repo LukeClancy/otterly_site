@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# migrate_creds: one-off. Converts vm/creds/*.enc.yaml (sops yaml) into
+# env/*.env (sops dotenv) using the rules in .sops.yaml, then removes vm/.
+# Run on the host, with keys that open both development and production.
+# Nested yaml keys are joined with _, same as before.
+
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+keys_file="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
+
+for name in shared development test production; do
+	src="vm/creds/$name.enc.yaml"
+	dest="env/$name.env"
+	SOPS_AGE_KEY_FILE="$keys_file" sops decrypt "$src" |
+		vm/utils/parse_yaml /dev/stdin |
+		sed -E 's/^([^=]+)="(.*)"$/\1=\2/' |
+		sops encrypt --filename-override "$dest" --input-type dotenv --output-type dotenv /dev/stdin >"$dest.tmp"
+	mv "$dest.tmp" "$dest"
+	echo "migrate_creds: wrote $dest"
+done
+
+SOPS_AGE_KEY_FILE="$keys_file" bin/decrypt_env development >/dev/null
+SOPS_AGE_KEY_FILE="$keys_file" bin/decrypt_env production >/dev/null
+echo "migrate_creds: env/ decrypts ok, removing vm/"
+
+git rm -rq vm
+rm -rf vm
+git add env

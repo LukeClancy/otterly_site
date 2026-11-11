@@ -7,13 +7,12 @@
 # General application configuration
 import Config
 
-# Load the creds for this env (vm/utils/get_environment_config, needs
-# SOPS_AGE_KEY from vm/.access_info) so eg. `MIX_ENV=test mix test` gets the
-# test creds. Same idea as midflip's config/environment.rb. Skipped without a
-# key, eg. during the docker build.
+# Development / test: decrypt env/shared.env + env/<env>.env with the
+# SOPS_AGE_KEY compose passes in, so `MIX_ENV=test mix test` gets the test
+# creds. Production gets plain env vars from Sencho (env_file) and has no key.
 if System.get_env("SOPS_AGE_KEY") do
   project_env = %{dev: "development", test: "test", prod: "production"}[config_env()]
-  {vars, 0} = System.cmd(Path.expand("../vm/utils/get_environment_config", __DIR__), [project_env])
+  {vars, 0} = System.cmd(Path.expand("../bin/decrypt_env", __DIR__), [project_env])
 
   for line <- String.split(vars, "\n", trim: true) do
     [k, v] = String.split(line, "=", parts: 2)

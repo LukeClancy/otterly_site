@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# decrypt_env <env>: prints env/shared.env then env/<env>.env decrypted, as
+# KEY=value lines (later lines win). Needs SOPS_AGE_KEY or SOPS_AGE_KEY_FILE.
+# ENV_DIR overrides the env/ directory (tests).
+
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+env_dir="${ENV_DIR:-env}"
+project_env="${1:?usage: decrypt_env <development|test|production>}"
+
+for file in "$env_dir/shared.env" "$env_dir/$project_env.env"; do
+	decrypted="$(sops decrypt --input-type dotenv --output-type dotenv "$file")" || {
+		echo "decrypt_env: failed to decrypt $file" >&2
+		exit 1
+	}
+	grep -v -e '^[[:space:]]*#' -e '^[[:space:]]*$' <<<"$decrypted" || true
+done

@@ -5,23 +5,20 @@
 # The docs in that second link note that all Elixir v1 releases are backwards compatible, so theres no good reason to stay on an old version. Erlang is lower down than we would deal with.
 #
 # Final search string: `1.20.3-erlang-29.0.5-alpine`, final resulting tag: `1.20.3-erlang-29.0.5-alpine-3.24.1`.
-#
-# I am not yet sure how this interacts with mix.
 
 FROM hexpm/elixir:1.20.3-erlang-29.0.5-alpine-3.24.1 AS base
 
-RUN apk add --no-cache build-base git bash inotify-tools nodejs npm nano curl sops
+RUN apk add --no-cache build-base git bash inotify-tools nodejs npm nano curl sops age
 WORKDIR /app
 RUN mix local.hex --force && mix local.rebar --force
 EXPOSE 4000
 
-# Checkpoint for a shell before the app is even copied in -
-# `run premix` for touching deps (eg. mix deps.update --all) by hand.
-FROM base AS premix
 FROM base AS development
-CMD ["vm/utils/serve", "development"]
+ENV MIX_ENV=dev
+CMD ["sh", "-c", "mix deps.get && exec mix phx.server"]
 
 FROM base AS production
+ENV MIX_ENV=prod
 COPY . .
 RUN mix deps.get
-CMD ["vm/utils/serve", "production"]
+CMD ["mix", "phx.server"]
