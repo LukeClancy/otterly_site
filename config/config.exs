@@ -7,18 +7,13 @@
 # General application configuration
 import Config
 
-# Load the creds for this env (vm/utils/get_environment_config, needs
-# SOPS_AGE_KEY from vm/.access_info) so eg. `MIX_ENV=test mix test` gets the
-# test creds. Same idea as midflip's config/environment.rb. Skipped without a
-# key, eg. during the docker build.
-if System.get_env("SOPS_AGE_KEY") do
-  project_env = %{dev: "development", test: "test", prod: "production"}[config_env()]
-  {vars, 0} = System.cmd(Path.expand("../vm/utils/get_environment_config", __DIR__), [project_env])
+project_env = %{dev: "development", test: "test", prod: "production"}[config_env()]
+# Load the creds compose_config decrypted for this env.
+env_path = Path.expand("../vm/env/#{project_env}", __DIR__)
 
-  for line <- String.split(vars, "\n", trim: true) do
-    [k, v] = String.split(line, "=", parts: 2)
-    System.put_env(k, String.trim(v, "\""))
-  end
+for line <- env_path |> File.read!() |> String.split("\n", trim: true) do
+  [k, v] = String.split(line, "=", parts: 2)
+  System.put_env(k, String.trim(v, "\""))
 end
 
 config :esbuild,

@@ -8,7 +8,7 @@ lives next to them in `vm/`:
 vm/
   utils/              shared scripts, see below
   README.md           this file, shared
-  deploy.conf         PROJECT, SERVER, PRE_UP, serve_app()
+  vm.conf         PROJECT, SERVER, PRE_UP, serve_app()
   Dockerfile          stages: base -> premix -> (deps) -> development / production.
                       Notes on updating the base image are at its top.
   docker-compose.yaml + docker-compose.development.yaml
@@ -21,13 +21,12 @@ All anchor at the project root, so they work from anywhere.
 
 | script | runs on | does |
 |---|---|---|
-| `compose_config` | host | writes `vm/.access_info` (SOPS_AGE_KEY + PROJECT_ENV, given to containers) and `vm/.env` (decrypted creds, for containers without these scripts) |
-| `serve <env>` | container | entrypoint: puts the access state in .bashrc/.profile, then `serve_app` from deploy.conf |
+| `compose_config` | `compose_config` service (`sops.Dockerfile`) | runs before every compose service, mounts the repo and `$SOPS_AGE_KEY_FILE`, writes `env/*` depending on environment (env/development, env/pg_development, etc) and `vm/.env` (compose configuration) |
+| `serve <env>` | container | entrypoint: puts the access state in .bashrc/.profile, then `serve_app` from vm.conf |
 | `get_environment_config <env>` | either | decrypted shared + `<env>` creds as `KEY="value"` lines. The app calls this itself (rails `config/environment.rb`, phoenix `config/config.exs`) so any shell can pick its env, eg. tests |
 | `push_production` | host | build, push to the registry, copy compose files, `PRE_UP`, `up -d` |
 | `test_sops_creds` | host | checks your keys open the creds they should |
 | `get_private_key <env>` | host | finds the key in your keys.txt that opens `<env>` |
-| `docker_stat` | host | registry images + server containers |
 
 ## Day-to-day Work
 
@@ -92,7 +91,7 @@ Remove their public key from .sops.yaml and then regenerate the credentials (`so
 
 **(Things below here are mainly for initial setup or issues)**
 
-See deploy.conf. Example:
+See vm.conf. Example:
 
 ```
 # remote dir is /root/$PROJECT

@@ -30,7 +30,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      # compose_config decrypts vm/creds with sops.
+      # compose_config decrypts vm/creds to vm/env with sops.
       - name: Install tools
         run: |
           sudo apt-get update

@@ -1,11 +1,10 @@
-# vm/.access_info holds SOPS_AGE_KEY and vm/.env the decrypted creds (the
-# production ones during push_production) - never let `COPY . .` bake them
-# into an image.
-vm/.env
-vm/.access_info
+# - vm/.env is for configuring docker compose and adding PROJECT_ENV
+# - other encrypted files containing the current environment (e.g. psql_development.enc.yaml) are under vm/env (as psql_development)
 
+vm/.env
+vm/env
 **/.git
-deps
+deps 
 _build
 node_modules
 assets/node_modules

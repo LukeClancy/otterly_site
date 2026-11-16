@@ -5,5 +5,5 @@ services:
 
 networks:
   default:
-    name: $DOCKER_NETWORK
+    name: caddy
     external: true

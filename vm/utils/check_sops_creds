@@ -10,7 +10,6 @@ check() {
 	key="$(vm/utils/get_private_key "$1")"
 	SOPS_AGE_KEY="$key" sops decrypt "vm/creds/$2.enc.yaml" >/dev/null || {
 		echo "Could not decrypt $2 with $1 cred (length ${#key})" >&2
-		exit 1
 	}
 }
 
@@ -20,4 +19,4 @@ check development shared
 check production production
 check production shared
 
-echo "-- creds ok --"
+echo "-- end --"

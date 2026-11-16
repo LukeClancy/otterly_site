@@ -15,9 +15,6 @@ WORKDIR /app
 RUN mix local.hex --force && mix local.rebar --force
 EXPOSE 4000
 
-# Checkpoint for a shell before the app is even copied in -
-# `run premix` for touching deps (eg. mix deps.update --all) by hand.
-FROM base AS premix
 FROM base AS development
 CMD ["vm/utils/serve", "development"]
 

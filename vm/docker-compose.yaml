@@ -23,7 +23,6 @@ x-vm-env: &x-vm-env
 # For containers with mixed environments (aka run tests in dev container)
 x-vm-access-info: &x-vm-access-info
   <<: *x-vm-base
-  env_file: ".access_info"
   build:
     target: ${PROJECT_ENV:?set to premix, development or production}
     context: ..
@@ -33,4 +32,3 @@ name: otterly
 services:
   otterly:
     <<: *x-vm-access-info
-    image: $REGISTRY/otterly:${PROJECT_ENV:?set to premix, development or production}
