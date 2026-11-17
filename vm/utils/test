@@ -1,8 +1,5 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-
 source vm.conf
-PROJECT_ENV=development docker compose run --rm compose_config
-
 test_app

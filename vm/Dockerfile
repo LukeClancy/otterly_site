@@ -10,7 +10,7 @@
 
 FROM hexpm/elixir:1.20.3-erlang-29.0.5-alpine-3.24.1 AS base
 
-RUN apk add --no-cache build-base git bash inotify-tools nodejs npm nano curl sops
+RUN apk add --no-cache build-base git bash inotify-tools nodejs npm nano curl
 WORKDIR /app
 RUN mix local.hex --force && mix local.rebar --force
 EXPOSE 4000

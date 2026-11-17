@@ -1,7 +1,11 @@
 services:
+  compose_config:
+    command: vm/utils/compose_config production
   otterly:
-    container_name: otterly
-    hostname: otterly
+    build:
+      target: production
+      context: ..
+      dockerfile: vm/Dockerfile
 
 networks:
   default:
