@@ -16,6 +16,8 @@ name: otterly
 services:
   # Writes vm/.env and vm/env/* to the host. Environment comes from the overlay's command.
   compose_config:
+    hostname: otterly_compose_config
+    container_name: otterly_compose_config
     build:
       dockerfile: utils/sops.Dockerfile
     volumes:
