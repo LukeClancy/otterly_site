@@ -19,6 +19,5 @@ FROM base AS development
 CMD ["vm/utils/serve", "development"]
 
 FROM base AS production
-COPY . .
 RUN mix deps.get
 CMD ["vm/utils/serve", "production"]
