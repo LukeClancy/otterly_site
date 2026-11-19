@@ -2,12 +2,4 @@
 # - other encrypted files containing the current environment (e.g. psql_development.enc.yaml) are under vm/env (as psql_development)
 
 vm/.env
-vm/env
 **/.git
-deps 
-_build
-node_modules
-assets/node_modules
-.elixir_ls
-tmp
-private

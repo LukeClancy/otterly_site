@@ -6,10 +6,5 @@
 
 set -euo pipefail
 cd "$(dirname "$0")/../.."
-
-project_env="${1:-development}"
-
-printf 'export PROJECT_ENV=%q\n' "$project_env" | tee -a /root/.bashrc >> /root/.profile
-
 source vm/vm.conf
-serve_app "$project_env"
+serve_app "${1:-development}"
