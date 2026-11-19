@@ -31,8 +31,6 @@ services:
     <<: *x-vm-base
     hostname: otterly
     container_name: otterly
-    volumes:
-      - ..:/app
     depends_on:
       compose_config:
         condition: service_completed_successfully

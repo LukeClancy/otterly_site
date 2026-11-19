@@ -16,4 +16,7 @@ FROM base AS development
 CMD ["vm/utils/serve", "development"]
 
 FROM base AS production
+COPY . .
+RUN MIX_ENV=prod mix setup
+RUN MIX_ENV=prod mix compile
 CMD ["vm/utils/serve", "production"]

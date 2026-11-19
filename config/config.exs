@@ -7,15 +7,6 @@
 # General application configuration
 import Config
 
-project_env = %{dev: "development", test: "test", prod: "production"}[config_env()]
-# Load the creds compose_config decrypted for this env.
-env_path = Path.expand("../vm/env/#{project_env}", __DIR__)
-
-for line <- env_path |> File.read!() |> String.split("\n", trim: true) do
-  [k, v] = String.split(line, "=", parts: 2)
-  System.put_env(k, String.trim(v, "\""))
-end
-
 config :esbuild,
   version: "0.28.2",
   otterly: [

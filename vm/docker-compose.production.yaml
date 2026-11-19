@@ -6,7 +6,8 @@ services:
       target: production
       context: ..
       dockerfile: vm/Dockerfile
-
+    volumes:
+      - ./env:/app/vm/env:ro
 networks:
   default:
     name: caddy

@@ -16,6 +16,17 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
-if System.get_env("PHX_SERVER") do
-  config :otterly, OtterlyWeb.Endpoint, server: true
+
+
+project_env = %{dev: "development", test: "test", prod: "production"}[config_env()]
+# Load the creds compose_config decrypted for this env.
+env_path = Path.expand("../vm/env/#{project_env}", __DIR__)
+
+for line <- env_path |> File.read!() |> String.split("\n", trim: true) do
+  [k, v] = String.split(line, "=", parts: 2)
+  System.put_env(k, String.trim(v, "\""))
 end
+
+config :otterly, OtterlyWeb.Endpoint,
+  server: (if System.get_env("PHX_SERVER"), do: true, else: false),
+  secret_key_base: System.get_env("SECRET_KEY_BASE")

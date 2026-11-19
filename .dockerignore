@@ -1,5 +1,6 @@
 # - vm/.env is for configuring docker compose and adding PROJECT_ENV
 # - other encrypted files containing the current environment (e.g. psql_development.enc.yaml) are under vm/env (as psql_development)
 
+vm/env
 vm/.env
 **/.git
