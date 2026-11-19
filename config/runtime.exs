@@ -27,6 +27,8 @@ for line <- env_path |> File.read!() |> String.split("\n", trim: true) do
   System.put_env(k, String.trim(v, "\""))
 end
 
+# makes it so mix commands can start a server or not
+if System.get_env("PHX_SERVER"), do: config(:otterly, OtterlyWeb.Endpoint, server: true)
+
 config :otterly, OtterlyWeb.Endpoint,
-  server: (if System.get_env("PHX_SERVER"), do: true, else: false),
   secret_key_base: System.get_env("SECRET_KEY_BASE")
