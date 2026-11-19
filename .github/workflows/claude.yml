@@ -30,6 +30,9 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Checkout submodules
+        run: git submodule update --recursive --checkout --init
+
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
