@@ -1,8 +1,15 @@
 services:
+  compose_config:
+    command: vm/utils/compose_config development
+
   otterly:
     ports:
       - "127.0.0.1:4000:4000"
     volumes:
       - ..:/app
+    build:
+      target: development
+      context: ..
+      dockerfile: vm/Dockerfile
     # uncomment to debug startup issues
     # command: sleep infinity

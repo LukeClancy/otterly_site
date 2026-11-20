@@ -12,25 +12,25 @@ x-vm-base: &x-vm-base
       max-file: "3"
   restart: always
 
-# For external services like databases
-x-vm-env: &x-vm-env
-  <<: *x-vm-base
-  env_file: ".env"
-  build:
-    target: ${PROJECT_ENV:?set to premix, development or production}
-    context: ..
-
-# For containers with mixed environments (aka run tests in dev container)
-x-vm-access-info: &x-vm-access-info
-  <<: *x-vm-base
-  env_file: ".access_info"
-  build:
-    target: ${PROJECT_ENV:?set to premix, development or production}
-    context: ..
-    dockerfile: vm/Dockerfile
-
 name: otterly
 services:
+  # Writes vm/.env and vm/env/* to the host. Environment comes from the overlay's command.
+  compose_config:
+    hostname: otterly_compose_config
+    container_name: otterly_compose_config
+    build:
+      dockerfile: utils/sops.Dockerfile
+    volumes:
+      - ..:/app
+      - ${SOPS_AGE_KEY_FILE:-${HOME}/.config/sops/age/keys.txt}:/root/age_keys.txt:ro
+    environment:
+      - SOPS_AGE_KEY_FILE=/root/age_keys.txt
+      - SOPS_AGE_KEY
+
   otterly:
-    <<: *x-vm-access-info
-    image: $REGISTRY/otterly:${PROJECT_ENV:?set to premix, development or production}
+    <<: *x-vm-base
+    hostname: otterly
+    container_name: otterly
+    depends_on:
+      compose_config:
+        condition: service_completed_successfully

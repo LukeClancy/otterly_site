@@ -1,9 +1,14 @@
 services:
+  compose_config:
+    command: vm/utils/compose_config production
   otterly:
-    container_name: otterly
-    hostname: otterly
-
+    build:
+      target: production
+      context: ..
+      dockerfile: vm/Dockerfile
+    volumes:
+      - ./env:/app/vm/env:ro
 networks:
   default:
-    name: $DOCKER_NETWORK
+    name: caddy
     external: true
